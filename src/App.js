@@ -1,14 +1,13 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import {Route} from 'react-router-dom';
-import HomePage from './components/pages/HomePage.js';
-import LoginPage from './components/pages/LoginPage.js';
-
+import LoginPage from './components/pages/LoginPage';
+import DefaultLayout from './components/DefaultLayout';
 
 const App = () => (
-  <div>
-    <Route path="/" exact component={HomePage}/>
+  <Fragment>
+    <Route path="/app" component={DefaultLayout}/>
     <Route path="/login" exact component={LoginPage}/>
-  </div>
+  </Fragment>
 );
 
 export default App;
