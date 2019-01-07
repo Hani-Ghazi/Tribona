@@ -481,16 +481,6 @@ p span {
   .open > .dropdown-menu {
     margin-top: initial;
   }
-
-  .nav-item:before {
-    display: block;
-    content: "";
-    width: 100%;
-    height: 20px;
-    position: absolute;
-    top: 25px;
-    left: 0;
-  }
 }
 
 @media (min-width: 992px) {
@@ -956,7 +946,7 @@ nav .fa-facebook-f, nav .fa-twitter, nav .fa-instagram {
 .form-control:focus {
   color: #495057;
   background-color: #fff;
-  border-color: none;
+  border-color: initial;
   outline: 0;
   box-shadow: 0 3px 3px rgba(50, 50, 50, 0.20);
   outline: none !important;
@@ -2183,7 +2173,7 @@ a:hover .letters-up {
   font-weight: 600;
 }
 
-.ui-state-active, .ui-widget-content .ui-state-active, {
+.ui-state-active, .ui-widget-content .ui-state-active {
   border: 1px solid #6e0793;
   background: #9B51E0;
   outline: none;
@@ -3368,10 +3358,6 @@ iframe {
 
   .dropdown-menu {
     box-shadow: none;
-  }
-
-  .nav-item:before {
-    display: none;
   }
 
   .center-text.blog {

@@ -8,6 +8,10 @@ import thunk from 'redux-thunk';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import rootReducer from './rootReducer'
+import dotenv from 'dotenv';
+
+
+dotenv.config();
 
 const store = createStore(
   rootReducer,
@@ -18,7 +22,9 @@ const store = createStore(
 ReactDOM.render(
   <BrowserRouter>
     <Provider store={store}>
-      <App/>
+
+        <App/>
+      {/*</ToastProvider>*/}
     </Provider>
   </BrowserRouter>,
   document.getElementById('root'));

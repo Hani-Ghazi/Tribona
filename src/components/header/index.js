@@ -1,8 +1,9 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {logout} from '../../actions/Auth'
 
-
-const Header = () => (
+const Header = ({isAuthenticated, logout}) => (
   <div id="wrapper-navbar">
     <nav id="top" className="navbar py-3 fixed-top navbar-expand-lg navbar-light bg-light">
       <a className="navbar-brand ml-sm-5" href="#">
@@ -27,13 +28,29 @@ const Header = () => (
           <li className="nav-item">
             <Link to={'/trips'} className={'nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3'}>Trips</Link>
           </li>
-          <li className="nav-item">
-            <Link to={'/login'} className={'nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3'}>Login/Join us</Link>
-          </li>
+          {
+            !isAuthenticated ?
+              <li className="nav-item">
+                <Link to={'/login'} className={'nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3'}>Login/Join us</Link>
+              </li>
+              :
+              <li className="nav-item">
+                <Link to={'/'} onClick={() => logout()}
+                      className={'nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3'}>Logout</Link>
+              </li>
+          }
+
         </ul>
       </div>
     </nav>
   </div>
 );
 
-export default Header;
+const mapStateToProps = (state) => {
+  console.log({state});
+  return {
+    isAuthenticated: !!state.user.id
+  }
+};
+
+export default connect(mapStateToProps, {logout})(Header);

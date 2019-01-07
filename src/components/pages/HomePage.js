@@ -1,8 +1,10 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, Component} from 'react';
 import StaticSlider from '../sliders/StaticSlider';
 import HorizontalFilters from '../filters/HorizontalFilters';
 import PopularTrips from '../partials/PopularTrips';
 import PopularPlaces from '../partials/PopularPlaces';
+import PropTypes from 'prop-types';
+
 
 const trips = [{
   img: require('../../assets/images/costarica.jpg'),
@@ -18,13 +20,23 @@ const trips = [{
   title: 'Costa Rica'
 }];
 
-const HomePage = () => (
-  <Fragment>
-    <StaticSlider curveImage={require("../../assets/svgs/curve.svg")}/>
-    <HorizontalFilters/>
-    <PopularTrips trips={trips}/>
-    <PopularPlaces places={trips}/>
-  </Fragment>
-);
+class HomePage extends Component {
+  render() {
+    const {places} = this.props;
+    return (
+      <Fragment>
+        <StaticSlider curveImage={require("../../assets/svgs/curve.svg")}/>
+        <HorizontalFilters/>
+        <PopularTrips trips={trips}/>
+        <PopularPlaces places={places || []}/>
+      </Fragment>
+    );
+  }
+}
+
+
+HomePage.propTypes = {
+  places: PropTypes.string.isRequired,
+};
 
 export default HomePage;
