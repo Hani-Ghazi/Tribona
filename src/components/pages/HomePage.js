@@ -1,8 +1,8 @@
 import React, {Fragment, Component} from 'react';
 import StaticSlider from '../sliders/StaticSlider';
 import HorizontalFilters from '../filters/HorizontalFilters';
-import PopularTrips from '../partials/PopularTrips';
-import PopularPlaces from '../partials/PopularPlaces';
+import PopularTrips from '../Trips/PopularTrips';
+import PopularPlaces from '../Places/PopularPlaces';
 import PropTypes from 'prop-types';
 
 
@@ -27,8 +27,8 @@ class HomePage extends Component {
       <Fragment>
         <StaticSlider curveImage={require("../../assets/svgs/curve.svg")}/>
         <HorizontalFilters/>
-        <PopularTrips trips={trips}/>
         <PopularPlaces places={places || []}/>
+        <PopularTrips trips={trips}/>
       </Fragment>
     );
   }

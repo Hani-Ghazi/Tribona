@@ -47,7 +47,6 @@ const Header = ({isAuthenticated, logout}) => (
 );
 
 const mapStateToProps = (state) => {
-  console.log({state});
   return {
     isAuthenticated: !!state.user.id
   }

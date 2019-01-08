@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-const PlaceCard = ({place}) => (
+const TripCard = ({ trip }) => (
   <div className="col-xs-12 col-md-6 col-lg-4 mb-4">
     <div className="card ">
       <small className="white front">
@@ -25,4 +25,4 @@ const PlaceCard = ({place}) => (
   </div>
 );
 
-export default PlaceCard;
+export default TripCard;

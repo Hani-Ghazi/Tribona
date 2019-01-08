@@ -18,7 +18,6 @@ class VerifyPage extends Component {
   };
 
   componentDidMount() {
-    console.log(this.props);
     this.setState({
       data: {...this.state.data, verificationToken: this.props.verificationToken, email: this.props.email || ''}
     });
