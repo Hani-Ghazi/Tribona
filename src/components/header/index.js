@@ -1,9 +1,9 @@
-import React from 'react';
-import {Link} from 'react-router-dom';
-import {connect} from 'react-redux';
-import {logout} from '../../actions/Auth'
+import React from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { logout } from "../../actions/Auth";
 
-const Header = ({isAuthenticated, logout}) => (
+const Header = ({ isAuthenticated, logout }) => (
   <div id="wrapper-navbar">
     <nav id="top" className="navbar py-3 fixed-top navbar-expand-lg navbar-light bg-light">
       <a className="navbar-brand ml-sm-5" href="#">
@@ -20,23 +20,26 @@ const Header = ({isAuthenticated, logout}) => (
       <div className="collapse navbar-collapse ml-auto" id="navbarSupportedContent">
         <ul className="navbar-nav ml-auto">
           <li className="nav-item">
-            <Link to={'/places'} className={'nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3'}>Places</Link>
+            <Link to={"/places"} className={"nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3"}>Places</Link>
           </li>
           <li className="nav-item">
-            <Link to={'/journeys'} className={'nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3'}>Journeys</Link>
+            <Link to={"/journeys"} className={"nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3"}>Journeys</Link>
           </li>
           <li className="nav-item">
-            <Link to={'/trips'} className={'nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3'}>Trips</Link>
+            <Link to={"/trips"} className={"nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3"}>Trips</Link>
+          </li>
+          <li className="nav-item">
+            <Link to={"/users"} className={"nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3"}>Users</Link>
           </li>
           {
             !isAuthenticated ?
               <li className="nav-item">
-                <Link to={'/login'} className={'nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3'}>Login/Join us</Link>
+                <Link to={"/login"} className={"nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3"}>Login/Join us</Link>
               </li>
               :
               <li className="nav-item">
-                <Link to={'/'} onClick={() => logout()}
-                      className={'nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3'}>Logout</Link>
+                <Link to={"/"} onClick={() => logout()}
+                      className={"nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3"}>Logout</Link>
               </li>
           }
 
@@ -49,7 +52,7 @@ const Header = ({isAuthenticated, logout}) => (
 const mapStateToProps = (state) => {
   return {
     isAuthenticated: !!state.user.id
-  }
+  };
 };
 
-export default connect(mapStateToProps, {logout})(Header);
+export default connect(mapStateToProps, { logout })(Header);

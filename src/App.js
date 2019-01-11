@@ -6,7 +6,7 @@ import ForgetPasswordPage from "./components/pages/ForgetPasswordPage";
 import VerifyPage from "./components/pages/VerifyPage";
 import ResetPAge from "./components/pages/ResetPassword";
 import { ToastContainer } from "react-toastify";
-import { HomePage } from "./components/AsyncComponent/AsyncComponent";
+import { AsyncHomePage, AsyncUserPage } from "./components/AsyncComponent/AsyncComponent";
 import GuestRoute from "./components/Guard/GuestRoute";
 import LoginGuard from "./components/Guard/LoginGuard";
 import Header from "./components/header";
@@ -24,7 +24,8 @@ const App = () => (
       <LoginGuard path="/forget-password" exact component={ForgetPasswordPage}/>
       <LoginGuard path="/verify" exact component={VerifyPage}/>
       <LoginGuard path="/reset" exact component={ResetPAge}/>
-      <GuestRoute path="/" exact component={HomePage}/>
+      <GuestRoute path="/" exact component={AsyncHomePage}/>
+      <GuestRoute path="/users" exact component={AsyncUserPage}/>
     </Switch>
     <Footer/>
     <ToastContainer/>
