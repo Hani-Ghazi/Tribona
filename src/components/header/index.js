@@ -6,9 +6,9 @@ import { logout } from "../../actions/Auth";
 const Header = ({ isAuthenticated, logout }) => (
   <div id="wrapper-navbar">
     <nav id="top" className="navbar py-3 fixed-top navbar-expand-lg navbar-light bg-light">
-      <a className="navbar-brand ml-sm-5" href="#">
+      <Link className="navbar-brand ml-sm-5" to={"/"}>
         <img src={require("../../assets/images/logo.png")} alt={"logo"}/>
-      </a>
+      </Link>
       <button className="navbar-toggler collapsed navbar-toggler-right" type="button" data-toggle="collapse"
               data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
               aria-label="Toggle navigation">
