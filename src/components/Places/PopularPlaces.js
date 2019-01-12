@@ -18,7 +18,7 @@ class PopularPlaces extends Component {
               <h5 className="primary-color section-title ">Find the one that suits you best!</h5>
             </div>
             <div className="col-sm-3 front my-auto">
-              <a className="btn btn-primary mt-2 px-5 py-2" href="#" role="button">more places</a>
+              <Link className="btn btn-primary mt-2 px-5 py-2" to={"/places"}>more places</Link>
             </div>
           </div>
 
