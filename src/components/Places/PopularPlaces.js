@@ -8,7 +8,8 @@ class PopularPlaces extends Component {
     const { places } = this.props;
 
     return (
-      <section id="section1">
+      <section id="section4">
+        <img className="curve3" src={require("../../assets/svgs/curve2.svg")} alt=""/>
         <div className="container">
           <h2 className="black front">Popular Places</h2>
           <div className="row mb-5">

@@ -27,8 +27,8 @@ class HomePage extends Component {
       <Fragment>
         <StaticSlider curveImage={require("../../assets/svgs/curve.svg")}/>
         <HorizontalFilters/>
-        <PopularPlaces places={places || []}/>
         <PopularTrips trips={trips}/>
+        <PopularPlaces places={places || []}/>
       </Fragment>
     );
   }
