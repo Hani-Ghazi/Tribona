@@ -4,22 +4,25 @@ import {
   USER_LOGGED_OUT,
   RESET_PASSWORD_EMAIL_SENT,
   RESET_PASSWORD_SUCCEEDED
-} from '../types';
-import api from '../api/user';
-import axiosInstence from '../api/index';
+} from "../types";
+import api from "../api/user";
+import axiosInstence from "../api/index";
 
 
-export const userLoggedIn = user => ({type: USER_LOGGED_IN, payload: user});
+export const userLoggedIn = user => ({ type: USER_LOGGED_IN, payload: user });
 
-export const userLoggedOut = () => ({type: USER_LOGGED_OUT, payload: {}});
+export const userLoggedOut = () => ({ type: USER_LOGGED_OUT, payload: {} });
 
 export const getMe = () => dispatch => {
-  const {token} = JSON.parse(localStorage.triponaUser || '');
-  axiosInstence.defaults.headers.common['Authorization'] = `bearer ${token}`;
+  const { token } = JSON.parse(localStorage.triponaUser || "");
+  axiosInstence.defaults.headers.common["Authorization"] = `bearer ${token}`;
   return api.getMe().then(user => {
-    user = {...user, token};
+    user = { ...user, token };
     localStorage.triponaUser = JSON.stringify(user);
     return dispatch(userLoggedIn(user));
+  }).catch(() => {
+    localStorage.removeItem("triponaUser");
+    dispatch(userLoggedOut());
   });
 };
 
@@ -52,7 +55,7 @@ export const loginViaGoogle = (credentials) => (dispatch) =>
 
 
 export const signup = (params) => (dispatch) =>
-  api.signup(params).then(user => dispatch({type: USER_SIGNED_UP, payload: user.verificationToken}));
+  api.signup(params).then(user => dispatch({ type: USER_SIGNED_UP, payload: user.verificationToken }));
 
 export const verify = (params) => (dispatch) =>
   api.verify(params).then(user => {
@@ -61,13 +64,13 @@ export const verify = (params) => (dispatch) =>
   });
 
 export const logout = () => dispatch => {
-  localStorage.removeItem('triponaUser');
+  localStorage.removeItem("triponaUser");
   return dispatch(userLoggedOut());
 };
 
 
 export const forgetPassword = (email) => (dispatch) =>
-  api.forgetPassword(email).then((res) => dispatch({type: RESET_PASSWORD_EMAIL_SENT, payload: res.resetToken}));
+  api.forgetPassword(email).then((res) => dispatch({ type: RESET_PASSWORD_EMAIL_SENT, payload: res.resetToken }));
 
 export const resetPassword = (params) => (dispatch) =>
-  api.resetPassword(params).then((res) => dispatch({type: RESET_PASSWORD_SUCCEEDED, payload: res}));
+  api.resetPassword(params).then((res) => dispatch({ type: RESET_PASSWORD_SUCCEEDED, payload: res }));

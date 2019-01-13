@@ -2,19 +2,17 @@ import React from "react";
 import Loadable from "react-loadable";
 import { PropagateLoader } from "react-spinners";
 import placesApi from "../../api/places";
-import utilsApi from "../../api/utils";
-import userApi from '../../api/user'
+import userApi from '../../api/user';
 
 export const AsyncHomePage = Loadable.Map({
   loader: {
     HomePage: () => import("../pages/HomePage"),
-    places: () => placesApi.getPlaces(),
-    countries: () => utilsApi.getCountries()
+    places: () => placesApi.getPlaces()
   },
   loading: () => <PropagateLoader/>,
   render(loaded, props) {
     let HomePage = loaded.HomePage.default;
-    return <HomePage {...props} places={loaded.places} countries={loaded.countries}/>;
+    return <HomePage {...props} places={loaded.places}/>;
   }
 });
 

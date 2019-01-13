@@ -1,21 +1,15 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import Select from "../Partials/Select";
-import utilsApi from "../../api/utils";
+import { connect } from "react-redux";
 
 
 class HorizontalFilters extends Component {
   state = {
-    countries: [],
     selectedCountry: {}
   };
 
-  componentDidMount() {
-    utilsApi.getCountries().then(countries => this.setState({ countries }));
-  }
-
   render() {
-    const { countries } = this.state;
+    const { countries } = this.props;
     return (
       <section id="section3">
         <div className="container formhome2 text-center justify-content-center align-items-center pb-4">
@@ -48,6 +42,9 @@ class HorizontalFilters extends Component {
   }
 }
 
-HorizontalFilters.propTypes = {};
 
-export default HorizontalFilters;
+const initMapStateToProps = state => {
+  return { countries: state.countries };
+};
+
+export default connect(initMapStateToProps)(HorizontalFilters);

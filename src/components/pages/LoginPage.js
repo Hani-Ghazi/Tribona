@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
-import { withToastManager } from "react-toast-notifications";
 import InlineErrors from "../messages/InlineErrors";
 import { Link } from "react-router-dom";
 import GoogleLogin from "react-google-login";

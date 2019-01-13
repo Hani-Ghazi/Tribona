@@ -11,12 +11,14 @@ import rootReducer from './rootReducer'
 import dotenv from 'dotenv';
 
 
+
 dotenv.config();
 
 const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(thunk))
 );
+
 
 
 ReactDOM.render(

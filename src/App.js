@@ -14,24 +14,33 @@ import Header from "./components/header";
 import Footer from "./components/footer";
 import "./assets/sass/_all.css";
 import "react-toastify/dist/ReactToastify.css";
+import { connect } from "react-redux";
+import { getMe } from "./actions/Auth";
+import { getCountries } from "./actions/Country";
 
 
-const App = ({ location }) => (
-  <Fragment>
-    <Header/>
-    <Switch>
-      <LoginGuard location={location} path="/login" exact component={LoginPage}/>
-      <LoginGuard location={location} path="/sign-up" exact component={SignUpPage}/>
-      <LoginGuard location={location} path="/forget-password" exact component={ForgetPasswordPage}/>
-      <LoginGuard location={location} path="/verify" exact component={VerifyPage}/>
-      <LoginGuard location={location} path="/reset" exact component={ResetPAge}/>
-      <GuestRoute location={location} path="/" exact component={AsyncHomePage}/>
-      <GuestRoute location={location} path="/users" exact component={AsyncUserPage}/>
-    </Switch>
-    <Footer/>
-    <ToastContainer/>
-  </Fragment>
-);
+const App = ({ location, getMe, getCountries }) => {
+  if (localStorage.getItem("triponaUser")) {
+    getMe();
+  }
+  getCountries();
+  return (
+    <Fragment>
+      <Header/>
+      <Switch>
+        <LoginGuard location={location} path="/login" exact component={LoginPage}/>
+        <LoginGuard location={location} path="/sign-up" exact component={SignUpPage}/>
+        <LoginGuard location={location} path="/forget-password" exact component={ForgetPasswordPage}/>
+        <LoginGuard location={location} path="/verify" exact component={VerifyPage}/>
+        <LoginGuard location={location} path="/reset" exact component={ResetPAge}/>
+        <GuestRoute location={location} path="/" exact component={AsyncHomePage}/>
+        <GuestRoute location={location} path="/users" exact component={AsyncUserPage}/>
+      </Switch>
+      <Footer/>
+      <ToastContainer/>
+    </Fragment>
+  );
+};
 
 App.propTypes = {
   location: PropTypes.shape({
@@ -40,4 +49,4 @@ App.propTypes = {
 };
 
 
-export default App;
+export default connect(null, { getMe, getCountries })(App);
