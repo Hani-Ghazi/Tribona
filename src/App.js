@@ -7,7 +7,11 @@ import ForgetPasswordPage from "./components/pages/ForgetPasswordPage";
 import VerifyPage from "./components/pages/VerifyPage";
 import ResetPAge from "./components/pages/ResetPassword";
 import { ToastContainer } from "react-toastify";
-import { AsyncHomePage, AsyncUserPage } from "./components/AsyncComponent/AsyncComponent";
+import {
+  AsyncHomePage,
+  AsyncUserPage,
+  AsyncPlacesListPage
+} from "./components/AsyncComponent/AsyncComponent";
 import GuestRoute from "./components/Guard/GuestRoute";
 import LoginGuard from "./components/Guard/LoginGuard";
 import Header from "./components/header";
@@ -35,6 +39,7 @@ const App = ({ location, getMe, getCountries }) => {
         <LoginGuard location={location} path="/reset" exact component={ResetPAge}/>
         <GuestRoute location={location} path="/" exact component={AsyncHomePage}/>
         <GuestRoute location={location} path="/users" exact component={AsyncUserPage}/>
+        <GuestRoute location={location} path="/places" exact component={AsyncPlacesListPage}/>
       </Switch>
       <Footer/>
       <ToastContainer/>
