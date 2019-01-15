@@ -31,7 +31,7 @@ export const AsyncUserPage = Loadable.Map({
 
 export const AsyncPlacesListPage = Loadable.Map({
   loader: {
-    PlacesListPage: () => import ("../pages/PlacesListPage"),
+    PlacesListPage: () => import ("../Places/PlacesListPage"),
     places: () => placesApi.getPlaces(),
     placesCategories: () => placesApi.getPlacesCategories()
   },
@@ -40,4 +40,10 @@ export const AsyncPlacesListPage = Loadable.Map({
     let PlacesListPage = loaded.PlacesListPage.default;
     return <PlacesListPage {...props} places={loaded.places} placesCategories={loaded.placesCategories}/>;
   }
+});
+
+
+export const AsyncPlaceDetailsPage = Loadable({
+  loader: () => import("../Places/PlaceDetails"),
+  loading: () => <PropagateLoader/>
 });

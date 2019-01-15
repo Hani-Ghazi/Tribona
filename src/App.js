@@ -10,7 +10,8 @@ import { ToastContainer } from "react-toastify";
 import {
   AsyncHomePage,
   AsyncUserPage,
-  AsyncPlacesListPage
+  AsyncPlacesListPage,
+  AsyncPlaceDetailsPage
 } from "./components/AsyncComponent/AsyncComponent";
 import GuestRoute from "./components/Guard/GuestRoute";
 import LoginGuard from "./components/Guard/LoginGuard";
@@ -40,6 +41,7 @@ const App = ({ location, getMe, getCountries }) => {
         <GuestRoute location={location} path="/" exact component={AsyncHomePage}/>
         <GuestRoute location={location} path="/users" exact component={AsyncUserPage}/>
         <GuestRoute location={location} path="/places" exact component={AsyncPlacesListPage}/>
+        <GuestRoute location={location} path="/places/:id" exact component={AsyncPlaceDetailsPage}/>
       </Switch>
       <Footer/>
       <ToastContainer/>
