@@ -10,7 +10,9 @@ import * as serviceWorker from './serviceWorker';
 import rootReducer from './rootReducer'
 import dotenv from 'dotenv';
 
-
+import { getMe } from "./actions/Auth";
+import { getCountries } from "./actions/Country";
+import { getPopularPlaces } from "./actions/Places";
 
 dotenv.config();
 
@@ -18,6 +20,12 @@ const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(thunk))
 );
+
+if (localStorage.getItem("triponaUser")) {
+  store.dispatch(getMe());
+}
+store.dispatch(getCountries());
+store.dispatch(getPopularPlaces());
 
 
 

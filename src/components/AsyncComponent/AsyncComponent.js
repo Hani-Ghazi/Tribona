@@ -7,12 +7,11 @@ import userApi from "../../api/user";
 export const AsyncHomePage = Loadable.Map({
   loader: {
     HomePage: () => import("../pages/HomePage"),
-    places: () => placesApi.getPlaces()
   },
   loading: () => <PropagateLoader/>,
   render(loaded, props) {
     let HomePage = loaded.HomePage.default;
-    return <HomePage {...props} places={loaded.places}/>;
+    return <HomePage {...props}/>;
   }
 });
 

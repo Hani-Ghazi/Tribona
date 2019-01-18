@@ -67,3 +67,33 @@ h6.underline-title {
 .pointer {
   cursor: pointer !important;
 }
+
+.max-w-100 {
+  max-width: 100% !important;
+}
+
+.comments-container.card {
+  border-radius: 0;
+  background-color: #F2F3F9;
+  box-shadow: none;
+  border: none;
+}
+
+.comments-container.card:hover {
+  transform: scale(1) !important;
+  box-shadow: none;
+  border: none;
+}
+
+.comment {
+  margin-bottom: 1.25rem;
+}
+
+.comment:after {
+  content: "";
+  margin-left: auto;
+  margin-right: auto;
+  bottom: 0;
+  width: 80%;
+  border-bottom: 1px solid #E5E5E5;
+}

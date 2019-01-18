@@ -2,19 +2,22 @@ import React, { Component, Fragment } from "react";
 import SliderWithScroll from "../sliders/SliderWithScroll";
 import { connect } from "react-redux";
 import Lightbox from "react-image-lightbox";
+import StarRatings from "react-star-ratings";
+
 import {
   getPlaceById,
   getPlaceComments,
-  CheckPlaceLikeStatus,
-  CheckPlaceFavStatus,
-  placeLike,
-  placeDisLike
+  placeToggleLike,
+  placeToggleFavorite,
+  addOrUpdateComment
 } from "../../actions/Places";
 import PropTypes from "prop-types";
 import { PropagateLoader } from "react-spinners";
 import "react-image-lightbox/style.css";
 import GoogleMapReact from "google-map-react";
-import { IoIosHeart, IoIosHeartEmpty, IoIosThumbsUp, IoIosThumbsDown } from "react-icons/io";
+import { Favorite, Comments, Like, Follow } from "../Partials";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 
 const { REACT_APP_PUBLIC_FILES } = process.env;
@@ -29,25 +32,65 @@ class PlaceDetails extends Component {
   componentDidMount() {
     const id = this.props.match.params.id;
     this.props.getPlaceById(id).then(() => {
-      this.setState({ place: {...this.props.place }});
-      this.props.getPlaceComments(id);
-      this.props.CheckPlaceLikeStatus(id);
+      this.setState({ place: this.props.place });
+      this.props.getPlaceComments(id).then(comments => this.setState({
+        place: {
+          ...this.props.place,
+          comments: comments.payload
+        }
+      }));
     });
   }
 
-  changeLikeStatus = (e) => {
-    const { isLike, id } = this.state.place;
-    (!!isLike ? this.props.placeDisLike(id) : this.props.placeLike(id)).then(() => this.setState({
-      place: {
-        ...this.state.place,
-        isLike: !isLike
-      }
-    }));
+  changeLikeStatus = () => {
+    const { isLiked, id } = this.state.place;
+    this.props.placeToggleLike({ id, isLiked }).then(() => {
+      this.setState({
+        place: {
+          ...this.state.place,
+          isLiked: !isLiked
+        }
+      });
+      toast.success(`You successfully ${isLiked ? "unlike" : "like"} this place`, {
+        hideProgressBar: true
+      });
+    });
+  };
+
+  changeFollowStatus = (isFollowOwner) => {
+    const { ownerName } = this.state.place;
+    this.setState({ place: { ...this.state.place, isFollowOwner: isFollowOwner } });
+    toast.success(`You successfully ${isFollowOwner ? "followed" : "un followed"} ${ownerName}`, {
+      hideProgressBar: true
+    });
+  };
+
+  changeFavStatus = () => {
+    const { isFavorite, id } = this.state.place;
+    this.props.placeToggleFavorite({ id, isFavorite })
+      .then(() => {
+        this.setState({ place: { ...this.state.place, isFavorite: !isFavorite } });
+        toast.success(`You successfully ${isFavorite ? "add to" : "remove from"} your favorites`, {
+          hideProgressBar: true
+        });
+      });
+  };
+
+  onComment = (text) => {
+    const { place } = this.state;
+    this.props.addOrUpdateComment({ id: place.id, text }).then(() => {
+      this.setState({
+        place: {
+          ...place,
+          comments: [...place.comments]
+        }
+      });
+    });
   };
 
   render() {
-    const { place } = this.state;
-    const { isOpen, currentIndex } = this.state;
+    const { popularPlaces } = this.props;
+    const { isOpen, currentIndex, place } = this.state;
     const images = (place || {}).images || [];
     return (
       <Fragment>
@@ -61,34 +104,50 @@ class PlaceDetails extends Component {
             <section id="section3" className="tour-list-sidebar tour-list-sidebar-2-col">
               <div className="container-fluid">
                 <div className="row">
-                  <div className="col-xs-12 col-md-6 col-lg-3 ml-lg-5 order-lg-first order-last mt-5 mt-lg-0">
-                    <div className="w-100  text-center">
+                  <div className="col-xs-12 col-md-6 col-lg-3 ml-lg-5 mt-5 mt-lg-0 mx-auto my-3">
+                    <img className="team-holder circle  mx-auto svgcenter"
+                         src={REACT_APP_PUBLIC_FILES + (place.ownerImage || "files-1547673340162.jpeg")} alt=""/>
+                    <div className="w-100 m-t-20 text-center">
                       <h3>{place.ownerName}</h3>
                     </div>
                     <div className="mb-lg-3 mb-4  text-center">
-                      <a href="#gallery-1" role="button" className="btn-gallery mb-2 w-100 d-lg-inline-block d-block">
+                      <Link to={'/places'} role="button" className="btn-gallery mb-2 w-100 d-lg-inline-block d-block">
                         <span id="btnFA"
                               className="btn  btn-outline-danger pt-2 mr-1  px-3 w-100">#{place.category.nameEn}</span>
-                      </a>
+                      </Link>
+                    </div>
+                    <div className="row">
+                      <div className="col text-center">
+                        <StarRatings
+                          rating={place.ratingsAvg || 0}
+                          starRatedColor="#f2b01e"
+                          starDimension="40px"
+                          starSpacing="8px"
+                        />
+                      </div>
                     </div>
                     <div className="row text-center">
-                      <div className="col">
-                        {
-                          !!place.isLike ?
-                            <IoIosThumbsDown size="2em" className="pointer" onClick={this.changeLikeStatus}/> :
-                            <IoIosThumbsUp size="2em" className="pointer" onClick={this.changeLikeStatus}/>
-                        }
+                      <div className="col align-self-md-center">
+                        <Like isLike={!!place.isLiked} onChange={this.changeLikeStatus}/>
                       </div>
-                      <div className="col">
-                        {
-                          !!place.isLike ? <IoIosHeartEmpty size="2em" className="pointer"/> :
-                            <IoIosHeart size="2em" className="pointer"/>
-                        }
+                      <div className="col align-self-md-center">
+                        <Favorite isFav={!!place.isFavorite} onChange={this.changeFavStatus}/>
                       </div>
-
+                      <div className="col align-self-md-center">
+                        <Follow isFollowOwner={!!place.isFollowOwner} userId={place.ownerId}
+                                cb={this.changeFollowStatus}/>
+                      </div>
                     </div>
                     <div id="instasidebar" className="grid2 runsidebar  text-center">
-                      <h6 className="black semibold mx-4 mt-3 mb-2 ">Popular PLaces</h6>
+                      <h6 className="black semibold mx-4 mt-3 mb-2 underline-title">Popular PLaces</h6>
+                      {
+                        (popularPlaces || [])
+                          .map((p, key) =>
+                            <Link key={key} className="grid-item2" to={`places/${p.id}`}>
+                              <img src={REACT_APP_PUBLIC_FILES + p.images[0]} alt=""/>
+                            </Link>
+                          )
+                      }
                     </div>
                   </div>
                   <div className="col-xs-12 col-md-11 col-lg-8   single-tour">
@@ -100,7 +159,7 @@ class PlaceDetails extends Component {
                             (place.images || [])
                               .map((img, key) =>
                                 <div key={key} className="image-link"
-                                     onClick={e => this.setState({ isOpen: true, currentIndex: key })}>
+                                     onClick={() => this.setState({ isOpen: true, currentIndex: key })}>
                                   <img className="card-grid-popup2" src={`${REACT_APP_PUBLIC_FILES + img}`} alt=""/>
                                 </div>
                               )
@@ -118,14 +177,12 @@ class PlaceDetails extends Component {
                         </div>
                         <div className="m-t-30">
                           <h6 className="underline-title">Description</h6>
-                          <div className="list-font">{place.description}</div>
+                          {place.description}
                         </div>
                         <div className="m-t-30">
-                          <h6 className="underline-title">Comments</h6>
-                          {
-                            place.comments && place.comments.length ?
-                              "there is comments" : "No comments"
-                          }
+                          <h6 className="underline-title m-b-0">Comments</h6>
+                          <Comments comments={place.comments || []} onAdd={this.onComment}/>
+
                         </div>
                       </div>
                     </div>
@@ -169,19 +226,23 @@ PlaceDetails.propTypes = {
     })
   }),
   place: PropTypes.object,
+  popularPlaces: PropTypes.array,
   isAuthenticated: PropTypes.bool.isRequired
 };
 
 
 const initMapStateToProps = state => {
-  return { place: state.places.place, isAuthenticated: !!state.user.id };
+  return {
+    place: state.places.place,
+    isAuthenticated: !!state.user.id,
+    popularPlaces: state.places.popular
+  };
 };
 
 export default connect(initMapStateToProps, {
   getPlaceById,
   getPlaceComments,
-  CheckPlaceFavStatus,
-  CheckPlaceLikeStatus,
-  placeLike,
-  placeDisLike
+  placeToggleLike,
+  placeToggleFavorite,
+  addOrUpdateComment
 })(PlaceDetails);

@@ -2,13 +2,16 @@ import {
   PLACES_FETCHED,
   PLACE_FETCHED,
   COMMENTS_FETCHED,
-  PLACE_LIKE_STATUS_FETCHED,
-  PLACE_FAV_STATUS_FETCHED
+  POPULAR_PLACES_FETCHED
 } from "../types";
 import api from "../api/places";
 
 export const getPlaces = () => dispatch =>
-  api.getPlaces().then(countries => dispatch({ type: PLACES_FETCHED, payload: countries }));
+  api.getPlaces().then(places => dispatch({ type: PLACES_FETCHED, payload: places }));
+
+
+export const getPopularPlaces = () => dispatch =>
+  api.getPlaces().then(places => dispatch({ type: POPULAR_PLACES_FETCHED, payload: places }));
 
 export const getPlaceById = (id) => (dispatch) =>
   api.getPlaceById(id).then(place => dispatch({ type: PLACE_FETCHED, payload: place }));
@@ -16,12 +19,12 @@ export const getPlaceById = (id) => (dispatch) =>
 export const getPlaceComments = (id) => (dispatch) =>
   api.getPlaceComments(id).then(comments => dispatch({ type: COMMENTS_FETCHED, payload: comments }));
 
-export const CheckPlaceFavStatus = (id) => (dispatch) =>
-  api.CheckPlaceFavStatus(id).then(status => dispatch({ type: PLACE_FAV_STATUS_FETCHED, payload: status }));
 
-export const CheckPlaceLikeStatus = (id) => (dispatch) =>
-  api.CheckPlaceLikeStatus(id).then(status => dispatch({ type: PLACE_LIKE_STATUS_FETCHED, payload: status }));
+export const addOrUpdateComment = ({ id, text, commentId }) => () => api.addOrUpdateComment({ id, text, commentId });
 
-export const placeLike = (id) => () => api.placeLike(id);
+export const deleteComment = ({ id, commentId }) => () => api.deleteComment({ id, commentId });
 
-export const placeDisLike = (id) => () => api.placeDisLike(id);
+
+export const placeToggleLike = ({ id, isLiked }) => () => isLiked ? api.placeDisLike(id) : api.placeLike(id);
+export const placeToggleFavorite = ({ id, isFavorite }) => () => isFavorite ? api.placeUnFav(id) : api.placeFav(id);
+

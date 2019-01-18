@@ -19,16 +19,9 @@ import Header from "./components/header";
 import Footer from "./components/footer";
 import "./assets/sass/_all.css";
 import "react-toastify/dist/ReactToastify.css";
-import { connect } from "react-redux";
-import { getMe } from "./actions/Auth";
-import { getCountries } from "./actions/Country";
 
+const App = ({ location }) => {
 
-const App = ({ location, getMe, getCountries }) => {
-  if (localStorage.getItem("triponaUser")) {
-    getMe();
-  }
-  getCountries();
   return (
     <Fragment>
       <Header/>
@@ -56,4 +49,4 @@ App.propTypes = {
 };
 
 
-export default connect(null, { getMe, getCountries })(App);
+export default App;
