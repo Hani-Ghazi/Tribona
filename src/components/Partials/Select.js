@@ -1,11 +1,11 @@
-import React, { Fragment } from "react";
+import React  from "react";
 import PropTypes from "prop-types";
 
 
 const Select = ({ list, placeholder, labelKey, valueKey, onChange, selectedValue, classes }) => (
   <select className={`form-control form-control-inline2 ${classes}`} id="inlineFormInputName2"
           onChange={onChange}>
-    <option selected={!selectedValue}>{placeholder}</option>
+    <option value={''}>{placeholder}</option>
     {
       (list || []).map((item, index) =>
         <option key={index} selected={item === selectedValue} value={item[valueKey]}>{item[labelKey]}</option>
