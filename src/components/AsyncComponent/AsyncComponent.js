@@ -3,6 +3,7 @@ import Loadable from "react-loadable";
 import { PropagateLoader } from "react-spinners";
 import placesApi from "../../api/places";
 import userApi from "../../api/user";
+import journeysApi from '../../api/journeys';
 
 export const AsyncHomePage = Loadable.Map({
   loader: {
@@ -44,5 +45,23 @@ export const AsyncPlacesListPage = Loadable.Map({
 
 export const AsyncPlaceDetailsPage = Loadable({
   loader: () => import("../Places/PlaceDetails"),
+  loading: () => <PropagateLoader/>
+});
+
+export const AsyncJourneysListPage = Loadable.Map({
+  loader: {
+    JourneysList: () => import ("../Journeys/JourneysList"),
+    journeys: () => journeysApi.getJourneys(),
+  },
+  loading: () => <PropagateLoader/>,
+  render(loaded, props) {
+    let JourneysList = loaded.JourneysList.default;
+    return <JourneysList {...props} journeys={loaded.journeys}/>;
+  }
+});
+
+
+export const AsyncJourneyDetailsPage = Loadable({
+  loader: () => import("../Journeys/JourneyDetails"),
   loading: () => <PropagateLoader/>
 });

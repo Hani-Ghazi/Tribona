@@ -1,18 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {BrowserRouter, Route} from 'react-router-dom'
-import {createStore, applyMiddleware} from 'redux';
-import {Provider} from 'react-redux';
-import {composeWithDevTools} from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
-import rootReducer from './rootReducer'
-import dotenv from 'dotenv';
+import React from "react";
+import ReactDOM from "react-dom";
+import { BrowserRouter, Route } from "react-router-dom";
+import { createStore, applyMiddleware } from "redux";
+import { Provider } from "react-redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import thunk from "redux-thunk";
+import App from "./App";
+import * as serviceWorker from "./serviceWorker";
+import rootReducer from "./rootReducer";
+import dotenv from "dotenv";
 
 import { getMe } from "./actions/Auth";
 import { getCountries } from "./actions/Country";
 import { getPopularPlaces } from "./actions/Places";
+import { getPopularJourneys } from "./actions/Journey";
 
 dotenv.config();
 
@@ -26,7 +27,7 @@ if (localStorage.getItem("triponaUser")) {
 }
 store.dispatch(getCountries());
 store.dispatch(getPopularPlaces());
-
+store.dispatch(getPopularJourneys());
 
 
 ReactDOM.render(
@@ -35,7 +36,7 @@ ReactDOM.render(
       <Route component={App}/>
     </Provider>
   </BrowserRouter>,
-  document.getElementById('root'));
+  document.getElementById("root"));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

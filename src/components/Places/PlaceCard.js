@@ -16,9 +16,8 @@ const PlaceCard = ({ place }) => (
             alt="place"
             className="img-fluid destination-item"/>
           <h6 className="white front w-100">{place.name} <br/> #{fixCategoryName(place.category)}
-            <span className="pull-right">{place.likesCount}
-              <IoIosThumbsUp/> {place.commentsCount}
-              <IoIosChatbubbles/>
+            <span className="pull-right">
+              {place.likesCount} <IoIosThumbsUp/> {place.commentsCount} <IoIosChatbubbles/>
           </span>
           </h6>
         </div>

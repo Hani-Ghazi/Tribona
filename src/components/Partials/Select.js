@@ -8,7 +8,7 @@ const Select = ({ list, placeholder, labelKey, valueKey, onChange, selectedValue
     <option value={''}>{placeholder}</option>
     {
       (list || []).map((item, index) =>
-        <option key={index} selected={item === selectedValue} value={item[valueKey]}>{item[labelKey]}</option>
+        <option key={index} value={item[valueKey]}>{item[labelKey]}</option>
       )
     }
   </select>
