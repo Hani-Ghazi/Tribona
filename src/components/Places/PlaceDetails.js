@@ -15,7 +15,7 @@ import PropTypes from "prop-types";
 import { PropagateLoader } from "react-spinners";
 import "react-image-lightbox/style.css";
 import GoogleMapReact from "google-map-react";
-import { Favorite, Comments, Like, Follow } from "../Partials";
+import { Favorite, Comments, Like, Follow, UserWidget, DetailedRate } from "../Partials";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -105,13 +105,10 @@ class PlaceDetails extends Component {
               <div className="container-fluid">
                 <div className="row">
                   <div className="col-xs-12 col-md-6 col-lg-3 ml-lg-5 mt-5 mt-lg-0 mx-auto my-3">
-                    <img className="team-holder circle  mx-auto svgcenter"
-                         src={REACT_APP_PUBLIC_FILES + (place.ownerImage || "files-1547673340162.jpeg")} alt=""/>
-                    <div className="w-100 m-t-20 text-center">
-                      <h3>{place.ownerName}</h3>
-                    </div>
+                    {/*<userWidget user={place}/>*/}
+                    <UserWidget user={place}/>
                     <div className="mb-lg-3 mb-4  text-center">
-                      <Link to={'/places'} role="button" className="btn-gallery mb-2 w-100 d-lg-inline-block d-block">
+                      <Link to={"/places"} role="button" className="btn-gallery mb-2 w-100 d-lg-inline-block d-block">
                         <span id="btnFA"
                               className="btn  btn-outline-danger pt-2 mr-1  px-3 w-100">#{place.category.nameEn}</span>
                       </Link>
@@ -150,7 +147,7 @@ class PlaceDetails extends Component {
                       }
                     </div>
                   </div>
-                  <div className="col-xs-12 col-md-11 col-lg-8   single-tour">
+                  <div className="col-xs-12 col-md-11 col-lg-8 single-tour">
                     <div className="row">
                       <div className="col-xs-12 col-md-12 col-lg-12">
                         <h6 className="underline-title">Images</h6>
@@ -178,6 +175,10 @@ class PlaceDetails extends Component {
                         <div className="m-t-30">
                           <h6 className="underline-title">Description</h6>
                           {place.description}
+                        </div>
+                        <div className="m-t-30">
+                          <h6 className="underline-title">Review Details</h6>
+                          <DetailedRate ratings={place.ratings} ratingsAvg={place.ratingsAvg}/>
                         </div>
                         <div className="m-t-30">
                           <h6 className="underline-title m-b-0">Comments</h6>

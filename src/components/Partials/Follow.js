@@ -6,12 +6,13 @@ import PropTypes from "prop-types";
 import { followUser, unFollowUser } from "../../actions/User";
 
 class Follow extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isFollowOwner: props.isFollowOwner,
-      userId: props.userId
-    };
+  state = {};
+
+  componentDidMount() {
+    this.setState({
+      isFollowOwner: this.props.isFollowOwner,
+      userId: this.props.userId
+    });
   }
 
   onFollowChange = () => {
@@ -36,7 +37,7 @@ class Follow extends Component {
             className="pointer"
             onClick={this.onFollowChange}
             vertical
-            color={isFollowOwner ? "#ff4f81" : ""}
+            color={isFollowOwner ? "#ff4f81" : undefined}
       />
     );
   }

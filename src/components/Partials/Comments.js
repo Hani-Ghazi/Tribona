@@ -17,62 +17,62 @@ class Comments extends React.Component {
     errors: { ...this.state.errors, [e.target.name]: null }
   });
 
-  renderComments = (comments) =>
-    <div className="card comments-container  max-w-100">
-      <div className="card-body">
-        {
-          comments.map(comment => <div className="row comment">
-            <div className="col-md-2">
-              <img src={REACT_APP_PUBLIC_FILES + (comment.ownerImage || "files-1547673340162.jpeg")}
-                   className="img img-rounded img-fluid img-border" alt="user owner"/>
-              <p
-                className="text-secondary text-center small">{moment().diff(moment(comment.createdAt), "minutes")} minutes
-                ago</p>
+  renderComment = (comment, key) =>
+    <li key={key}>
+      <div className="comment-main-level mb-4">
+
+        <div className="comment-avatar d-none d-md-block"><img
+          src={REACT_APP_PUBLIC_FILES + (comment.ownerImage || "files-1547673340162.jpeg")} alt="user owner"/></div>
+        <div className="comment-box">
+          <div className="comment-head">
+            <h6 className="comment-name "><a href="#">comment.ownerName</a></h6>
+            <div className="text-left">
+              <br className="hidebr"/>
+              <span className="time-review">{moment().diff(moment(comment.createdAt), "minutes")} minutes
+                ago</span>
             </div>
-            <div className="col-md-10 align-self-center">
-              <p>
-                <a className="float-left"
-                   href="https://maniruzzaman-akash.blogspot.com/p/contact.html"><strong>{comment.ownerName}</strong></a>
-              </p>
-              <div className="clearfix"/>
-              <p>{comment.text}</p>
-            </div>
-          </div>)
-        }
+
+          </div>
+          <div className="comment-content">{comment.text}</div>
+        </div>
       </div>
-    </div>;
+    </li>;
 
   render() {
     const { comments, onAdd } = this.props;
     const { comment } = this.state.data;
     const commentsCount = comments ? comments.length : 0;
     return (
-      <Fragment>
+      <div className="comments-container">
         {
-          !!commentsCount && this.renderComments(comments)
+          !commentsCount &&
+          <h6 className="bold mt-5 black">There are no comments yet!. please be the first</h6>
         }
-        <div className="col-md-12 pt-3 pb-3" id="pagesection">
+        <ul id="comments-list" className="comments-list">
           {
-            !commentsCount &&
-            "No comments yet, please be the first"
+            commentsCount && comments.map((comment, key) => this.renderComment(comment, key))
           }
-          <div className="form-group">
-            <label htmlFor="form_message">Message *</label>
-            <textarea id="form_message" name="comment" className="form-control"
-                      placeholder="What tour are you interested in? *" rows="4"
-                      required="required" value={comment}
-                      onChange={this.onChange}
-                      data-error="Please,leave us a message."/>
-            <div className="help-block with-errors tiny mt-2"/>
+        </ul>
+        <div className="mt-5  mx-auto my-auto form-comment">
+          <div className="row mt-3">
+            <div className="col-12 ">
+              <div className="form-group text-center">
+                <textarea className="form-control" placeholder="Write a detailed review" name="comment"
+                          rows="5" value={comment} onChange={this.onChange}/>
+              </div>
+            </div>
           </div>
-          <button className="btn btn-primary px-4 btn-send pull-r"
-                  onClick={() => {
-                    onAdd(comment);
-                    this.setState({ data: { comment: "" } });
-                  }}>Comment
-          </button>
+          <div className="row">
+            <div className="w-100">
+              <button type="submit" className="btn my-2 btn-primary mb-lg-0 mb-4 float-r" onClick={() => {
+                onAdd(comment);
+                this.setState({ data: { comment: "" } });
+              }}>Comment!
+              </button>
+            </div>
+          </div>
         </div>
-      </Fragment>
+      </div>
     );
   };
 }

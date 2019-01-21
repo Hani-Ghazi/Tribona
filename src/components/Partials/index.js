@@ -5,5 +5,5 @@ export { default as Follow } from "./Follow";
 export { default as Favorite } from "./Favorite";
 export { default as LikeCount } from "./LikeCount";
 export { default as CommentsCount } from "./CommentsCount";
-
-
+export { default as UserWidget } from "./UserWidget";
+export { default as DetailedRate } from "./DetailedRate";

@@ -1,7 +1,7 @@
 import {
   PLACE_FETCHED,
   PLACES_FETCHED,
-  COMMENTS_FETCHED,
+  PLAEC_COMMENTS_FETCHED,
   POPULAR_PLACES_FETCHED
 } from "../types";
 
@@ -13,7 +13,7 @@ export default (state = INIT_STATE, action) => {
       return { ...state, list: action.payload };
     case PLACE_FETCHED:
       return { ...state, place: { ...state.place, ...action.payload } };
-    case COMMENTS_FETCHED:
+    case PLAEC_COMMENTS_FETCHED:
       return { ...state, place: { ...state.place, comments: action.payload } };
     case POPULAR_PLACES_FETCHED :
       return { ...state, popular: action.payload };

@@ -1,7 +1,7 @@
 import {
   PLACES_FETCHED,
   PLACE_FETCHED,
-  COMMENTS_FETCHED,
+  PLAEC_COMMENTS_FETCHED,
   POPULAR_PLACES_FETCHED
 } from "../types";
 import api from "../api/places";
@@ -17,7 +17,7 @@ export const getPlaceById = (id) => (dispatch) =>
   api.getPlaceById(id).then(place => dispatch({ type: PLACE_FETCHED, payload: place }));
 
 export const getPlaceComments = (id) => (dispatch) =>
-  api.getPlaceComments(id).then(comments => dispatch({ type: COMMENTS_FETCHED, payload: comments }));
+  api.getPlaceComments(id).then(comments => dispatch({ type: PLAEC_COMMENTS_FETCHED, payload: comments }));
 
 
 export const addOrUpdateComment = ({ id, text, commentId }) => () => api.addOrUpdateComment({ id, text, commentId });
