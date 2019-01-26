@@ -48,6 +48,8 @@ const App = ({ location }) => {
       <ShouldLoginModal/>
       <Footer/>
       <ToastContainer/>
+
+
     </Fragment>
   );
 };
