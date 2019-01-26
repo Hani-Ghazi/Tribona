@@ -7,3 +7,5 @@ export { default as LikeCount } from "./LikeCount";
 export { default as CommentsCount } from "./CommentsCount";
 export { default as UserWidget } from "./UserWidget";
 export { default as DetailedRate } from "./DetailedRate";
+export { default as ShouldLoginModal } from "./ShouldLoginModal";
+export { default as Images } from "./Images";

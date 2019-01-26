@@ -28,3 +28,13 @@ export const deleteComment = ({ id, commentId }) => () => api.deleteComment({ id
 export const placeToggleLike = ({ id, isLiked }) => () => isLiked ? api.placeDisLike(id) : api.placeLike(id);
 export const placeToggleFavorite = ({ id, isFavorite }) => () => isFavorite ? api.placeUnFav(id) : api.placeFav(id);
 
+export const getPlacesCategories = () => () => api.getPlacesCategories();
+
+export const createPlace = (place) => (dispatch) => api.createPlace(place).then(palce => dispatch({
+  type: PLACE_FETCHED,
+  payload: place
+}));
+export const updatePlace = (place) => (dispatch) => api.updatePlace(place).then(palce => dispatch({
+  type: PLACE_FETCHED,
+  payload: place
+}));

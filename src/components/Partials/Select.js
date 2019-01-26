@@ -1,11 +1,11 @@
-import React  from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
 
-const Select = ({ list, placeholder, labelKey, valueKey, onChange, selectedValue, classes }) => (
-  <select className={`form-control form-control-inline2 ${classes}`} id="inlineFormInputName2"
-          onChange={onChange}>
-    <option value={''}>{placeholder}</option>
+const Select = ({ list, placeholder, labelKey, valueKey, onChange, selectedValue, classes, name }) => (
+  <select className={`form-control form-control-inline2 ${classes}`} id="inlineFormInputName2" value={selectedValue}
+          onChange={onChange} name={name}>
+    <option value={""}>{placeholder}</option>
     {
       (list || []).map((item, index) =>
         <option key={index} value={item[valueKey]}>{item[labelKey]}</option>

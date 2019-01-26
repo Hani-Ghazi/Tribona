@@ -3,7 +3,6 @@ import SliderWithScroll from "../sliders/SliderWithScroll";
 import { connect } from "react-redux";
 import Lightbox from "react-image-lightbox";
 import StarRatings from "react-star-ratings";
-
 import {
   getPlaceById,
   getPlaceComments,
@@ -11,13 +10,24 @@ import {
   placeToggleFavorite,
   addOrUpdateComment
 } from "../../actions/Places";
+import {
+  openLoginModal
+} from "../../actions/Modals";
 import PropTypes from "prop-types";
 import { PropagateLoader } from "react-spinners";
 import "react-image-lightbox/style.css";
 import GoogleMapReact from "google-map-react";
-import { Favorite, Comments, Like, Follow, UserWidget, DetailedRate } from "../Partials";
+import {
+  Favorite,
+  Comments,
+  Like,
+  Follow,
+  UserWidget,
+  DetailedRate
+} from "../Partials";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { IoIosCreate } from "react-icons/io";
 
 
 const { REACT_APP_PUBLIC_FILES } = process.env;
@@ -43,6 +53,10 @@ class PlaceDetails extends Component {
   }
 
   changeLikeStatus = () => {
+    const { isAuthenticated } = this.props;
+    if (!isAuthenticated) {
+      return this.props.openLoginModal();
+    }
     const { isLiked, id } = this.state.place;
     this.props.placeToggleLike({ id, isLiked }).then(() => {
       this.setState({
@@ -58,6 +72,9 @@ class PlaceDetails extends Component {
   };
 
   changeFollowStatus = (isFollowOwner) => {
+    const { isAuthenticated } = this.props;
+    if (!isAuthenticated)
+      return this.props.openLoginModal();
     const { ownerName } = this.state.place;
     this.setState({ place: { ...this.state.place, isFollowOwner: isFollowOwner } });
     toast.success(`You successfully ${isFollowOwner ? "followed" : "un followed"} ${ownerName}`, {
@@ -66,6 +83,9 @@ class PlaceDetails extends Component {
   };
 
   changeFavStatus = () => {
+    const { isAuthenticated } = this.props;
+    if (!isAuthenticated)
+      return this.props.openLoginModal();
     const { isFavorite, id } = this.state.place;
     this.props.placeToggleFavorite({ id, isFavorite })
       .then(() => {
@@ -76,7 +96,25 @@ class PlaceDetails extends Component {
       });
   };
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.place && this.props.place && nextProps.place.id && this.props.place.id && nextProps.place.id !== this.props.place.id) {
+      const { id } = nextProps.place;
+      this.props.getPlaceById(id).then(() => {
+        this.setState({ place: nextProps.place });
+        this.props.getPlaceComments(id).then(comments => this.setState({
+          place: {
+            ...nextProps.place,
+            comments: comments.payload
+          }
+        }));
+      });
+    }
+  }
+
   onComment = (text) => {
+    const { isAuthenticated } = this.props;
+    if (!isAuthenticated)
+      return this.props.openLoginModal();
     const { place } = this.state;
     this.props.addOrUpdateComment({ id: place.id, text }).then(() => {
       this.setState({
@@ -89,7 +127,7 @@ class PlaceDetails extends Component {
   };
 
   render() {
-    const { popularPlaces } = this.props;
+    const { popularPlaces, isAuthenticated, userId } = this.props;
     const { isOpen, currentIndex, place } = this.state;
     const images = (place || {}).images || [];
     return (
@@ -134,15 +172,23 @@ class PlaceDetails extends Component {
                         <Follow isFollowOwner={!!place.isFollowOwner} userId={place.ownerId}
                                 cb={this.changeFollowStatus}/>
                       </div>
+                      {
+                        isAuthenticated && userId === place.ownerId &&
+                        <div className="col align-self-md-center">
+                          <IoIosCreate size="2em" className="pointer"
+                                       onClick={() => this.props.history.push(`edit/${place.id}`)}/>
+                        </div>
+                      }
                     </div>
                     <div id="instasidebar" className="grid2 runsidebar  text-center">
                       <h6 className="black semibold mx-4 mt-3 mb-2 underline-title">Popular PLaces</h6>
                       {
                         (popularPlaces || [])
+                          .filter(img => img.images.length)
                           .map((p, key) =>
-                            <Link key={key} className="grid-item2" to={`places/${p.id}`}>
-                              <img src={REACT_APP_PUBLIC_FILES + p.images[0]} alt=""/>
-                            </Link>
+                            <span key={key} className="pointer" onClick={() => this.props.getPlaceById(p.id)}>
+                              <img src={REACT_APP_PUBLIC_FILES + p.images[0]} alt="" className="test"/>
+                            </span>
                           )
                       }
                     </div>
@@ -228,15 +274,18 @@ PlaceDetails.propTypes = {
   }),
   place: PropTypes.object,
   popularPlaces: PropTypes.array,
-  isAuthenticated: PropTypes.bool.isRequired
+  isAuthenticated: PropTypes.bool.isRequired,
+  userId: PropTypes.string
 };
 
 
 const initMapStateToProps = state => {
+  console.log({ user: state.user.id, place: state.places.place });
   return {
     place: state.places.place,
     isAuthenticated: !!state.user.id,
-    popularPlaces: state.places.popular
+    popularPlaces: state.places.popular,
+    userId: state.user.id
   };
 };
 
@@ -245,5 +294,6 @@ export default connect(initMapStateToProps, {
   getPlaceComments,
   placeToggleLike,
   placeToggleFavorite,
-  addOrUpdateComment
+  addOrUpdateComment,
+  openLoginModal
 })(PlaceDetails);

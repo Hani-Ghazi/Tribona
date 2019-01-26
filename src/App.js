@@ -21,6 +21,9 @@ import Header from "./components/header";
 import Footer from "./components/footer";
 import "./assets/sass/_all.css";
 import "react-toastify/dist/ReactToastify.css";
+import PlaceForm from "./components/Places/PlaceForm";
+import ShouldLoginModal from "./components/Partials/ShouldLoginModal";
+
 
 const App = ({ location }) => {
 
@@ -36,10 +39,13 @@ const App = ({ location }) => {
         <GuestRoute location={location} path="/" exact component={AsyncHomePage}/>
         <GuestRoute location={location} path="/users" exact component={AsyncUserPage}/>
         <GuestRoute location={location} path="/places" exact component={AsyncPlacesListPage}/>
+        <GuestRoute location={location} path="/places/add" exact component={PlaceForm}/>
+        <GuestRoute location={location} path="/places/edit/:id" exact component={PlaceForm}/>
         <GuestRoute location={location} path="/places/:id" exact component={AsyncPlaceDetailsPage}/>
         <GuestRoute location={location} path="/journeys" exact component={AsyncJourneysListPage}/>
         <GuestRoute location={location} path="/journeys/:id" exact component={AsyncJourneyDetailsPage}/>
       </Switch>
+      <ShouldLoginModal/>
       <Footer/>
       <ToastContainer/>
     </Fragment>

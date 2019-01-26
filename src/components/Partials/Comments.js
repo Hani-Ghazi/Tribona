@@ -50,7 +50,7 @@ class Comments extends React.Component {
         }
         <ul id="comments-list" className="comments-list">
           {
-            commentsCount && comments.map((comment, key) => this.renderComment(comment, key))
+            !!commentsCount && comments.map((comment, key) => this.renderComment(comment, key))
           }
         </ul>
         <div className="mt-5  mx-auto my-auto form-comment">

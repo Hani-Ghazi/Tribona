@@ -3,7 +3,7 @@ import StarRatings from "react-star-ratings";
 import { ProgressBar } from "react-bootstrap";
 
 const DetailedRate = ({ ratingsAvg, ratings }) => (
-  <div className="row">
+  <div className="row w-75">
     <div className="align-self-center col text-center">
       <StarRatings
         rating={ratingsAvg || 0}
@@ -17,8 +17,8 @@ const DetailedRate = ({ ratingsAvg, ratings }) => (
       {
         Object.keys(ratings)
           .map((key, index) =>
-            <Fragment key={index}><span>{key} Stars</span><ProgressBar className={"m-b-10"}
-                                                           now={ratings[key] * 20}/></Fragment>
+            <Fragment key={index}><ProgressBar className={"m-b-10"} label={`${key} Stars`} bsStyle="warning"
+                                                           now={(index+1) * 20}/></Fragment>
           )
       }
     </div>

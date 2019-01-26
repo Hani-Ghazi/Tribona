@@ -105,3 +105,45 @@ h6.underline-title {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+.rounded-modal {
+  border-radius: 25px;
+  min-width: 60vw;
+  text-align: center;
+}
+
+.test {
+  height: auto;
+  max-height: 250px;
+  width: auto;
+  max-width: 46%;
+  border-radius: 7px;
+  margin: 10px 5px;
+}
+
+
+.delete {
+  position: relative;
+  top: 16px;
+  right: 15px
+}
+
+footer svg, .button svg, .delete svg {
+  filter: drop-shadow(3px 3px 3px #999);
+  transition: 0.3s;
+  transform: rotate(-0.2deg)
+}
+
+footer svg:hover, .button svg:hover, .delete svg:hover {
+  filter: drop-shadow(4px 4px 4px #999);
+  transform: rotate(-0.6deg);
+  cursor: pointer
+}
+
+.delete svg {
+  filter: drop-shadow(1px 1px 1px #999)
+}
+
+label {
+  font-size: 16px;
+}
