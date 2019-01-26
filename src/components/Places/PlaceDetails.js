@@ -203,7 +203,7 @@ class PlaceDetails extends Component {
                               .map((img, key) =>
                                 <div key={key} className="image-link"
                                      onClick={() => this.setState({ isOpen: true, currentIndex: key })}>
-                                  <img className="card-grid-popup2" src={`${REACT_APP_PUBLIC_FILES + img}`} alt=""/>
+                                  <img className="card-grid-popup2 test" src={`${REACT_APP_PUBLIC_FILES + img}`} alt=""/>
                                 </div>
                               )
                           }
