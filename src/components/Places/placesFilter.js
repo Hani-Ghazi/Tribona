@@ -36,7 +36,7 @@ class placesFilter extends React.Component {
       });
   }
 
-  renderCategoriesFilter = (placesCategories) => {
+  renderCategoriesFilter = () => {
     const { categories, data: { categoryId } } = this.state;
     return (
       <div className="more-info tags my-4">
