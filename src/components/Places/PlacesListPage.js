@@ -2,12 +2,16 @@ import React, { Component, Fragment } from "react";
 import StaticSlider from "../sliders/StaticSlider";
 import PlacesFilter from "./placesFilter";
 import PlaceCard from "./PlaceCard";
+import { connect } from "react-redux";
+import { getPlaces } from "../../actions/Places";
+
 
 class PlacesListPage extends Component {
 
-  filter = () => {
 
-  };
+  componentDidMount() {
+    this.props.getPlaces();
+  }
 
   render() {
     const { places, placesCategories } = this.props;
@@ -23,7 +27,7 @@ class PlacesListPage extends Component {
               <div className="col-lg-9 col-sm-6 col-xs-12">
                 <div className="row">
                   {
-                    (places || []).map(place => <PlaceCard place={place}/>)
+                    (places || []).map((place, k) => <PlaceCard key={k} place={place}/>)
                   }
                 </div>
               </div>
@@ -37,4 +41,10 @@ class PlacesListPage extends Component {
   }
 }
 
-export default PlacesListPage;
+const initMapStateToProps = state => {
+  return {
+    places: state.places.list
+  };
+};
+
+export default connect(initMapStateToProps, { getPlaces })(PlacesListPage);

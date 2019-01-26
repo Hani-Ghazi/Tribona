@@ -6,8 +6,8 @@ import {
 } from "../types";
 import api from "../api/places";
 
-export const getPlaces = () => dispatch =>
-  api.getPlaces().then(places => dispatch({ type: PLACES_FETCHED, payload: places }));
+export const getPlaces = (filters) => dispatch =>
+  api.getPlaces(filters).then(places => dispatch({ type: PLACES_FETCHED, payload: places }));
 
 
 export const getPopularPlaces = () => dispatch =>

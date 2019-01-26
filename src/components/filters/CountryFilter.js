@@ -2,9 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 import Select from "../Partials/Select";
 
-const CountryFilter = ({ countries, classes}) => (
-  <Select onChange={(e) => console.log(e.target.value)} list={countries || []}
-          labelKey={"countryName"} classes={classes}
+const CountryFilter = ({ countries, onChange, classes}) => (
+  <Select onChange={onChange} list={countries || []}
+          labelKey={"countryName"} classes={classes} name=""
           valueKey={"geonameId"} placeholder={"Select Country"}/>
 );
 

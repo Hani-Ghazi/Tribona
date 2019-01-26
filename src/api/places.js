@@ -1,7 +1,7 @@
 import api from "./index";
 
 export default {
-  getPlaces: () => api.get("places").then(res => res.data),
+  getPlaces: (filters) => api.get("places", filters).then(res => res.data),
   getPlacesCategories: () => api.get("places/categories").then(res => res.data),
   getPlaceById: (id) => api.get(`places/${id}`).then(res => res.data),
   getPlaceComments: (id) => api(`places/${id}/comments`).then(res => res.data),

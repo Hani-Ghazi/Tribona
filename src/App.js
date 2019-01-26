@@ -23,7 +23,8 @@ import "./assets/sass/_all.css";
 import "react-toastify/dist/ReactToastify.css";
 import PlaceForm from "./components/Places/PlaceForm";
 import ShouldLoginModal from "./components/Partials/ShouldLoginModal";
-
+import HomePage from "./components/pages/HomePage";
+import PlacesListPage from "./components/Places/PlacesListPage";
 
 const App = ({ location }) => {
 
@@ -36,9 +37,9 @@ const App = ({ location }) => {
         <LoginGuard location={location} path="/forget-password" exact component={ForgetPasswordPage}/>
         <LoginGuard location={location} path="/verify" exact component={VerifyPage}/>
         <LoginGuard location={location} path="/reset" exact component={ResetPAge}/>
-        <GuestRoute location={location} path="/" exact component={AsyncHomePage}/>
+        <GuestRoute location={location} path="/" exact component={HomePage}/>
         <GuestRoute location={location} path="/users" exact component={AsyncUserPage}/>
-        <GuestRoute location={location} path="/places" exact component={AsyncPlacesListPage}/>
+        <GuestRoute location={location} path="/places" exact component={PlacesListPage}/>
         <GuestRoute location={location} path="/places/add" exact component={PlaceForm}/>
         <GuestRoute location={location} path="/places/edit/:id" exact component={PlaceForm}/>
         <GuestRoute location={location} path="/places/:id" exact component={AsyncPlaceDetailsPage}/>

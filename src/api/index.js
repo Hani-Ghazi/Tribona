@@ -1,4 +1,6 @@
 import axios from "axios";
+import qs from "query-string";
+
 
 const instance = axios.create({
   baseURL: process.env.REACT_APP_API_URL
@@ -9,5 +11,12 @@ const access_token = (user && user.token && user.token !== "") ? `bearer ${user.
 
 // Alter defaults after instance has been created
 instance.defaults.headers.common["Authorization"] = access_token ? access_token : "";
+
+instance.interceptors.request.use(config => {
+  if (!!config.filters) {
+    config.url += `?${qs.stringify(config.filters)}`;
+  }
+  return config;
+});
 
 export default instance;

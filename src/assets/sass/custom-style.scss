@@ -121,7 +121,6 @@ h6.underline-title {
   margin: 10px 5px;
 }
 
-
 .delete {
   position: relative;
   top: 16px;
@@ -146,4 +145,10 @@ footer svg:hover, .button svg:hover, .delete svg:hover {
 
 label {
   font-size: 16px;
+}
+
+.active-category {
+  color: #fff !important;
+  background-color: #fe4f81 !important;
+  border-color: #fe4f81 !important;
 }
