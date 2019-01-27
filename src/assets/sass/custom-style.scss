@@ -113,9 +113,9 @@ h6.underline-title {
 }
 
 .test {
-  height: auto;
+  height: auto !important;
   max-height: 250px;
-  width: auto;
+  width: auto !important;
   max-width: 46%;
   border-radius: 7px;
   margin: 10px 5px;
