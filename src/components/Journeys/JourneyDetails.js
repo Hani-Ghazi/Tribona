@@ -10,45 +10,17 @@ import {
   getJourneyComments,
   journeyToggleFavorite,
   journeyToggleLike,
-  addOrUpdateComment
+  addOrUpdateComment,
+  getJourneySteps
 } from "../../actions/Journey";
+import {
+  openLoginModal
+} from "../../actions/Modals";
 import PropTypes from "prop-types";
 import { toast } from "react-toastify";
 import { PropagateLoader } from "react-spinners";
 
-import "../../assets/iconfont.css";
-import "../../assets/index.css";
-import Steps from "rc-steps";
-
-
 const { REACT_APP_PUBLIC_FILES } = process.env;
-
-const customStyles = {
-  stepIndicatorSize: 25,
-  currentStepIndicatorSize: 30,
-  separatorStrokeWidth: 2,
-  currentStepStrokeWidth: 3,
-  stepStrokeCurrentColor: "#fe7013",
-  stepStrokeWidth: 3,
-  stepStrokeFinishedColor: "#fe7013",
-  stepStrokeUnFinishedColor: "#aaaaaa",
-  separatorFinishedColor: "#fe7013",
-  separatorUnFinishedColor: "#aaaaaa",
-  stepIndicatorFinishedColor: "#fe7013",
-  stepIndicatorUnFinishedColor: "#ffffff",
-  stepIndicatorCurrentColor: "#ffffff",
-  stepIndicatorLabelFontSize: 13,
-  currentStepIndicatorLabelFontSize: 13,
-  stepIndicatorLabelCurrentColor: "#fe7013",
-  stepIndicatorLabelFinishedColor: "#ffffff",
-  stepIndicatorLabelUnFinishedColor: "#aaaaaa",
-  labelColor: "#999999",
-  labelSize: 13,
-  currentStepLabelColor: "#fe7013"
-};
-
-const labels = ["Cart", "Delivery Address", "Order Summary", "Payment Method", "Track"];
-
 
 class JourneyDetails extends Component {
 
@@ -60,18 +32,48 @@ class JourneyDetails extends Component {
 
   componentDidMount() {
     const id = this.props.match.params.id;
-    this.props.getJourneyById(id).then(() => {
-      this.setState({ journey: this.props.journey });
-      this.props.getJourneyComments(id).then(res => this.setState({
+    const { getJourneyComments, getJourneySteps, getJourneyById } = this.props;
+    getJourneyById(id)
+      .then(async res => {
+        // this.setState({ journey: res.payload });
+        const temp = await Promise.all([getJourneyComments(id), getJourneySteps(id)]);
+        this.setState({
+          journey: {
+            ...res.payload,
+            comments: temp[0],
+            steps: temp[1]
+          }
+        });
+      });
+  }
+
+  async componentWillReceiveProps(nextProps) {
+    if (nextProps.journey && this.props.journey && nextProps.journey.id && this.props.journey.id && nextProps.journey.id !== this.props.journey.id) {
+      const { id } = nextProps.journey;
+      const { getJourneyComments, getJourneySteps} = this.props;
+      const temp = await Promise.all([getJourneyComments(id), getJourneySteps(id)]);
+      this.setState({
         journey: {
-          ...this.props.journey,
-          comments: res.payload
+          ...nextProps.journey,
+          comments: temp[0],
+          steps: temp[1]
         }
-      }));
-    });
+      });
+      // this.setState({ journey: nextProps.journey });
+      // this.props.getJourneyComments(id).then(comments => this.setState({
+      //   journey: {
+      //     ...nextProps.journey,
+      //     comments: comments.payload
+      //   }
+      // }));
+    }
   }
 
   changeLikeStatus = () => {
+    const { isAuthenticated } = this.props;
+    if (!isAuthenticated) {
+      return this.props.openLoginModal();
+    }
     const { isLiked, id } = this.state.journey;
     this.props.journeyToggleLike({ id, isLiked }).then(() => {
       this.setState({
@@ -87,6 +89,10 @@ class JourneyDetails extends Component {
   };
 
   changeFollowStatus = (isFollowOwner) => {
+    const { isAuthenticated } = this.props;
+    if (!isAuthenticated) {
+      return this.props.openLoginModal();
+    }
     const { ownerName } = this.state.journey;
     this.setState({ journey: { ...this.state.journey, isFollowOwner: isFollowOwner } });
     toast.success(`You successfully ${isFollowOwner ? "followed" : "un followed"} ${ownerName}`, {
@@ -95,6 +101,10 @@ class JourneyDetails extends Component {
   };
 
   changeFavStatus = () => {
+    const { isAuthenticated } = this.props;
+    if (!isAuthenticated) {
+      return this.props.openLoginModal();
+    }
     const { isFavorite, id } = this.state.journey;
     this.props.journeyToggleFavorite({ id, isFavorite })
       .then(() => {
@@ -106,6 +116,10 @@ class JourneyDetails extends Component {
   };
 
   onComment = (text) => {
+    const { isAuthenticated } = this.props;
+    if (!isAuthenticated) {
+      return this.props.openLoginModal();
+    }
     const { journey } = this.state;
     this.props.addOrUpdateComment({ id: journey.id, text }).then(() => {
       this.setState({
@@ -121,15 +135,8 @@ class JourneyDetails extends Component {
 
     const { popularJourneys } = this.props;
     const { isOpen, currentIndex, journey } = this.state;
+    const step = !!(journey || {}).steps ? journey.steps[currentIndex] : null;
     const images = (journey || {}).images || [];
-    const steps =
-      [
-        { name: "Step 1", component: <JourneyStep step={{}}/> },
-        { name: "Step 2", component: <JourneyStep step={{}}/> },
-        { name: "Step 3", component: <JourneyStep step={{}}/> },
-        { name: "Step 4", component: <JourneyStep step={{}}/> },
-        { name: "Step 5", component: <JourneyStep step={{}}/> }
-      ];
     return (
       <Fragment>
         {
@@ -170,15 +177,12 @@ class JourneyDetails extends Component {
                       <h6 className="black semibold mx-4 mt-3 mb-2 underline-title">Popular Journeys</h6>
                       {
                         (popularJourneys || [])
+                          .slice(0, 10)
                           .filter(x => x.images.length)
                           .map((j, key) =>
-                            <div key={key} className="col-xs-12 col-md-6 col-lg-6 mb-1 mt-1"
-                                 style={{ display: "inline-flex" }}>
-                              <Link className="" to={`journeys/${j.id}`}>
-                                <img src={REACT_APP_PUBLIC_FILES + j.images[0]} alt=""
-                                     className="img-fluid img-border test"/>
-                              </Link>
-                            </div>
+                            <span key={key} className="pointer" onClick={() => this.props.getJourneyById(j.id)}>
+                              <img src={REACT_APP_PUBLIC_FILES + j.images[0]} alt="" className="test"/>
+                            </span>
                           )
                       }
                     </div>
@@ -210,18 +214,23 @@ class JourneyDetails extends Component {
                       <h6 className="black bold mt-4 mb-3 underline-title">Description</h6>
                       <p>{journey.description}</p>
                       <h6 className="black bold mt-4 mb-3 underline-title">Steps</h6>
-                      <div className='step-progress'>
-                        <Steps current={currentIndex}>
-                          <Steps.Step />
-                          <Steps.Step />
-                          <Steps.Step onClick={() => this.setState({
-                            currentIndex: 2
-                          })} />
-                          <Steps.Step />
-                          <Steps.Step />
-                          <Steps.Step />
-                          <Steps.Step />
-                        </Steps>
+                      <div className={"w-100 text-center"}>
+                        <ul className={"steps"}>
+                          {
+                            journey.steps
+                              .map((step, currentIndex) =>
+                                <li
+                                  key={currentIndex}
+                                  onClick={() => this.setState({ currentIndex })}
+                                  className={`pointer ${currentIndex === this.state.currentIndex && "active"}`}>{currentIndex + 1}</li>
+                              )
+                          }
+                        </ul>
+                      </div>
+                      <div className={"step-container"}>
+                        {
+                          step && <JourneyStep step={step}/>
+                        }
                       </div>
                     </div>
 
@@ -229,6 +238,7 @@ class JourneyDetails extends Component {
                 </div>
               </div>
             </section>
+
           </Fragment>
         }
       </Fragment>);
@@ -239,6 +249,10 @@ class JourneyDetails extends Component {
 JourneyDetails.propTypes = {
   getJourneyById: PropTypes.func.isRequired,
   getJourneyComments: PropTypes.func.isRequired,
+  journeyToggleFavorite: PropTypes.func.isRequired,
+  journeyToggleLike: PropTypes.func.isRequired,
+  addOrUpdateComment: PropTypes.func.isRequired,
+  getJourneySteps: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string.isRequired
@@ -258,5 +272,7 @@ export default connect(initMapStateToProps, {
   getJourneyComments,
   journeyToggleFavorite,
   journeyToggleLike,
-  addOrUpdateComment
+  addOrUpdateComment,
+  getJourneySteps,
+  openLoginModal
 })(JourneyDetails);

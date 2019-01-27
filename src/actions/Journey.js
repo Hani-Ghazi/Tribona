@@ -27,7 +27,8 @@ export const deleteComment = ({ id, commentId }) => () => api.deleteComment({ id
 export const journeyToggleLike = ({ id, isLiked }) => () => isLiked ? api.journeyDisLike(id) : api.journeyLike(id);
 export const journeyToggleFavorite = ({ id, isFavorite }) => () => isFavorite ? api.journeyUnFav(id) : api.journeyFav(id);
 
-
+export const getJourneySteps = (id) => () =>
+  api.getJourneySteps(id);
 
 //
 // getJourneyComments,

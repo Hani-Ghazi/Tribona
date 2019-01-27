@@ -156,3 +156,39 @@ label {
   background-color: #fe4f81 !important;
   border-color: #fe4f81 !important;
 }
+
+ul.steps > li {
+  width: 4em;
+  height: 4em;
+  text-align: center;
+  line-height: 4em;
+  border-radius: 4em;
+  background: white;
+  margin: 0 1.5em;
+  display: inline-block;
+  color: #ff4f81;
+  position: relative;
+  border: 2px solid #ff4f81;
+}
+
+ul.steps > li::before {
+  content: '';
+  position: absolute;
+  top: 1.9em;
+  left: -4em;
+  width: 4em;
+  height: .2em;
+  background: white;
+  border-bottom: 2px dashed #ff4f81;
+  z-index: -1;
+}
+
+ul.steps > li:first-child::before {
+  display: none;
+}
+
+ul.steps .active {
+  background: #ff4f81;
+  color: white;
+}
+

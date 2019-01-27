@@ -99,15 +99,13 @@ class PlaceDetails extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.place && this.props.place && nextProps.place.id && this.props.place.id && nextProps.place.id !== this.props.place.id) {
       const { id } = nextProps.place;
-      this.props.getPlaceById(id).then(() => {
-        this.setState({ place: nextProps.place });
-        this.props.getPlaceComments(id).then(comments => this.setState({
-          place: {
-            ...nextProps.place,
-            comments: comments.payload
-          }
-        }));
-      });
+      this.setState({ place: nextProps.place });
+      this.props.getPlaceComments(id).then(comments => this.setState({
+        place: {
+          ...nextProps.place,
+          comments: comments.payload
+        }
+      }));
     }
   }
 
@@ -203,7 +201,8 @@ class PlaceDetails extends Component {
                               .map((img, key) =>
                                 <div key={key} className="image-link"
                                      onClick={() => this.setState({ isOpen: true, currentIndex: key })}>
-                                  <img className="card-grid-popup2 test" src={`${REACT_APP_PUBLIC_FILES + img}`} alt=""/>
+                                  <img className="card-grid-popup2 test" src={`${REACT_APP_PUBLIC_FILES + img}`}
+                                       alt=""/>
                                 </div>
                               )
                           }
@@ -267,6 +266,10 @@ class PlaceDetails extends Component {
 PlaceDetails.propTypes = {
   getPlaceById: PropTypes.func.isRequired,
   getPlaceComments: PropTypes.func.isRequired,
+  placeToggleLike: PropTypes.func.isRequired,
+  placeToggleFavorite: PropTypes.func.isRequired,
+  addOrUpdateComment: PropTypes.func.isRequired,
+  openLoginModal: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string.isRequired
@@ -280,7 +283,6 @@ PlaceDetails.propTypes = {
 
 
 const initMapStateToProps = state => {
-  console.log({ user: state.user.id, place: state.places.place });
   return {
     place: state.places.place,
     isAuthenticated: !!state.user.id,

@@ -7,6 +7,7 @@
     "@mdi/js": "^3.3.92",
     "@mdi/react": "^1.1.0",
     "axios": "^0.18.0",
+    "bluebird": "^3.5.3",
     "dotenv": "^6.2.0",
     "eslint": "5.6.0",
     "eslint-config-airbnb": "^15.1.0",
