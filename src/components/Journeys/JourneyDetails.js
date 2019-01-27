@@ -19,6 +19,7 @@ import {
 import PropTypes from "prop-types";
 import { toast } from "react-toastify";
 import { PropagateLoader } from "react-spinners";
+import Lightbox from "react-image-lightbox";
 
 const { REACT_APP_PUBLIC_FILES } = process.env;
 
@@ -35,7 +36,6 @@ class JourneyDetails extends Component {
     const { getJourneyComments, getJourneySteps, getJourneyById } = this.props;
     getJourneyById(id)
       .then(async res => {
-        // this.setState({ journey: res.payload });
         const temp = await Promise.all([getJourneyComments(id), getJourneySteps(id)]);
         this.setState({
           journey: {
@@ -50,7 +50,7 @@ class JourneyDetails extends Component {
   async componentWillReceiveProps(nextProps) {
     if (nextProps.journey && this.props.journey && nextProps.journey.id && this.props.journey.id && nextProps.journey.id !== this.props.journey.id) {
       const { id } = nextProps.journey;
-      const { getJourneyComments, getJourneySteps} = this.props;
+      const { getJourneyComments, getJourneySteps } = this.props;
       const temp = await Promise.all([getJourneyComments(id), getJourneySteps(id)]);
       this.setState({
         journey: {
@@ -59,13 +59,6 @@ class JourneyDetails extends Component {
           steps: temp[1]
         }
       });
-      // this.setState({ journey: nextProps.journey });
-      // this.props.getJourneyComments(id).then(comments => this.setState({
-      //   journey: {
-      //     ...nextProps.journey,
-      //     comments: comments.payload
-      //   }
-      // }));
     }
   }
 
@@ -134,9 +127,8 @@ class JourneyDetails extends Component {
   render() {
 
     const { popularJourneys } = this.props;
-    const { isOpen, currentIndex, journey } = this.state;
-    const step = !!(journey || {}).steps ? journey.steps[currentIndex] : null;
-    const images = (journey || {}).images || [];
+    const { currentIndex, journey } = this.state;
+    let step = !!(journey || {}).steps ? journey.steps[currentIndex] : null;
     return (
       <Fragment>
         {
@@ -180,9 +172,9 @@ class JourneyDetails extends Component {
                           .slice(0, 10)
                           .filter(x => x.images.length)
                           .map((j, key) =>
-                            <span key={key} className="pointer" onClick={() => this.props.getJourneyById(j.id)}>
+                            <Link key={key} className="pointer" to={`${j.id}`} onClick={() => this.props.getJourneyById(j.id)}>
                               <img src={REACT_APP_PUBLIC_FILES + j.images[0]} alt="" className="test"/>
-                            </span>
+                            </Link>
                           )
                       }
                     </div>
@@ -238,7 +230,6 @@ class JourneyDetails extends Component {
                 </div>
               </div>
             </section>
-
           </Fragment>
         }
       </Fragment>);

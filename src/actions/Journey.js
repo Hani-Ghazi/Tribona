@@ -12,7 +12,7 @@ export const getPopularJourneys = () => (dispatch) =>
   api.getPopularJourneys().then(journeys => dispatch({ type: POPULAR_JOURNEYS_FETCHED, payload: journeys }));
 
 export const getJourneyById = (id) => (dispatch) =>
-  api.getJourneyById(id).then(journey => dispatch({type: JOURNEY_FETCHED, payload: journey}));
+  api.getJourneyById(id).then(journey => dispatch({ type: JOURNEY_FETCHED, payload: journey }));
 
 
 export const getJourneyComments = (id) => (dispatch) =>
@@ -30,8 +30,13 @@ export const journeyToggleFavorite = ({ id, isFavorite }) => () => isFavorite ? 
 export const getJourneySteps = (id) => () =>
   api.getJourneySteps(id);
 
-//
-// getJourneyComments,
-//   journeyToggleLike,
-//   placeToggleFavorite,
-//   addOrUpdateComment
+
+export const createJourney = (journey) => () => api.createJourney(journey);
+
+export const updateJourney = (journey) => () => api.updateJourney(journey);
+
+export const createStep = (step) => () => api.createStep(step);
+
+export const updateStep = (step) => () => api.updateStep(step);
+
+export const stepToggleLike = ({id, isLiked}) => () => isLiked? api.stepDisLike(id) : api.stepLike(id);

@@ -3,8 +3,6 @@ import StaticSlider from "../sliders/StaticSlider";
 import { FaImages } from "react-icons/fa";
 import { toast } from "react-toastify";
 import api from "../../api/utils";
-import "react-images-uploader/styles.css";
-import "react-images-uploader/font.css";
 import { Images, Select } from "../Partials";
 import { connect } from "react-redux";
 import { getPlacesCategories, createPlace, updatePlace, getPlaceById } from "../../actions/Places";
