@@ -47,6 +47,8 @@ const Header = ({ isAuthenticated, logout, user }) => (
                 <div className="dropdown-menu dropdownId dropdown-menu-right" aria-labelledby="navbarDropdown6">
                   <Link to={"/places/add"} className="dropdown-item mt-1">New Place</Link>
                   <div className="dropdown-divider"/>
+                  <Link to={"/journeys/add"} className="dropdown-item mt-1">New Journey</Link>
+                  <div className="dropdown-divider"/>
                   <Link to={"/"} onClick={() => logout()} className="dropdown-item mt-1">Logout</Link>
                 </div>
               </li>

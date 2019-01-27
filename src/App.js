@@ -25,6 +25,7 @@ import PlaceForm from "./components/Places/PlaceForm";
 import ShouldLoginModal from "./components/Partials/ShouldLoginModal";
 import HomePage from "./components/pages/HomePage";
 import PlacesListPage from "./components/Places/PlacesListPage";
+import JourneyForm from "./components/Journeys/JourneyForm";
 
 const App = ({ location }) => {
 
@@ -44,6 +45,8 @@ const App = ({ location }) => {
         <GuestRoute location={location} path="/places/edit/:id" exact component={PlaceForm}/>
         <GuestRoute location={location} path="/places/:id" exact component={AsyncPlaceDetailsPage}/>
         <GuestRoute location={location} path="/journeys" exact component={AsyncJourneysListPage}/>
+        <GuestRoute location={location} path="/journeys/add" exact component={JourneyForm}/>
+        <GuestRoute location={location} path="/journeys/edit/:id" exact component={JourneyForm}/>
         <GuestRoute location={location} path="/journeys/:id" exact component={AsyncJourneyDetailsPage}/>
       </Switch>
       <ShouldLoginModal/>
