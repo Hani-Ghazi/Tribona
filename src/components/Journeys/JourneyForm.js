@@ -11,7 +11,8 @@ import {
   getJourneyById,
   createStep,
   updateStep,
-  getJourneySteps
+  getJourneySteps,
+  deleteJourneyStep
 } from "../../actions/Journey";
 import { getCitiesByCountryId } from "../../actions/Country";
 import { getPlaces } from "../../actions/Places";
@@ -100,6 +101,18 @@ class JourneyForm extends Component {
     this.setState({ [key]: { ...this.state[key], images: images.filter(img => img !== image) } });
   };
 
+  onDeleteStep = e => {
+    e.preventDefault();
+    const { data, newStep: { id } } = this.state;
+    this.props.deleteJourneyStep(id)
+      .then(() => {
+        toast.success("Journey Step deleted Successfully", {
+          hideProgressBar: true
+        });
+        this.setState({ isOpen: false, data: { ...data, steps: data.steps.filter(x => x.id !== id) }, newStep: {} });
+      });
+  };
+
   onSubmit = e => {
     e.preventDefault();
     const { data } = this.state;
@@ -134,12 +147,28 @@ class JourneyForm extends Component {
   onSaveStep = e => {
     e.preventDefault();
     const { newStep } = this.state;
-    this.props.createStep(newStep)
-      .then(step => this.setState({
-        isOpen: false,
-        data: { ...this.state.data, steps: [...this.state.data.steps, step] },
-        newStep: {}
-      }));
+    const { createStep, updateStep } = this.props;
+    (newStep.id ? updateStep({ ...newStep, placeId: newStep.placeId || newStep.place.id }) : createStep(newStep))
+      .then(step => {
+        toast.success("Journey Saved Successfully", {
+          hideProgressBar: true
+        });
+        if (!!newStep.id) {
+          this.setState({
+            isOpen: false,
+            data: { ...this.state.data, steps: this.state.data.steps.map(x => x.id === newStep.id ? step : x) },
+            newStep: {}
+          });
+        }
+        else {
+          this.setState({
+            isOpen: false,
+            data: { ...this.state.data, steps: [...this.state.data.steps, step] },
+            newStep: {}
+          });
+        }
+
+      });
   };
 
 
@@ -192,7 +221,11 @@ class JourneyForm extends Component {
                                 .map((step, currentIndex) =>
                                   <li
                                     key={currentIndex}
-                                    onClick={() => this.setState({ currentIndex, newStep: step, isOpen: true})}
+                                    onClick={() => this.setState({
+                                      currentIndex,
+                                      newStep: { ...step, journeyId: data.id },
+                                      isOpen: true
+                                    })}
                                     className={`pointer ${currentIndex === this.state.currentIndex && "active"}`}>{currentIndex + 1}</li>
                                 )
                             }
@@ -238,7 +271,7 @@ class JourneyForm extends Component {
                                 <div className="row">
                                   <div className={"col-md-3 offset-6"}>
                                     <button type="submit" className="btn my-2 btn-primary mb-lg-0 mb-4 w-100"
-                                            onClick={this.onSaveStep}>Delete
+                                            onClick={this.onDeleteStep}>Delete
                                     </button>
                                   </div>
                                   <div className={"col-md-3"}>
@@ -289,7 +322,8 @@ JourneyForm.propTypes = {
   createStep: PropTypes.func.isRequired,
   updateStep: PropTypes.func.isRequired,
   getJourneySteps: PropTypes.func.isRequired,
-  getPlaces: PropTypes.func.isRequired
+  getPlaces: PropTypes.func.isRequired,
+  deleteJourneyStep: PropTypes.func.isRequired
 };
 
 
@@ -307,5 +341,6 @@ export default connect(initMapStateToProps, {
   createStep,
   updateStep,
   getJourneySteps,
-  getPlaces
+  getPlaces,
+  deleteJourneyStep
 })(JourneyForm);

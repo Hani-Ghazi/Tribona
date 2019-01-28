@@ -168,7 +168,7 @@ ul.steps > li {
   display: inline-block;
   color: #ff4f81;
   position: relative;
-  border: 2px solid;
+  border: 2px solid #ff4f81;
 }
 
 ul.steps > li::before {
@@ -178,7 +178,7 @@ ul.steps > li::before {
   left: -4em;
   width: 4em;
   height: .2em;
-  background: white;
+  //background: white;
   border-bottom: 2px dashed #ff4f81;
   z-index: -1;
 }

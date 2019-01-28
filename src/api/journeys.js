@@ -15,7 +15,8 @@ export default {
   createJourney: (journey) => api.post(`journeys`, journey).then(res => res.data),
   updateJourney: (journey) => api.put(`journeys/${journey.id}`, journey).then(res => res.data),
   createStep: (step) => api.post(`journeys/${step.journeyId}/steps`, step).then(res => res.data),
-  updateStep: (step) => api.put(`journeys/${step.journeyId}/steps`, step).then(res => res.data),
+  updateStep: (step) => api.put(`journeys/steps/${step.id}`, step).then(res => res.data),
+  deleteJourneyStep: (id) => api.delete(`journeys/steps/${id}`).then(res => res.data),
   stepDisLike: (id) => api.delete(`journeys/steps/${id}/like`).then(res => res.data),
   stepLike: (id) => api.put(`journeys/steps/${id}/like`).then(res => res.data)
 };

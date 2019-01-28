@@ -39,4 +39,7 @@ export const createStep = (step) => () => api.createStep(step);
 
 export const updateStep = (step) => () => api.updateStep(step);
 
+export const deleteJourneyStep = (id) => (dispatch) =>
+  api.deleteJourneyStep(id);
+
 export const stepToggleLike = ({id, isLiked}) => () => isLiked? api.stepDisLike(id) : api.stepLike(id);
