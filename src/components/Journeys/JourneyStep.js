@@ -1,18 +1,14 @@
 import React, { Fragment } from "react";
-import Lightbox from "react-image-lightbox";
 import PropTypes from "prop-types";
-import { DetailedRate, Favorite, Follow, Like, UserWidget } from "../Partials";
+import { DetailedRate, Like, ImagesGallery } from "../Partials";
 import { toast } from "react-toastify";
 import { connect } from "react-redux";
 import { openLoginModal } from "../../actions/Modals";
 import { stepToggleLike } from "../../actions/Journey";
 
-const { REACT_APP_PUBLIC_FILES } = process.env;
 
 class JourneyStep extends React.Component {
   state = {
-    isOpen: false,
-    currentIndex: 0,
     step: null
   };
 
@@ -47,7 +43,7 @@ class JourneyStep extends React.Component {
   }
 
   render() {
-    const { step, step: { images }, isOpen, currentIndex } = this.state;
+    const { step, step: { images } } = this.state;
     return (
       <Fragment>
         <div className={"container"}>
@@ -64,17 +60,7 @@ class JourneyStep extends React.Component {
                 !!images.length &&
                 <Fragment>
                   <h6 className="underline-title">Images</h6>
-                  <div className="cardHolder album">
-                    {
-                      images.map((img, key) =>
-                        <div key={key} className="image-link"
-                             onClick={() => this.setState({ isOpen: true, currentIndex: key })}>
-                          <img className="card-grid-popup2 test" src={`${REACT_APP_PUBLIC_FILES + img}`}
-                               alt=""/>
-                        </div>
-                      )
-                    }
-                  </div>
+                  <ImagesGallery images={images}/>
                 </Fragment>
               }
 
@@ -85,29 +71,10 @@ class JourneyStep extends React.Component {
             </div>
           </div>
         </div>
-        {
-          isOpen &&
-          <Lightbox
-            mainSrc={REACT_APP_PUBLIC_FILES + images[currentIndex]}
-            nextSrc={REACT_APP_PUBLIC_FILES + images[(currentIndex + 1) % images.length]}
-            prevSrc={REACT_APP_PUBLIC_FILES + images[(currentIndex + images.length - 1) % images.length]}
-            onCloseRequest={() => this.setState({ isOpen: false })}
-            onMovePrevRequest={() =>
-              this.setState({
-                currentIndex: (currentIndex + images.length - 1) % images.length
-              })
-            }
-            onMoveNextRequest={() =>
-              this.setState({
-                currentIndex: (currentIndex + 1) % images.length
-              })
-            }
-          />
-        }
       </Fragment>
     );
   }
-};
+}
 
 JourneyStep.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired

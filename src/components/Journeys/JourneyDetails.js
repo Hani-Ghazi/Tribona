@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import SliderWithScroll from "../sliders/SliderWithScroll";
-import { Favorite, Follow, Like, UserWidget } from "../Partials";
+import { Favorite, Follow, Like, UserWidget, ImagesGallery, PopularAside } from "../Partials";
 import { Link } from "react-router-dom";
 import StarRatings from "react-star-ratings";
 import JourneyStep from "./JourneyStep";
@@ -18,8 +18,7 @@ import {
 } from "../../actions/Modals";
 import PropTypes from "prop-types";
 import { toast } from "react-toastify";
-import { PropagateLoader } from "react-spinners";
-import Lightbox from "react-image-lightbox";
+import PageLoader from "../Loaders/pageLoader";
 import { IoIosCreate } from "react-icons/io";
 
 const { REACT_APP_PUBLIC_FILES } = process.env;
@@ -29,37 +28,46 @@ class JourneyDetails extends Component {
   state = {
     isOpen: false,
     currentIndex: 0,
-    journey: null
+    journey: null,
+    isLoading: true
   };
 
   componentDidMount() {
     const id = this.props.match.params.id;
     const { getJourneyComments, getJourneySteps, getJourneyById } = this.props;
     getJourneyById(id)
-      .then(async res => {
-        const temp = await Promise.all([getJourneyComments(id), getJourneySteps(id)]);
-        this.setState({
-          journey: {
-            ...res.payload,
-            comments: temp[0],
-            steps: temp[1]
-          }
-        });
+      .then(res => {
+        Promise.all([
+          getJourneyComments(id),
+          getJourneySteps(id)
+        ]).then(temp => this.setState({
+            journey: {
+              ...res.payload,
+              comments: temp[0],
+              steps: temp[1]
+            },
+            isLoading: false
+          })
+        );
       });
   }
 
-  async componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.journey && this.props.journey && nextProps.journey.id && this.props.journey.id && nextProps.journey.id !== this.props.journey.id) {
       const { id } = nextProps.journey;
       const { getJourneyComments, getJourneySteps } = this.props;
-      const temp = await Promise.all([getJourneyComments(id), getJourneySteps(id)]);
-      this.setState({
-        journey: {
-          ...nextProps.journey,
-          comments: temp[0],
-          steps: temp[1]
-        }
-      });
+      Promise.all([
+        getJourneyComments(id),
+        getJourneySteps(id)
+      ]).then(temp => this.setState({
+          journey: {
+            ...nextProps.journey,
+            comments: temp[0],
+            steps: temp[1]
+          },
+          isLoading: false
+        })
+      );
     }
   }
 
@@ -128,15 +136,16 @@ class JourneyDetails extends Component {
   render() {
 
     const { popularJourneys, isAuthenticated, userId } = this.props;
-    const { currentIndex, journey } = this.state;
+    const { currentIndex, journey, isLoading } = this.state;
     let step = !!(journey || {}).steps ? journey.steps[currentIndex] : null;
+
     return (
       <Fragment>
         {
-          !journey && <PropagateLoader/>
+          isLoading && <PageLoader/>
         }
         {
-          journey &&
+          !isLoading &&
           <Fragment>
             <SliderWithScroll slide={journey}/>
             <section id="section3" className="tour-list-sidebar tour-list-sidebar-2-col">
@@ -175,17 +184,7 @@ class JourneyDetails extends Component {
                     </div>
                     <div id="instasidebar" className="grid2 runsidebar  text-center">
                       <h6 className="black semibold mx-4 mt-3 mb-2 underline-title">Popular Journeys</h6>
-                      {
-                        (popularJourneys || [])
-                          .slice(0, 10)
-                          .filter(x => x.images.length)
-                          .map((j, key) =>
-                            <Link key={key} className="pointer" to={`${j.id}`}
-                                  onClick={() => this.props.getJourneyById(j.id)}>
-                              <img src={REACT_APP_PUBLIC_FILES + j.images[0]} alt="" className="test"/>
-                            </Link>
-                          )
-                      }
+                      <PopularAside list={popularJourneys} action={this.props.getJourneyById}/>
                     </div>
                   </div>
                   <div className="col-xs-12 col-md-12 col-lg-8   single-tour">
@@ -203,6 +202,8 @@ class JourneyDetails extends Component {
                       </div>
                     </div>
                     <div className="tour-schedule">
+                      <h6 className="underline-title">Images</h6>
+                      <ImagesGallery images={journey.images}/>
                       <h6 className="black bold mt-4 mb-3 underline-title">Description</h6>
                       <p>{journey.description}</p>
                       <h6 className="black bold mt-4 mb-3 underline-title">Steps</h6>
@@ -232,7 +233,8 @@ class JourneyDetails extends Component {
             </section>
           </Fragment>
         }
-      </Fragment>);
+      </Fragment>
+    );
   }
 }
 

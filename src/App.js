@@ -21,8 +21,10 @@ import Header from "./components/header";
 import Footer from "./components/footer";
 import "./assets/sass/_all.css";
 import "react-toastify/dist/ReactToastify.css";
+import "react-image-lightbox/style.css";
 import PlaceForm from "./components/Places/PlaceForm";
 import ShouldLoginModal from "./components/Partials/ShouldLoginModal";
+import LightBox from "./components/Modals/LightBox";
 import HomePage from "./components/pages/HomePage";
 import PlacesListPage from "./components/Places/PlacesListPage";
 import JourneyForm from "./components/Journeys/JourneyForm";
@@ -50,6 +52,7 @@ const App = ({ location }) => {
         <GuestRoute location={location} path="/journeys/:id" exact component={AsyncJourneyDetailsPage}/>
       </Switch>
       <ShouldLoginModal/>
+      <LightBox/>
       <Footer/>
       <ToastContainer/>
 

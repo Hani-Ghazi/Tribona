@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from "react";
 import SliderWithScroll from "../sliders/SliderWithScroll";
 import { connect } from "react-redux";
-import Lightbox from "react-image-lightbox";
 import StarRatings from "react-star-ratings";
 import {
   getPlaceById,
@@ -14,8 +13,6 @@ import {
   openLoginModal
 } from "../../actions/Modals";
 import PropTypes from "prop-types";
-import { PropagateLoader } from "react-spinners";
-import "react-image-lightbox/style.css";
 import GoogleMapReact from "google-map-react";
 import {
   Favorite,
@@ -23,14 +20,15 @@ import {
   Like,
   Follow,
   UserWidget,
-  DetailedRate
+  DetailedRate,
+  ImagesGallery,
+  PopularAside
 } from "../Partials";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { IoIosCreate } from "react-icons/io";
+import PageLoader from "../Loaders/pageLoader";
 
-
-const { REACT_APP_PUBLIC_FILES } = process.env;
 
 class PlaceDetails extends Component {
   state = {
@@ -126,12 +124,11 @@ class PlaceDetails extends Component {
 
   render() {
     const { popularPlaces, isAuthenticated, userId } = this.props;
-    const { isOpen, currentIndex, place } = this.state;
-    const images = (place || {}).images || [];
+    const { place } = this.state;
     return (
       <Fragment>
         {
-          !place && <PropagateLoader/>
+          !place && <PageLoader/>
         }
         {
           place &&
@@ -180,33 +177,14 @@ class PlaceDetails extends Component {
                     </div>
                     <div id="instasidebar" className="grid2 runsidebar  text-center">
                       <h6 className="black semibold mx-4 mt-3 mb-2 underline-title">Popular PLaces</h6>
-                      {
-                        (popularPlaces || [])
-                          .filter(img => img.images.length)
-                          .map((p, key) =>
-                            <span key={key} className="pointer" onClick={() => this.props.getPlaceById(p.id)}>
-                              <img src={REACT_APP_PUBLIC_FILES + p.images[0]} alt="" className="test"/>
-                            </span>
-                          )
-                      }
+                      <PopularAside list={popularPlaces} action={this.props.getPlaceById}/>
                     </div>
                   </div>
                   <div className="col-xs-12 col-md-11 col-lg-8 single-tour">
                     <div className="row">
                       <div className="col-xs-12 col-md-12 col-lg-12">
                         <h6 className="underline-title">Images</h6>
-                        <div className="cardHolder album">
-                          {
-                            (place.images || [])
-                              .map((img, key) =>
-                                <div key={key} className="image-link"
-                                     onClick={() => this.setState({ isOpen: true, currentIndex: key })}>
-                                  <img className="card-grid-popup2 test" src={`${REACT_APP_PUBLIC_FILES + img}`}
-                                       alt=""/>
-                                </div>
-                              )
-                          }
-                        </div>
+                        <ImagesGallery images={place.images}/>
                         <div className="m-t-30">
                           <h6 className="underline-title">Map Location</h6>
                           <div className="list-font" style={{ height: "400px" }}>
@@ -236,25 +214,6 @@ class PlaceDetails extends Component {
                 </div>
               </div>
             </section>
-            {
-              isOpen &&
-              <Lightbox
-                mainSrc={REACT_APP_PUBLIC_FILES + images[currentIndex]}
-                nextSrc={REACT_APP_PUBLIC_FILES + images[(currentIndex + 1) % images.length]}
-                prevSrc={REACT_APP_PUBLIC_FILES + images[(currentIndex + images.length - 1) % images.length]}
-                onCloseRequest={() => this.setState({ isOpen: false })}
-                onMovePrevRequest={() =>
-                  this.setState({
-                    currentIndex: (currentIndex + images.length - 1) % images.length
-                  })
-                }
-                onMoveNextRequest={() =>
-                  this.setState({
-                    currentIndex: (currentIndex + 1) % images.length
-                  })
-                }
-              />
-            }
           </Fragment>
         }
 
