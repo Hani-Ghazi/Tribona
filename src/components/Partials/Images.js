@@ -18,7 +18,7 @@ const Images = ({ images, removeImage }) => (
           <img
             src={REACT_APP_PUBLIC_FILES + image}
             alt=''
-            className="img-border img-fluid"
+            className="img-border img-fluid test"
           />
         </div>
       )}

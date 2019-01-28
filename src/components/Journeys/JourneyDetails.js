@@ -20,6 +20,7 @@ import PropTypes from "prop-types";
 import { toast } from "react-toastify";
 import { PropagateLoader } from "react-spinners";
 import Lightbox from "react-image-lightbox";
+import { IoIosCreate } from "react-icons/io";
 
 const { REACT_APP_PUBLIC_FILES } = process.env;
 
@@ -126,7 +127,7 @@ class JourneyDetails extends Component {
 
   render() {
 
-    const { popularJourneys } = this.props;
+    const { popularJourneys, isAuthenticated, userId } = this.props;
     const { currentIndex, journey } = this.state;
     let step = !!(journey || {}).steps ? journey.steps[currentIndex] : null;
     return (
@@ -164,6 +165,13 @@ class JourneyDetails extends Component {
                         <Follow isFollowOwner={!!journey.isFollowOwner} userId={journey.ownerId}
                                 cb={this.changeFollowStatus}/>
                       </div>
+                      {
+                        isAuthenticated && userId === journey.ownerId &&
+                        <div className="col align-self-md-center">
+                          <IoIosCreate size="2em" className="pointer"
+                                       onClick={() => this.props.history.push(`edit/${journey.id}`)}/>
+                        </div>
+                      }
                     </div>
                     <div id="instasidebar" className="grid2 runsidebar  text-center">
                       <h6 className="black semibold mx-4 mt-3 mb-2 underline-title">Popular Journeys</h6>
@@ -172,7 +180,8 @@ class JourneyDetails extends Component {
                           .slice(0, 10)
                           .filter(x => x.images.length)
                           .map((j, key) =>
-                            <Link key={key} className="pointer" to={`${j.id}`} onClick={() => this.props.getJourneyById(j.id)}>
+                            <Link key={key} className="pointer" to={`${j.id}`}
+                                  onClick={() => this.props.getJourneyById(j.id)}>
                               <img src={REACT_APP_PUBLIC_FILES + j.images[0]} alt="" className="test"/>
                             </Link>
                           )
@@ -187,19 +196,10 @@ class JourneyDetails extends Component {
                         <img className="svgcenter mb-2 location-icon" src={require("../../assets/svgs/location.svg")}
                              alt=""/>
                       </div>
-                      <div className="col-lg-3 col-6 order-6 order-lg-4">
-                        <img className="svgcenter mt-3 mb-2 calendar-icon"
-                             src={require("../../assets/svgs/calendar.svg")}
-                             alt=""/>
-                      </div>
                     </div>
                     <div className="row">
                       <div className="col-lg-3 col-6 order-7 order-lg-7">
                         <p className="grey text-center">Location<br/><span className="black bold">Netherlands</span></p>
-                      </div>
-                      <div className="col-lg-3 col-6 order-8 order-lg-8">
-                        <p className="grey text-center mx-2">Dates<br/><span className="black bold">May, August, September, October</span>
-                        </p>
                       </div>
                     </div>
                     <div className="tour-schedule">
@@ -251,11 +251,17 @@ JourneyDetails.propTypes = {
   }),
   journey: PropTypes.object,
   popularJourneys: PropTypes.array,
-  isAuthenticated: PropTypes.bool.isRequired
+  isAuthenticated: PropTypes.bool.isRequired,
+  userId: PropTypes.string
 };
 
 const initMapStateToProps = state => {
-  return { journey: state.journeys.journey, popularJourneys: state.journeys.popular, isAuthenticated: !!state.user.id };
+  return {
+    journey: state.journeys.journey,
+    popularJourneys: state.journeys.popular,
+    isAuthenticated: !!state.user.id,
+    userId: state.user.id
+  };
 };
 
 export default connect(initMapStateToProps, {

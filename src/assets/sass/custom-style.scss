@@ -168,7 +168,7 @@ ul.steps > li {
   display: inline-block;
   color: #ff4f81;
   position: relative;
-  border: 2px solid #ff4f81;
+  border: 2px solid white;
 }
 
 ul.steps > li::before {
@@ -192,3 +192,21 @@ ul.steps .active {
   color: white;
 }
 
+.step-images-container {
+  max-height: 80vh;
+  overflow: auto;
+}
+
+.white-bg {
+  background-color: #ffffff;
+}
+
+.grey-bg {
+  background-color: #F2F3F9;
+}
+
+@media (max-width: 1200px) {
+  #footer {
+    margin-top: 0;
+  }
+}
