@@ -1,8 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import SliderWithScroll from "../sliders/SliderWithScroll";
-import { Favorite, Follow, Like, UserWidget, ImagesGallery, PopularAside } from "../Partials";
-import { Link } from "react-router-dom";
+import { Favorite, Follow, Like, UserWidget, ImagesGallery, PopularAside, DetailedRate, Comments } from "../Partials";
 import StarRatings from "react-star-ratings";
 import JourneyStep from "./JourneyStep";
 import {
@@ -11,7 +10,8 @@ import {
   journeyToggleFavorite,
   journeyToggleLike,
   addOrUpdateComment,
-  getJourneySteps
+  getJourneySteps,
+  deleteComment
 } from "../../actions/Journey";
 import {
   openLoginModal
@@ -21,7 +21,6 @@ import { toast } from "react-toastify";
 import PageLoader from "../Loaders/pageLoader";
 import { IoIosCreate } from "react-icons/io";
 
-const { REACT_APP_PUBLIC_FILES } = process.env;
 
 class JourneyDetails extends Component {
 
@@ -29,7 +28,8 @@ class JourneyDetails extends Component {
     isOpen: false,
     currentIndex: 0,
     journey: null,
-    isLoading: true
+    isLoading: true,
+    isUpdating: false
   };
 
   componentDidMount() {
@@ -43,7 +43,7 @@ class JourneyDetails extends Component {
         ]).then(temp => this.setState({
             journey: {
               ...res.payload,
-              comments: temp[0],
+              comments: temp[0].payload,
               steps: temp[1]
             },
             isLoading: false
@@ -118,31 +118,41 @@ class JourneyDetails extends Component {
   };
 
   onComment = (text) => {
-    const { isAuthenticated } = this.props;
+    const { isAuthenticated, getJourneyComments } = this.props;
     if (!isAuthenticated) {
       return this.props.openLoginModal();
     }
     const { journey } = this.state;
     this.props.addOrUpdateComment({ id: journey.id, text }).then(() => {
-      this.setState({
-        journey: {
-          ...journey,
-          comments: [...journey.comments]
-        }
-      });
+      getJourneyComments(journey.id).then(res => this.setState({ journey: { ...journey, comments: res.payload } }));
     });
+  };
+
+  onRemoveComment = (commentId) => {
+    const { deleteComment, getJourneyComments } = this.props;
+    const { journey: { id }, journey } = this.state;
+    this.setState({ isUpdating: true });
+    deleteComment({ id, commentId })
+      .then(() => getJourneyComments(id)
+        .then(res => {
+            this.setState({ journey: { ...journey, comments: res.payload }, isUpdating: false });
+            toast.success(`Comment successfully deleted`, {
+              hideProgressBar: true
+            });
+          }
+        ));
   };
 
   render() {
 
     const { popularJourneys, isAuthenticated, userId } = this.props;
-    const { currentIndex, journey, isLoading } = this.state;
+    const { currentIndex, journey, isLoading, isUpdating } = this.state;
     let step = !!(journey || {}).steps ? journey.steps[currentIndex] : null;
 
     return (
       <Fragment>
         {
-          isLoading && <PageLoader/>
+          (isLoading || isUpdating) && <PageLoader/>
         }
         {
           !isLoading &&
@@ -225,6 +235,11 @@ class JourneyDetails extends Component {
                           step && <JourneyStep step={step}/>
                         }
                       </div>
+                      <h6 className={"black bold mt-4 mb-3 underline-title"}>Journey Review Details</h6>
+                      <DetailedRate ratings={journey.ratings} ratingsAvg={journey.ratingsAvg}/>
+                      <h6 className={"black bold mt-4 mb-3 underline-title"}>Comments</h6>
+                      <Comments comments={journey.comments || []} onAdd={this.onComment}
+                                onRemove={this.onRemoveComment}/>
                     </div>
 
                   </div>
@@ -246,6 +261,7 @@ JourneyDetails.propTypes = {
   journeyToggleLike: PropTypes.func.isRequired,
   addOrUpdateComment: PropTypes.func.isRequired,
   getJourneySteps: PropTypes.func.isRequired,
+  deleteComment: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string.isRequired
@@ -273,5 +289,6 @@ export default connect(initMapStateToProps, {
   journeyToggleLike,
   addOrUpdateComment,
   getJourneySteps,
-  openLoginModal
+  openLoginModal,
+  deleteComment
 })(JourneyDetails);

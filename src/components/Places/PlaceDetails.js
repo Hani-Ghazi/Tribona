@@ -7,7 +7,8 @@ import {
   getPlaceComments,
   placeToggleLike,
   placeToggleFavorite,
-  addOrUpdateComment
+  addOrUpdateComment,
+  deleteComment
 } from "../../actions/Places";
 import {
   openLoginModal
@@ -122,6 +123,20 @@ class PlaceDetails extends Component {
     });
   };
 
+  onRemoveComment = (commentId) => {
+    const { deleteComment, getPlaceComments } = this.props;
+    const { place: { id }, place } = this.state;
+    deleteComment({ id, commentId })
+      .then(() => getPlaceComments(id)
+        .then(res => {
+            this.setState({ place: { ...place, comments: res.payload } });
+            toast.success(`Comment successfully deleted`, {
+              hideProgressBar: true
+            });
+          }
+        ));
+  };
+
   render() {
     const { popularPlaces, isAuthenticated, userId } = this.props;
     const { place } = this.state;
@@ -205,7 +220,8 @@ class PlaceDetails extends Component {
                         </div>
                         <div className="m-t-30">
                           <h6 className="underline-title m-b-0">Comments</h6>
-                          <Comments comments={place.comments || []} onAdd={this.onComment}/>
+                          <Comments comments={place.comments || []} onAdd={this.onComment}
+                                    onRemove={this.onRemoveComment}/>
 
                         </div>
                       </div>
@@ -229,6 +245,7 @@ PlaceDetails.propTypes = {
   placeToggleFavorite: PropTypes.func.isRequired,
   addOrUpdateComment: PropTypes.func.isRequired,
   openLoginModal: PropTypes.func.isRequired,
+  deleteComment: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string.isRequired
@@ -256,5 +273,6 @@ export default connect(initMapStateToProps, {
   placeToggleLike,
   placeToggleFavorite,
   addOrUpdateComment,
-  openLoginModal
+  openLoginModal,
+  deleteComment
 })(PlaceDetails);

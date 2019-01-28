@@ -205,6 +205,13 @@ ul.steps .active {
   background-color: #F2F3F9;
 }
 
+.page-loader {
+  height: 100vh;
+  position: fixed;
+  z-index: 100;
+  width: 100%;
+}
+
 @media (max-width: 1200px) {
   #footer {
     margin-top: 0;

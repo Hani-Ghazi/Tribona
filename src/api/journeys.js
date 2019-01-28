@@ -10,7 +10,7 @@ export default {
   journeyFav: (id) => api.put(`journeys/${id}/favorite`).then(res => res.data),
   journeyUnFav: (id) => api.delete(`journeys/${id}/favorite`).then(res => res.data),
   addOrUpdateComment: ({ id, text, commentId }) => api.post(`journeys/${id}/comments${!!commentId ? "/" + commentId : ""}`, { text }).then(res => res.data),
-  deleteComment: ({ id, commentId }) => api.delete(`journeys/${id}/${commentId}`).then(res => res.data),
+  deleteComment: ({ id, commentId }) => api.delete(`journeys/${id}/comments/${commentId}`).then(res => res.data),
   getJourneySteps: (id) => api.get(`journeys/${id}/steps`).then(res => res.data),
   createJourney: (journey) => api.post(`journeys`, journey).then(res => res.data),
   updateJourney: (journey) => api.put(`journeys/${journey.id}`, journey).then(res => res.data),

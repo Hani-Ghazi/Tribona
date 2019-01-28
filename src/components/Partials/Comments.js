@@ -1,7 +1,8 @@
 import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-
+import { FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
+import { connect } from "react-redux";
 
 const { REACT_APP_PUBLIC_FILES } = process.env;
 
@@ -17,26 +18,41 @@ class Comments extends React.Component {
     errors: { ...this.state.errors, [e.target.name]: null }
   });
 
-  renderComment = (comment, key) =>
-    <li key={key}>
-      <div className="comment-main-level mb-4">
+  renderComment = (comment, key) => {
+    const { isAuthenticated, onRemove, userId } = this.props;
+    return (
+      <li key={key}>
+        <div className="comment-main-level mb-4">
 
-        <div className="comment-avatar d-none d-md-block"><img
-          src={REACT_APP_PUBLIC_FILES + (comment.ownerImage || "files-1547673340162.jpeg")} alt="user owner"/></div>
-        <div className="comment-box">
-          <div className="comment-head">
-            <h6 className="comment-name "><a href="#">comment.ownerName</a></h6>
-            <div className="text-left">
-              <br className="hidebr"/>
-              <span className="time-review">{moment().diff(moment(comment.createdAt), "minutes")} minutes
+          <div className="comment-avatar d-none d-md-block"><img
+            src={REACT_APP_PUBLIC_FILES + (comment.ownerImage || "files-1547673340162.jpeg")} alt="user owner"/></div>
+          <div className="comment-box">
+            <div className="comment-head">
+              <h6 className="comment-name "><a href="#">comment.ownerName</a></h6>
+              <div className="text-left">
+                <br className="hidebr"/>
+                <span className="time-review">{moment().diff(moment(comment.createdAt), "minutes")} minutes
                 ago</span>
+                {
+                  isAuthenticated && comment.ownerId === userId &&
+                  <span className={"pull-right"}>
+                    {/*<FaRegEdit*/}
+                    {/*className="pointer"*/}
+                    {/*size={"1.5em"}/> */}
+                    <FaRegTrashAlt
+                    size={"1.5em"} className="pointer"
+                    color="#ff4f81"
+                    onClick={() => onRemove(comment.id)}/>
+                  </span>
+                }
+              </div>
             </div>
-
+            <div className="comment-content">{comment.text}</div>
           </div>
-          <div className="comment-content">{comment.text}</div>
         </div>
-      </div>
-    </li>;
+      </li>
+    );
+  };
 
   render() {
     const { comments, onAdd } = this.props;
@@ -79,8 +95,15 @@ class Comments extends React.Component {
 
 Comments.propTypes = {
   comments: PropTypes.array.isRequired,
-  onAdd: PropTypes.func.isRequired
+  onAdd: PropTypes.func.isRequired,
+  onRemove: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
+  userId: PropTypes.string
 };
 
 
-export default Comments;
+const initMapStateToProps = state => {
+  return { isAuthenticated: !!state.user.id, userId: state.user.id };
+};
+
+export default connect(initMapStateToProps)(Comments);
