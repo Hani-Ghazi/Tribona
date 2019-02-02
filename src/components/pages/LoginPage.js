@@ -111,13 +111,14 @@ class LoginPage extends Component {
     const { data, errors } = this.state;
     return (
       <Fragment>
-        <Header/>
+        {/*<Header/>*/}
         <div className="limiter">
           <div className="container-login100" style={{ backgroundImage: `url(${bgImage})` }}>
             <div className="wrap-login100">
               <form className="login100-form validate-form" onSubmit={this.onSubmit}>
-                <span>
-                  <img src={require("../../assets/images/logo.png")} alt="logo" className={"img-fluid"}/>
+                <span className="dis-block text-center w-100">
+                  <img src={require("../../assets/images/logo.png")} alt="logo"
+                       className={"img-fluid dis-block m-auto w-50"}/>
                 </span>
                 <span className="login100-form-title p-b-34 p-t-27">Log in</span>
                 {
