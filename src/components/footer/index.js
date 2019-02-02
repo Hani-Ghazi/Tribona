@@ -56,13 +56,6 @@ const Footer = () => (
           </div>
 
         </div>
-        <div className="scale-up">
-          <a className="smooth-scroll  rectangle-right" href="#">
-            <div className="go-up px-1"><i className="fas mb-2 fa-arrow-up"/><br/>
-              <h6 className="text-center letters-up">GO<br/>UP</h6>
-            </div>
-          </a>
-        </div>
 
         <div className="row">
           <div className="col-12 mt-2 mt-sm-2 text-center text-white">
