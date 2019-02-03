@@ -11,3 +11,4 @@ export { default as ShouldLoginModal } from "./ShouldLoginModal";
 export { default as Images } from "./Images";
 export { default as ImagesGallery } from "./ImagesGallery";
 export { default as PopularAside } from "./PopularAside";
+export { default as AutoCompleteInput } from "./AutoCompleteInput";

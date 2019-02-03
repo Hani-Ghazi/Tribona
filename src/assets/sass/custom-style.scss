@@ -57,7 +57,7 @@ span.pull-right {
 
 .destination-item h6 {
   padding: 0 10px 10px 10px !important;
-  margin-top: -70px !important;
+  margin-top: -95px !important;
 }
 
 h6.underline-title {
@@ -220,4 +220,21 @@ ul.steps .active {
 
 .navbar-brand img {
   width: 40px;
+}
+
+.react-autosuggest__suggestions-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  background-color: #ffffff;
+  border-radius: 10px;
+  max-height: 30vh;
+  overflow-y: auto;
+  position: absolute;
+  z-index: 9999;
+  width: 100%;
+}
+
+.autoComplete-container > div {
+  position: relative;
 }

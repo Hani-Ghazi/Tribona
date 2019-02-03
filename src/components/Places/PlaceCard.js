@@ -15,7 +15,7 @@ const PlaceCard = ({ place }) => (
             src={place.images[0] ? `${REACT_APP_PUBLIC_FILES + place.images[0]}` : require("../../assets/images/switzerland.jpg")}
             alt="place"
             className="img-fluid destination-item"/>
-          <h6 className="white front w-100">{place.name} <br/> #{fixCategoryName(place.category)}
+          <h6 className="white front w-100">{place.name}<br/> #{fixCategoryName(place.category)} <br/>
             <span className="pull-right">
               {place.likesCount} <IoIosThumbsUp/> {place.commentsCount} <IoIosChatbubbles/>
           </span>

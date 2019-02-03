@@ -1,7 +1,7 @@
 import React from "react";
 import { FaGlobeAsia } from "react-icons/fa";
 import { getPlaces } from "../../actions/Places";
-import { Select } from "../Partials";
+import { Select, AutoCompleteInput } from "../Partials";
 import api from "../../api/places";
 import { connect } from "react-redux";
 
@@ -77,16 +77,24 @@ class placesFilter extends React.Component {
             </div>
           </div>
           <div className="form-group row">
+            <div className="col-sm-12 autoComplete-container">
+              {/*<div className="input-group">*/}
+              <AutoCompleteInput
+                list={this.props.countries}
+                onChange={e => this.onChange({ target: { name: "countryId", value: e.geonameId } })}/>
+              {/*<Select onChange={this.onChange} labelKey={"countryName"}*/}
+              {/*selectedValue={data.countryId}*/}
+              {/*list={this.props.countries || []} name={"countryId"}*/}
+              {/*valueKey={"geonameId"} placeholder={"Select Country"}/>*/}
+              {/*<div className="input-group-append">*/}
+              {/*<div className="input-group-text"><FaGlobeAsia/></div>*/}
+              {/*</div>*/}
+              {/*</div>*/}
+            </div>
+          </div>
+          <div className="form-group row">
             <div className="col-sm-12">
-              <div className="input-group">
-                <Select onChange={this.onChange} labelKey={"countryName"}
-                        selectedValue={data.countryId}
-                        list={this.props.countries || []} name={"countryId"}
-                        valueKey={"geonameId"} placeholder={"Select Country"}/>
-                <div className="input-group-append">
-                  <div className="input-group-text"><FaGlobeAsia/></div>
-                </div>
-              </div>
+              {/*<AutoCompleteInput list={this.props.countries} onChange={e => console.log(e)}/>*/}
             </div>
           </div>
           {this.renderCategoriesFilter()}
