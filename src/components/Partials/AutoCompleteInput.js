@@ -18,9 +18,9 @@ class AutoCompleteInput extends Component {
   getSuggestions = value => {
     const inputValue = value.trim().toLowerCase();
     const inputLength = inputValue.length;
-    const { list } = this.props;
-    return inputLength === 0 ? [] : list.filter(lang =>
-      lang.countryName.toLowerCase().slice(0, inputLength) === inputValue
+    const { list, labelKey } = this.props;
+    return inputLength === 0 ? [] : list.filter(item =>
+      item[labelKey].toLowerCase().slice(0, inputLength) === inputValue
     );
   };
 
@@ -28,7 +28,7 @@ class AutoCompleteInput extends Component {
 
   renderSuggestion = suggestion => (
     <div>
-      {suggestion.countryName}
+      {suggestion[this.props.labelKey]}
     </div>
   );
 
@@ -49,13 +49,14 @@ class AutoCompleteInput extends Component {
 
   // Autosuggest will call this function every time you need to clear suggestions.
   onSuggestionsClearRequested = () => {
+    if(!this.state.value)
+      this.props.onChange('');
     this.setState({
       suggestions: []
     });
   };
 
   onSuggestionSelected = (e, value) => {
-    console.log({dd: value.suggestion})
     this.props.onChange(value.suggestion);
   };
 
@@ -64,7 +65,7 @@ class AutoCompleteInput extends Component {
 
     // Autosuggest will pass through all these props to the input.
     const inputProps = {
-      placeholder: "Select Country",
+      placeholder: this.props.placeholder,
       value,
       onChange: this.onChange
     };
@@ -93,7 +94,9 @@ class AutoCompleteInput extends Component {
 }
 
 AutoCompleteInput.propTypes = {
-  list: PropTypes.array.isRequired
+  list: PropTypes.array.isRequired,
+  key: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired
 };
 
 
