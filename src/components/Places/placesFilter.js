@@ -80,16 +80,8 @@ class placesFilter extends React.Component {
             <div className="col-sm-12 autoComplete-container">
               {/*<div className="input-group">*/}
               <AutoCompleteInput
-                list={this.props.countries}
+                list={this.props.countries} placeholder={"Select Country"} labelKey={"countryName"}
                 onChange={e => this.onChange({ target: { name: "countryId", value: e.geonameId } })}/>
-              {/*<Select onChange={this.onChange} labelKey={"countryName"}*/}
-              {/*selectedValue={data.countryId}*/}
-              {/*list={this.props.countries || []} name={"countryId"}*/}
-              {/*valueKey={"geonameId"} placeholder={"Select Country"}/>*/}
-              {/*<div className="input-group-append">*/}
-              {/*<div className="input-group-text"><FaGlobeAsia/></div>*/}
-              {/*</div>*/}
-              {/*</div>*/}
             </div>
           </div>
           <div className="form-group row">
