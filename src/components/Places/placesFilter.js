@@ -62,7 +62,6 @@ class placesFilter extends React.Component {
   };
 
   render() {
-    const { data } = this.state;
     return (<div className="form-container py-3">
         <h4 className="black bold mt-3 px-4 pb-2 text-center">Search your Places</h4>
         <form id="sidebar-form" className="px-4">
@@ -78,7 +77,6 @@ class placesFilter extends React.Component {
           </div>
           <div className="form-group row">
             <div className="col-sm-12 autoComplete-container">
-              {/*<div className="input-group">*/}
               <AutoCompleteInput
                 list={this.props.countries} placeholder={"Select Country"} labelKey={"countryName"}
                 onChange={e => this.onChange({ target: { name: "countryId", value: e.geonameId } })}/>

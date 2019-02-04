@@ -8,9 +8,7 @@ import VerifyPage from "./components/pages/VerifyPage";
 import ResetPAge from "./components/pages/ResetPassword";
 import { ToastContainer } from "react-toastify";
 import {
-  AsyncHomePage,
   AsyncUserPage,
-  AsyncPlacesListPage,
   AsyncPlaceDetailsPage,
   AsyncJourneysListPage,
   AsyncJourneyDetailsPage
@@ -28,6 +26,7 @@ import LightBox from "./components/Modals/LightBox";
 import HomePage from "./components/pages/HomePage";
 import PlacesListPage from "./components/Places/PlacesListPage";
 import JourneyForm from "./components/Journeys/JourneyForm";
+import JourneysList from "./components/Journeys/JourneysList";
 
 const App = ({ location }) => {
 
@@ -46,7 +45,7 @@ const App = ({ location }) => {
         <GuestRoute location={location} path="/places/add" exact component={PlaceForm}/>
         <GuestRoute location={location} path="/places/edit/:id" exact component={PlaceForm}/>
         <GuestRoute location={location} path="/places/:id" exact component={AsyncPlaceDetailsPage}/>
-        <GuestRoute location={location} path="/journeys" exact component={AsyncJourneysListPage}/>
+        <GuestRoute location={location} path="/journeys" exact component={JourneysList}/>
         <GuestRoute location={location} path="/journeys/add" exact component={JourneyForm}/>
         <GuestRoute location={location} path="/journeys/edit/:id" exact component={JourneyForm}/>
         <GuestRoute location={location} path="/journeys/:id" exact component={AsyncJourneyDetailsPage}/>

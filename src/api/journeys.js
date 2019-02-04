@@ -1,7 +1,7 @@
 import api from "./index";
 
 export default {
-  getJourneys: () => api.get(`journeys`).then(res => res.data),
+  getJourneys: (params) => api.get(`journeys`, params).then(res => res.data),
   getPopularJourneys: () => api.get(`journeys`).then(res => res.data),
   getJourneyById: (id) => api.get(`journeys/${id}`).then(res => res.data),
   getJourneyComments: (id) => api(`journeys/${id}/comments`).then(res => res.data),

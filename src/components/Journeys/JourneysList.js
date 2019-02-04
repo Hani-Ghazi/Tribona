@@ -2,9 +2,16 @@ import React, { Component, Fragment } from "react";
 import JourneysFilters from "./JourneysFilters";
 import JourneyCard from "./JourneyCard";
 import StaticSlider from "../sliders/StaticSlider";
-
+import { getJourneys } from "../../actions/Journey";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 class JourneysList extends Component {
+
+  componentDidMount() {
+    this.props.getJourneys();
+  }
+
 
   render() {
     const { journeys } = this.props;
@@ -39,4 +46,15 @@ class JourneysList extends Component {
   }
 }
 
-export default JourneysList;
+const initMapStateToProps = state => {
+  return {
+    journeys: state.journeys.list
+  };
+};
+
+JourneysList.propTypes = {
+  getJourneys: PropTypes.func.isRequired
+};
+
+
+export default connect(initMapStateToProps, { getJourneys })(JourneysList);
