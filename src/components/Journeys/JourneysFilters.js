@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import CountryFilter from "../filters/CountryFilter";
 import { AutoCompleteInput } from "../Partials";
 import { connect } from "react-redux";
 import { getJourneys } from "../../actions/Journey";

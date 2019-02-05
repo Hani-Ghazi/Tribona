@@ -38,3 +38,6 @@ export const updatePlace = (place) => (dispatch) => api.updatePlace(place).then(
   type: PLACE_FETCHED,
   payload: place
 }));
+
+
+export const ratePlace = (id, newRating) => () => api.ratePlace(id, newRating)

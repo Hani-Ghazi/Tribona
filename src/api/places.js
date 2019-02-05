@@ -12,5 +12,6 @@ export default {
   addOrUpdateComment: ({ id, text, commentId }) => api.post(`places/${id}/comments${!!commentId ? "/" + commentId : ""}`, { text }).then(res => res.data),
   deleteComment: ({ id, commentId }) => api.delete(`places/${id}/comments/${commentId}`).then(res => res.data),
   createPlace: (place) => api.post(`places`, place).then(res => res.data),
-  updatePlace: (place) => api.put(`places/${place.id}`, place).then(res => res.data)
+  updatePlace: (place) => api.put(`places/${place.id}`, place).then(res => res.data),
+  ratePlace: (id, newRating) => api.post(`places/${id}/rating`, { value: newRating }).then(res => res.data)
 };

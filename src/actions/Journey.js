@@ -43,3 +43,5 @@ export const deleteJourneyStep = (id) => (dispatch) =>
   api.deleteJourneyStep(id);
 
 export const stepToggleLike = ({id, isLiked}) => () => isLiked? api.stepDisLike(id) : api.stepLike(id);
+
+export const rateJourney = (id, newRating) => () => api.rateJourney(id, newRating);

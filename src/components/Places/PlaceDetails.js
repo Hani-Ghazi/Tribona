@@ -8,7 +8,8 @@ import {
   placeToggleLike,
   placeToggleFavorite,
   addOrUpdateComment,
-  deleteComment
+  deleteComment,
+  ratePlace
 } from "../../actions/Places";
 import {
   openLoginModal
@@ -137,6 +138,16 @@ class PlaceDetails extends Component {
         ));
   };
 
+  changeRating = newRating => {
+    this.setState({ isUpdating: true });
+    const { place: { id } } = this.state;
+    this.props.ratePlace(id, newRating)
+      .then(() => {
+        this.setState({ place: { ...this.state.place, myRating: newRating }, isUpdating: false });
+      });
+
+  };
+
   render() {
     const { popularPlaces, isAuthenticated, userId } = this.props;
     const { place } = this.state;
@@ -153,7 +164,6 @@ class PlaceDetails extends Component {
               <div className="container-fluid">
                 <div className="row">
                   <div className="col-xs-12 col-md-6 col-lg-3 ml-lg-5 mt-5 mt-lg-0 mx-auto my-3">
-                    {/*<userWidget user={place}/>*/}
                     <UserWidget user={place}/>
                     <div className="mb-lg-3 mb-4  text-center">
                       <Link to={"/places"} role="button" className="btn-gallery mb-2 w-100 d-lg-inline-block d-block">
@@ -164,7 +174,10 @@ class PlaceDetails extends Component {
                     <div className="row">
                       <div className="col text-center">
                         <StarRatings
-                          rating={place.ratingsAvg || 0}
+                          changeRating={this.changeRating}
+                          numberOfStars={5}
+                          name='rating'
+                          rating={place.myRating || 0}
                           starRatedColor="#f2b01e"
                           starDimension="40px"
                           starSpacing="8px"
@@ -246,6 +259,7 @@ PlaceDetails.propTypes = {
   addOrUpdateComment: PropTypes.func.isRequired,
   openLoginModal: PropTypes.func.isRequired,
   deleteComment: PropTypes.func.isRequired,
+  ratePlace: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string.isRequired
@@ -274,5 +288,6 @@ export default connect(initMapStateToProps, {
   placeToggleFavorite,
   addOrUpdateComment,
   openLoginModal,
-  deleteComment
+  deleteComment,
+  ratePlace
 })(PlaceDetails);

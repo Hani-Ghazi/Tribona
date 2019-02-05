@@ -11,7 +11,8 @@ import {
   journeyToggleLike,
   addOrUpdateComment,
   getJourneySteps,
-  deleteComment
+  deleteComment,
+  rateJourney
 } from "../../actions/Journey";
 import {
   openLoginModal
@@ -143,6 +144,16 @@ class JourneyDetails extends Component {
         ));
   };
 
+  changeRating = newRating => {
+    this.setState({ isUpdating: true });
+    const { journey: { id } } = this.state;
+    this.props.rateJourney(id, newRating)
+      .then(() => {
+        this.setState({ journey: { ...this.state.journey, myRating: newRating }, isUpdating: false });
+      });
+
+  };
+
   render() {
 
     const { popularJourneys, isAuthenticated, userId } = this.props;
@@ -166,7 +177,10 @@ class JourneyDetails extends Component {
                     <div className="row">
                       <div className="col text-center">
                         <StarRatings
-                          rating={journey.ratingsAvg || 0}
+                          changeRating={this.changeRating}
+                          numberOfStars={5}
+                          name='rating'
+                          rating={journey.myRating || 0}
                           starRatedColor="#f2b01e"
                           starDimension="40px"
                           starSpacing="8px"
@@ -262,6 +276,7 @@ JourneyDetails.propTypes = {
   addOrUpdateComment: PropTypes.func.isRequired,
   getJourneySteps: PropTypes.func.isRequired,
   deleteComment: PropTypes.func.isRequired,
+  rateJourney: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string.isRequired
@@ -290,5 +305,6 @@ export default connect(initMapStateToProps, {
   addOrUpdateComment,
   getJourneySteps,
   openLoginModal,
-  deleteComment
+  deleteComment,
+  rateJourney
 })(JourneyDetails);

@@ -18,5 +18,6 @@ export default {
   updateStep: (step) => api.put(`journeys/steps/${step.id}`, step).then(res => res.data),
   deleteJourneyStep: (id) => api.delete(`journeys/steps/${id}`).then(res => res.data),
   stepDisLike: (id) => api.delete(`journeys/steps/${id}/like`).then(res => res.data),
-  stepLike: (id) => api.put(`journeys/steps/${id}/like`).then(res => res.data)
+  stepLike: (id) => api.put(`journeys/steps/${id}/like`).then(res => res.data),
+  rateJourney: (id, newRating) => api.post(`journeys/${id}/rating`, { value: newRating }).then(res => res.data)
 };
