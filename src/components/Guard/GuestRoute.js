@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Route, Redirect } from "react-router-dom";
+import { Route } from "react-router-dom";
 import { connect } from "react-redux";
+import { startLoading } from "../../actions/Loaders";
 
 const GuestRoute = ({ isAuthenticated, component: Component, ...rest }) => (
   <Route {...rest} render={props => <Component {...props}/>}/>
@@ -16,4 +17,4 @@ const mapToProps = state => {
   return { isAuthenticated: !!state.user.id };
 };
 
-export default connect(mapToProps)(GuestRoute);
+export default connect(mapToProps, { startLoading })(GuestRoute);

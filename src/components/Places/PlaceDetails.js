@@ -14,6 +14,7 @@ import {
 import {
   openLoginModal
 } from "../../actions/Modals";
+import { finishedLoading, finishedUpdating, startUpdating } from "../../actions/Loaders";
 import PropTypes from "prop-types";
 import GoogleMapReact from "google-map-react";
 import {
@@ -29,26 +30,29 @@ import {
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { IoIosCreate } from "react-icons/io";
-import PageLoader from "../Loaders/pageLoader";
-
+import ActionLoader from "../Loaders/actionLoader";
 
 class PlaceDetails extends Component {
   state = {
     isOpen: false,
     currentIndex: 0,
-    place: null
+    place: null,
+    isUpdating: false
   };
 
   componentDidMount() {
     const id = this.props.match.params.id;
     this.props.getPlaceById(id).then(() => {
       this.setState({ place: this.props.place });
-      this.props.getPlaceComments(id).then(comments => this.setState({
-        place: {
-          ...this.props.place,
-          comments: comments.payload
-        }
-      }));
+      this.props.getPlaceComments(id).then(comments => {
+        this.props.finishedLoading();
+        this.setState({
+          place: {
+            ...this.props.place,
+            comments: comments.payload
+          }
+        });
+      });
     });
   }
 
@@ -58,12 +62,14 @@ class PlaceDetails extends Component {
       return this.props.openLoginModal();
     }
     const { isLiked, id } = this.state.place;
+    this.setState({ isUpdating: true });
     this.props.placeToggleLike({ id, isLiked }).then(() => {
       this.setState({
         place: {
           ...this.state.place,
           isLiked: !isLiked
-        }
+        },
+        isUpdating: false
       });
       toast.success(`You successfully ${isLiked ? "unlike" : "like"} this place`, {
         hideProgressBar: true
@@ -76,7 +82,8 @@ class PlaceDetails extends Component {
     if (!isAuthenticated)
       return this.props.openLoginModal();
     const { ownerName } = this.state.place;
-    this.setState({ place: { ...this.state.place, isFollowOwner: isFollowOwner } });
+    this.setState({ isUpdating: true });
+    this.setState({ place: { ...this.state.place, isFollowOwner: isFollowOwner }, isUpdating: false });
     toast.success(`You successfully ${isFollowOwner ? "followed" : "un followed"} ${ownerName}`, {
       hideProgressBar: true
     });
@@ -87,9 +94,10 @@ class PlaceDetails extends Component {
     if (!isAuthenticated)
       return this.props.openLoginModal();
     const { isFavorite, id } = this.state.place;
+    this.setState({ isUpdating: true });
     this.props.placeToggleFavorite({ id, isFavorite })
       .then(() => {
-        this.setState({ place: { ...this.state.place, isFavorite: !isFavorite } });
+        this.setState({ place: { ...this.state.place, isFavorite: !isFavorite }, isUpdating: false });
         toast.success(`You successfully ${isFavorite ? "add to" : "remove from"} your favorites`, {
           hideProgressBar: true
         });
@@ -114,12 +122,14 @@ class PlaceDetails extends Component {
     if (!isAuthenticated)
       return this.props.openLoginModal();
     const { place } = this.state;
+    this.setState({ isUpdating: true });
     this.props.addOrUpdateComment({ id: place.id, text }).then(() => {
       this.setState({
         place: {
           ...place,
           comments: [...place.comments]
-        }
+        },
+        isUpdating: false
       });
     });
   };
@@ -127,10 +137,11 @@ class PlaceDetails extends Component {
   onRemoveComment = (commentId) => {
     const { deleteComment, getPlaceComments } = this.props;
     const { place: { id }, place } = this.state;
+    this.setState({ isUpdating: true });
     deleteComment({ id, commentId })
       .then(() => getPlaceComments(id)
         .then(res => {
-            this.setState({ place: { ...place, comments: res.payload } });
+            this.setState({ place: { ...place, comments: res.payload }, isUpdating: false });
             toast.success(`Comment successfully deleted`, {
               hideProgressBar: true
             });
@@ -141,6 +152,7 @@ class PlaceDetails extends Component {
   changeRating = newRating => {
     this.setState({ isUpdating: true });
     const { place: { id } } = this.state;
+    this.setState({ isUpdating: true });
     this.props.ratePlace(id, newRating)
       .then(() => {
         this.setState({ place: { ...this.state.place, myRating: newRating }, isUpdating: false });
@@ -150,11 +162,11 @@ class PlaceDetails extends Component {
 
   render() {
     const { popularPlaces, isAuthenticated, userId } = this.props;
-    const { place } = this.state;
+    const { place, isUpdating } = this.state;
     return (
       <Fragment>
         {
-          !place && <PageLoader/>
+          isUpdating && <ActionLoader/>
         }
         {
           place &&
@@ -260,6 +272,9 @@ PlaceDetails.propTypes = {
   openLoginModal: PropTypes.func.isRequired,
   deleteComment: PropTypes.func.isRequired,
   ratePlace: PropTypes.func.isRequired,
+  finishedLoading: PropTypes.func.isRequired,
+  finishedUpdating: PropTypes.func.isRequired,
+  startUpdating: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string.isRequired
@@ -289,5 +304,8 @@ export default connect(initMapStateToProps, {
   addOrUpdateComment,
   openLoginModal,
   deleteComment,
-  ratePlace
+  ratePlace,
+  finishedLoading,
+  finishedUpdating,
+  startUpdating
 })(PlaceDetails);

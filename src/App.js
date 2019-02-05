@@ -8,10 +8,16 @@ import VerifyPage from "./components/pages/VerifyPage";
 import ResetPAge from "./components/pages/ResetPassword";
 import { ToastContainer } from "react-toastify";
 import {
-  AsyncUserPage,
   AsyncPlaceDetailsPage,
+  AsyncPlacesListPage,
+  AsyncPlaceFormPage,
+  // -------------------- //
+  AsyncJourneyDetailsPage,
   AsyncJourneysListPage,
-  AsyncJourneyDetailsPage
+  AsyncJourneyFormPage,
+  // -------------------- //
+  AsyncHomePage
+
 } from "./components/AsyncComponent/AsyncComponent";
 import GuestRoute from "./components/Guard/GuestRoute";
 import LoginGuard from "./components/Guard/LoginGuard";
@@ -20,16 +26,10 @@ import Footer from "./components/footer";
 import "./assets/sass/_all.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-image-lightbox/style.css";
-import PlaceForm from "./components/Places/PlaceForm";
 import ShouldLoginModal from "./components/Partials/ShouldLoginModal";
 import LightBox from "./components/Modals/LightBox";
-import HomePage from "./components/pages/HomePage";
-import PlacesListPage from "./components/Places/PlacesListPage";
-import JourneyForm from "./components/Journeys/JourneyForm";
-import JourneysList from "./components/Journeys/JourneysList";
 
 const App = ({ location }) => {
-
   return (
     <Fragment>
       <Header/>
@@ -39,15 +39,14 @@ const App = ({ location }) => {
         <LoginGuard location={location} path="/forget-password" exact component={ForgetPasswordPage}/>
         <LoginGuard location={location} path="/verify" exact component={VerifyPage}/>
         <LoginGuard location={location} path="/reset" exact component={ResetPAge}/>
-        <GuestRoute location={location} path="/" exact component={HomePage}/>
-        <GuestRoute location={location} path="/users" exact component={AsyncUserPage}/>
-        <GuestRoute location={location} path="/places" exact component={PlacesListPage}/>
-        <GuestRoute location={location} path="/places/add" exact component={PlaceForm}/>
-        <GuestRoute location={location} path="/places/edit/:id" exact component={PlaceForm}/>
+        <GuestRoute location={location} path="/" exact component={AsyncHomePage}/>
+        <GuestRoute location={location} path="/places" exact component={AsyncPlacesListPage}/>
+        <GuestRoute location={location} path="/places/add" exact component={AsyncPlaceFormPage}/>
+        <GuestRoute location={location} path="/places/edit/:id" exact component={AsyncPlaceFormPage}/>
         <GuestRoute location={location} path="/places/:id" exact component={AsyncPlaceDetailsPage}/>
-        <GuestRoute location={location} path="/journeys" exact component={JourneysList}/>
-        <GuestRoute location={location} path="/journeys/add" exact component={JourneyForm}/>
-        <GuestRoute location={location} path="/journeys/edit/:id" exact component={JourneyForm}/>
+        <GuestRoute location={location} path="/journeys" exact component={AsyncJourneysListPage}/>
+        <GuestRoute location={location} path="/journeys/add" exact component={AsyncJourneyFormPage}/>
+        <GuestRoute location={location} path="/journeys/edit/:id" exact component={AsyncJourneyFormPage}/>
         <GuestRoute location={location} path="/journeys/:id" exact component={AsyncJourneyDetailsPage}/>
       </Switch>
       <ShouldLoginModal/>

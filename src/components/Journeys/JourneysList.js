@@ -5,17 +5,24 @@ import StaticSlider from "../sliders/StaticSlider";
 import { getJourneys } from "../../actions/Journey";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import ActionLoader from "../Loaders/actionLoader";
+
 
 class JourneysList extends Component {
 
+  state = {
+    isUpdating: true
+  };
+
   componentDidMount() {
-    this.props.getJourneys();
+    this.props.getJourneys().then(() => this.setState({ isUpdating: false }));
   }
 
 
   render() {
     const { journeys } = this.props;
     const half = !!journeys ? Math.ceil(journeys.length / 2) : 0;
+    const { isUpdating } = this.state;
     return (
       <Fragment>
         <StaticSlider curveImage={require("../../assets/svgs/curve.svg")}/>
@@ -28,16 +35,29 @@ class JourneysList extends Component {
                   <JourneysFilters/>
                 </div>
               </div>
-              <div className="col-xs-12 col-md-6 col-lg-4">
-                {
-                  journeys && journeys.slice(0, half).map((journey, key) => <JourneyCard key={key} journey={journey}/>)
-                }
-              </div>
-              <div className="col-xs-12 col-md-6 col-lg-4">
-                {
-                  journeys && journeys.slice(half).map((journey, key) => <JourneyCard key={key} journey={journey}/>)
-                }
-              </div>
+              {
+                isUpdating &&
+                <div className="col-xs-12 col-md-12 col-lg-8">
+                  <ActionLoader/>
+                </div>
+              }
+              {
+                !isUpdating &&
+                <div className="col-xs-12 col-md-6 col-lg-4">
+                  {
+                    journeys && journeys.slice(0, half).map((journey, key) => <JourneyCard key={key}
+                                                                                           journey={journey}/>)
+                  }
+                </div>
+              }
+              {
+                !isUpdating &&
+                <div className="col-xs-12 col-md-6 col-lg-4">
+                  {
+                    journeys && journeys.slice(half).map((journey, key) => <JourneyCard key={key} journey={journey}/>)
+                  }
+                </div>
+              }
             </div>
           </div>
         </section>
@@ -57,4 +77,6 @@ JourneysList.propTypes = {
 };
 
 
-export default connect(initMapStateToProps, { getJourneys })(JourneysList);
+export default connect(initMapStateToProps, {
+  getJourneys
+})(JourneysList);

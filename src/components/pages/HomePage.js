@@ -5,6 +5,7 @@ import PopularTrips from "../Trips/PopularTrips";
 import PopularPlaces from "../Places/PopularPlaces";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { finishedLoading } from "../../actions/Loaders";
 
 
 const trips = [{
@@ -22,6 +23,10 @@ const trips = [{
 }];
 
 class HomePage extends Component {
+  componentDidMount() {
+    this.props.finishedLoading();
+  }
+
   render() {
     const { popularPlaces } = this.props;
     return (
@@ -37,11 +42,11 @@ class HomePage extends Component {
 
 
 HomePage.propTypes = {
-  places: PropTypes.string.isRequired
+  places: PropTypes.string
 };
 
 const initMapStateToProps = state => {
   return { popularPlaces: state.places.popular };
 };
 
-export default connect(initMapStateToProps)(HomePage);
+export default connect(initMapStateToProps, { finishedLoading })(HomePage);

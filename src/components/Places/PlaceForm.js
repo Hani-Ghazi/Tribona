@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import { getPlacesCategories, createPlace, updatePlace, getPlaceById } from "../../actions/Places";
 import { getCitiesByCountryId } from "../../actions/Country";
 import isEmpty from "lodash/isEmpty";
+import { finishedLoading, finishedUpdating, startUpdating } from "../../actions/Loaders";
 
 class PlaceForm extends Component {
   state = {
@@ -31,13 +32,16 @@ class PlaceForm extends Component {
   componentDidMount() {
     if (!!this.props.place) {
       this.setState({ data: this.props.place });
+      this.props.finishedLoading();
     }
     else if (!!this.props.match.params.id) {
-      this.props.getPlaceById(this.props.match.params.id).then(res =>
+      this.props.getPlaceById(this.props.match.params.id).then(res => {
+        this.props.finishedLoading();
         this.setState(
           { data: { ...res.payload, categoryId: res.payload.category.id } },
           () => this.props.getCitiesByCountryId(this.state.data.countryId)
-            .then(cities => this.setState({ cities }))));
+            .then(cities => this.setState({ cities })));
+      });
     }
     this.props.getPlacesCategories()
       .then(categories => {
@@ -204,5 +208,8 @@ export default connect(initMapStateToProps, {
   getCitiesByCountryId,
   createPlace,
   updatePlace,
-  getPlaceById
+  getPlaceById,
+  finishedLoading,
+  finishedUpdating,
+  startUpdating
 })(PlaceForm);

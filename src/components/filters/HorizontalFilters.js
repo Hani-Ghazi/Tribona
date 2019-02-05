@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Select from "../Partials/Select";
 import CoutntryFilter from "./CountryFilter";
 import { connect } from "react-redux";
+import { AutoCompleteInput } from "../Partials";
 
 
 class HorizontalFilters extends Component {
@@ -20,7 +21,9 @@ class HorizontalFilters extends Component {
             <input type="text" className="form-control-inline2 form-control mb-2 mr-lg-2 mx-md-0 mx-4 py-2"
                    id="inlineFormInputName1" placeholder="Search place or trip"/>
             <span className="fas fa-search iconform"/>
-            <CoutntryFilter classes={"mb-2 mr-lg-2 mx-4 mx-md-0"}/>
+            <AutoCompleteInput
+              list={countries} placeholder={"Select Country"} labelKey={"countryName"}
+              onChange={e => console.log(e)}/>
             <select className=" mb-2 mr-lg-2 mx-4 mx-md-0 form-control form-control-inline2"
                     id="inlineFormInputName3">
               <option selected>Tour Type</option>

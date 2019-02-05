@@ -17,9 +17,14 @@ import { getPopularJourneys } from "./actions/Journey";
 
 dotenv.config();
 
+const composeEnhancers = composeWithDevTools({
+  trace: true
+  // Specify name here, actionsBlacklist, actionsCreators and other options if needed
+});
+
 const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(thunk))
+  composeEnhancers(applyMiddleware(thunk))
 );
 
 if (localStorage.getItem("triponaUser")) {

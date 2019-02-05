@@ -17,8 +17,14 @@ import {
 import {
   openLoginModal
 } from "../../actions/Modals";
+import {
+  finishedLoading,
+  startUpdating,
+  finishedUpdating
+} from "../../actions/Loaders";
 import PropTypes from "prop-types";
 import { toast } from "react-toastify";
+import ActionLoader from "../Loaders/actionLoader";
 import PageLoader from "../Loaders/pageLoader";
 import { IoIosCreate } from "react-icons/io";
 
@@ -36,6 +42,7 @@ class JourneyDetails extends Component {
   componentDidMount() {
     const id = this.props.match.params.id;
     const { getJourneyComments, getJourneySteps, getJourneyById } = this.props;
+    this.props.finishedLoading();
     getJourneyById(id)
       .then(res => {
         Promise.all([
@@ -78,12 +85,14 @@ class JourneyDetails extends Component {
       return this.props.openLoginModal();
     }
     const { isLiked, id } = this.state.journey;
+    this.setState({ isUpdating: true });
     this.props.journeyToggleLike({ id, isLiked }).then(() => {
       this.setState({
         journey: {
           ...this.state.journey,
           isLiked: !isLiked
-        }
+        },
+        isUpdating: false
       });
       toast.success(`You successfully ${isLiked ? "unlike" : "like"} this journey`, {
         hideProgressBar: true
@@ -97,7 +106,9 @@ class JourneyDetails extends Component {
       return this.props.openLoginModal();
     }
     const { ownerName } = this.state.journey;
-    this.setState({ journey: { ...this.state.journey, isFollowOwner: isFollowOwner } });
+    this.setState({ isUpdating: true });
+
+    this.setState({ journey: { ...this.state.journey, isFollowOwner: isFollowOwner }, isUpdating: false });
     toast.success(`You successfully ${isFollowOwner ? "followed" : "un followed"} ${ownerName}`, {
       hideProgressBar: true
     });
@@ -109,9 +120,10 @@ class JourneyDetails extends Component {
       return this.props.openLoginModal();
     }
     const { isFavorite, id } = this.state.journey;
+    this.setState({ isUpdating: true });
     this.props.journeyToggleFavorite({ id, isFavorite })
       .then(() => {
-        this.setState({ journey: { ...this.state.journey, isFavorite: !isFavorite } });
+        this.setState({ journey: { ...this.state.journey, isFavorite: !isFavorite }, isUpdating: false });
         toast.success(`You successfully ${isFavorite ? "add to" : "remove from"} your favorites`, {
           hideProgressBar: true
         });
@@ -124,8 +136,12 @@ class JourneyDetails extends Component {
       return this.props.openLoginModal();
     }
     const { journey } = this.state;
+    this.setState({ isUpdating: true });
     this.props.addOrUpdateComment({ id: journey.id, text }).then(() => {
-      getJourneyComments(journey.id).then(res => this.setState({ journey: { ...journey, comments: res.payload } }));
+      getJourneyComments(journey.id).then(res => this.setState({
+        journey: { ...journey, comments: res.payload },
+        isUpdating: false
+      }));
     });
   };
 
@@ -147,6 +163,7 @@ class JourneyDetails extends Component {
   changeRating = newRating => {
     this.setState({ isUpdating: true });
     const { journey: { id } } = this.state;
+    this.setState({ isUpdating: true });
     this.props.rateJourney(id, newRating)
       .then(() => {
         this.setState({ journey: { ...this.state.journey, myRating: newRating }, isUpdating: false });
@@ -163,7 +180,10 @@ class JourneyDetails extends Component {
     return (
       <Fragment>
         {
-          (isLoading || isUpdating) && <PageLoader/>
+          isLoading && <PageLoader/>
+        }
+        {
+          isUpdating && <ActionLoader/>
         }
         {
           !isLoading &&
@@ -277,6 +297,9 @@ JourneyDetails.propTypes = {
   getJourneySteps: PropTypes.func.isRequired,
   deleteComment: PropTypes.func.isRequired,
   rateJourney: PropTypes.func.isRequired,
+  finishedLoading: PropTypes.func.isRequired,
+  startUpdating: PropTypes.func.isRequired,
+  finishedUpdating: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string.isRequired
@@ -306,5 +329,8 @@ export default connect(initMapStateToProps, {
   getJourneySteps,
   openLoginModal,
   deleteComment,
-  rateJourney
+  rateJourney,
+  finishedLoading,
+  startUpdating,
+  finishedUpdating
 })(JourneyDetails);

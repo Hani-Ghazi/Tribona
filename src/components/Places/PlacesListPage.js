@@ -4,17 +4,25 @@ import PlacesFilter from "./placesFilter";
 import PlaceCard from "./PlaceCard";
 import { connect } from "react-redux";
 import { getPlaces } from "../../actions/Places";
+import { startUpdating, finishedUpdating } from "../../actions/Loaders";
+import ActionLoader from "../Loaders/actionLoader";
 
 
 class PlacesListPage extends Component {
 
+  state = {
+    isUpdating: true
+  };
 
   componentDidMount() {
-    this.props.getPlaces();
+    this.props.startUpdating();
+    this.props.getPlaces().then(() => this.setState({ isUpdating: false }));
   }
+
 
   render() {
     const { places, placesCategories } = this.props;
+    const { isUpdating } = this.state;
     return (
       <Fragment>
         <StaticSlider curveImage={require("../../assets/svgs/curve.svg")}/>
@@ -27,7 +35,8 @@ class PlacesListPage extends Component {
               <div className="col-lg-9 col-sm-6 col-xs-12">
                 <div className="row">
                   {
-                    (places || []).map((place, k) => <PlaceCard key={k} place={place}/>)
+                    isUpdating ? <ActionLoader/> :
+                      (places || []).map((place, k) => <PlaceCard key={k} place={place}/>)
                   }
                 </div>
               </div>
@@ -47,4 +56,4 @@ const initMapStateToProps = state => {
   };
 };
 
-export default connect(initMapStateToProps, { getPlaces })(PlacesListPage);
+export default connect(initMapStateToProps, { getPlaces, startUpdating, finishedUpdating })(PlacesListPage);

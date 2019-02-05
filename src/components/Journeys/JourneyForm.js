@@ -20,7 +20,7 @@ import isEmpty from "lodash/isEmpty";
 import PropTypes from "prop-types";
 import { FaPlus } from "react-icons/fa";
 import Modal from "react-responsive-modal";
-import PageLoader from "../Loaders/pageLoader";
+import { finishedLoading, startUpdating, finishedUpdating } from "../../actions/Loaders";
 
 class JourneyForm extends Component {
   state = {
@@ -46,12 +46,15 @@ class JourneyForm extends Component {
         getJourneySteps(id),
         getPlaces()
       ])
-        .then(temp => this.setState({
-          data: { ...temp[0].payload },
-          steps: temp[1],
-          places: temp[2].payload,
-          isLoading: false
-        }));
+        .then(temp => {
+          this.props.finishedLoading();
+          this.setState({
+            data: { ...temp[0].payload },
+            steps: temp[1],
+            places: temp[2].payload,
+            isLoading: false
+          });
+        });
 
     }
   }
@@ -177,9 +180,6 @@ class JourneyForm extends Component {
     return (
       <Fragment>
         <StaticSlider curveImage={require("../../assets/svgs/curvegrey.svg")}/>
-        {
-          isLoading && <PageLoader bg={"grey-bg"}/>
-        }
         {
           !isLoading && <section id="pagesection">
             <div className="container">
@@ -323,7 +323,10 @@ JourneyForm.propTypes = {
   updateStep: PropTypes.func.isRequired,
   getJourneySteps: PropTypes.func.isRequired,
   getPlaces: PropTypes.func.isRequired,
-  deleteJourneyStep: PropTypes.func.isRequired
+  deleteJourneyStep: PropTypes.func.isRequired,
+  finishedLoading: PropTypes.func.isRequired,
+  startUpdating: PropTypes.func.isRequired,
+  finishedUpdating: PropTypes.func.isRequired
 };
 
 
@@ -342,5 +345,8 @@ export default connect(initMapStateToProps, {
   updateStep,
   getJourneySteps,
   getPlaces,
-  deleteJourneyStep
+  deleteJourneyStep,
+  finishedLoading,
+  startUpdating,
+  finishedUpdating
 })(JourneyForm);

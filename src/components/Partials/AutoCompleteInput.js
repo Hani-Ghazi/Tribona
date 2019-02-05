@@ -49,8 +49,8 @@ class AutoCompleteInput extends Component {
 
   // Autosuggest will call this function every time you need to clear suggestions.
   onSuggestionsClearRequested = () => {
-    if(!this.state.value)
-      this.props.onChange('');
+    if (!this.state.value)
+      this.props.onChange("");
     this.setState({
       suggestions: []
     });
@@ -95,7 +95,7 @@ class AutoCompleteInput extends Component {
 
 AutoCompleteInput.propTypes = {
   list: PropTypes.array.isRequired,
-  key: PropTypes.string.isRequired,
+  labelKey: PropTypes.string.isRequired,
   placeholder: PropTypes.string.isRequired
 };
 
