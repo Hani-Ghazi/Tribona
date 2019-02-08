@@ -9,6 +9,7 @@ import { getPlacesCategories, createPlace, updatePlace, getPlaceById } from "../
 import { getCitiesByCountryId } from "../../actions/Country";
 import isEmpty from "lodash/isEmpty";
 import { finishedLoading, finishedUpdating, startUpdating } from "../../actions/Loaders";
+import MarkerInput from "../Partials/MarkerInput";
 
 class PlaceForm extends Component {
   state = {
@@ -16,8 +17,8 @@ class PlaceForm extends Component {
       images: [],
       name: "",
       description: "",
-      latitude: 22,
-      longitude: 33,
+      latitude: "",
+      longitude: "",
       countryId: "",
       cityId: "",
       categoryId: "",
@@ -123,6 +124,16 @@ class PlaceForm extends Component {
     return {};
   };
 
+  onMarkerChange = (marker) => {
+    this.setState({
+      data: {
+        ...this.state.data,
+        latitude: marker.latitude,
+        longitude: marker.longitude
+      }
+    });
+  };
+
   render() {
     const { data, cities, categories } = this.state;
     return (
@@ -161,6 +172,27 @@ class PlaceForm extends Component {
                             selectedValue={data.cityId}
                             list={cities || []} name={"cityId"}
                             valueKey={"geonameId"} placeholder={"Select City"}/>
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="form_message p-l-10">Map</label>
+                    <div className="row m-t-10 m-b-10">
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label htmlFor="form_message p-l-10">latitude</label>
+                          <input type="text" name="latitude" className="form-control"
+                                 value={data.latitude} readOnly placeholder="latitude"/>
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label htmlFor="form_message p-l-10">longitude</label>
+                          <input type="text" name="name" className="form-control"
+                                 value={data.longitude} readOnly placeholder="longitude"/>
+                        </div>
+                      </div>
+                    </div>
+                    <MarkerInput marker={{ longitude: data.longitude, latitude: data.latitude }}
+                                 onChange={this.onMarkerChange}/>
                   </div>
                   <div className="form-group">
                     <label htmlFor="form_message p-l-10">Description</label>
