@@ -3,7 +3,7 @@ import StaticSlider from "../sliders/StaticSlider";
 import { FaImages } from "react-icons/fa";
 import { toast } from "react-toastify";
 import api from "../../api/utils";
-import { Images, Select } from "../Partials";
+import { Images, Select, AutoCompleteInput } from "../Partials";
 import { connect } from "react-redux";
 import { getPlacesCategories, createPlace, updatePlace, getPlaceById } from "../../actions/Places";
 import { getCitiesByCountryId } from "../../actions/Country";
@@ -22,8 +22,6 @@ class PlaceForm extends Component {
       countryId: "",
       cityId: "",
       categoryId: "",
-      category: {},
-      city: {}
     },
     loading: false,
     categories: [],
@@ -84,6 +82,7 @@ class PlaceForm extends Component {
   };
 
   onChange = e => {
+    console.log(e)
     if (e.target.name === "countryId" && e.target.value) {
       this.props.getCitiesByCountryId(e.target.value)
         .then(cities => this.setState({ cities }));
@@ -100,6 +99,7 @@ class PlaceForm extends Component {
   };
 
   onSubmit = e => {
+
     e.preventDefault();
     const { data } = this.state;
     const errors = this.validate(data);
@@ -152,26 +152,26 @@ class PlaceForm extends Component {
                            placeholder="Please enter your first name *" required="required"/>
                     <div className="help-block with-errors tiny mt-2"/>
                   </div>
-                  <div className="form-group">
+                  <div className="form-group pos-relative">
                     <label htmlFor="">Select Category</label>
-                    <Select onChange={this.onChange} labelKey={"nameEn"}
-                            selectedValue={data.categoryId || data.category.id}
-                            list={categories || []} name={"categoryId"}
-                            valueKey={"id"} placeholder={"Select Category"}/>
+                    <AutoCompleteInput
+                      list={categories || []} placeholder={"Select Category"} labelKey={"nameEn"}
+                      onChange={e => this.onChange({ target: { name: "categoryId", value: e.id } })}
+                    />
                   </div>
-                  <div className="form-group">
+                  <div className="form-group pos-relative">
                     <label htmlFor="">Select Country</label>
-                    <Select onChange={this.onChange} labelKey={"countryName"}
-                            selectedValue={data.countryId}
-                            list={this.props.countries || []} name={"countryId"}
-                            valueKey={"geonameId"} placeholder={"Select Country"}/>
+                    <AutoCompleteInput
+                      list={this.props.countries} placeholder={"Select Country"} labelKey={"countryName"}
+                      onChange={e => this.onChange({ target: { name: "countryId", value: e.geonameId } })}
+                    />
                   </div>
-                  <div className="form-group">
+                  <div className="form-group pos-relative">
                     <label htmlFor="">Select City</label>
-                    <Select onChange={this.onChange} labelKey={"cityName"}
-                            selectedValue={data.cityId}
-                            list={cities || []} name={"cityId"}
-                            valueKey={"geonameId"} placeholder={"Select City"}/>
+                    <AutoCompleteInput
+                      list={cities || []} placeholder={"Select City"} labelKey={"cityName"}
+                      onChange={e => this.onChange({ target: { name: "cityId", value: e.geonameId } })}
+                    />
                   </div>
                   <div className="form-group">
                     <label htmlFor="form_message p-l-10">Map</label>

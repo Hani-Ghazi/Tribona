@@ -19,12 +19,12 @@ class AutoCompleteInput extends Component {
     const inputValue = value.trim().toLowerCase();
     const inputLength = inputValue.length;
     const { list, labelKey } = this.props;
-    return inputLength === 0 ? [] : list.filter(item =>
+    return inputLength === 0 ? list : list.filter(item =>
       item[labelKey].toLowerCase().slice(0, inputLength) === inputValue
     );
   };
 
-  getSuggestionValue = suggestion => suggestion.countryName;
+  getSuggestionValue = suggestion => suggestion[this.props.labelKey];
 
   renderSuggestion = suggestion => (
     <div>
@@ -49,8 +49,6 @@ class AutoCompleteInput extends Component {
 
   // Autosuggest will call this function every time you need to clear suggestions.
   onSuggestionsClearRequested = () => {
-    if (!this.state.value)
-      this.props.onChange("");
     this.setState({
       suggestions: []
     });
@@ -81,6 +79,7 @@ class AutoCompleteInput extends Component {
     return (
       <Autosuggest
         suggestions={suggestions}
+        shouldRenderSuggestions={() => true}
         onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
         onSuggestionsClearRequested={this.onSuggestionsClearRequested}
         getSuggestionValue={this.getSuggestionValue}

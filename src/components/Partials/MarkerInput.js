@@ -13,9 +13,9 @@ class MarkerInput extends Component {
     this.state.marker = props.marker;
   }
 
-  onChange = (e) => this.setState({ e });
 
   onMapClicked = (mapProps, map, clickEvent) => {
+    if (this.props.disable) return;
     const marker = {
       latitude: clickEvent.latLng.lat(),
       longitude: clickEvent.latLng.lng()
@@ -26,6 +26,8 @@ class MarkerInput extends Component {
 
   render() {
     const { marker } = this.state;
+    const { center } = this.props;
+    console.log({ center, marker });
     if (!this.props.google) {
       return <div>Loading...</div>;
     }
@@ -39,8 +41,11 @@ class MarkerInput extends Component {
             position: "relative"
           }}
           google={this.props.google}
-
-          zoom={7}
+          initialCenter={{
+            lat: center.latitude,
+            lng: center.longitude
+          }}
+          zoom={9}
           onClick={this.onMapClicked}
         >
           <Marker
@@ -63,7 +68,12 @@ MarkerInput.defaultProps = {
   marker: {
     longitude: 32.866045119695286,
     latitude: 39.882533979173
-  }
+  },
+  center: {
+    longitude: 32.866045119695286,
+    latitude: 39.882533979173
+  },
+  disable: false
 };
 
 MarkerInput.propTypes = {
@@ -71,7 +81,12 @@ MarkerInput.propTypes = {
     longitude: PropTypes.number,
     latitude: PropTypes.number
   }),
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func,
+  disable: PropTypes.bool,
+  center: PropTypes.shape({
+    longitude: PropTypes.number,
+    latitude: PropTypes.number
+  })
 };
 
 

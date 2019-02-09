@@ -25,7 +25,8 @@ import {
   UserWidget,
   DetailedRate,
   ImagesGallery,
-  PopularAside
+  PopularAside,
+  MarkerInput
 } from "../Partials";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -227,13 +228,11 @@ class PlaceDetails extends Component {
                         <ImagesGallery images={place.images}/>
                         <div className="m-t-30">
                           <h6 className="underline-title">Map Location</h6>
-                          <div className="list-font" style={{ height: "400px" }}>
-                            <GoogleMapReact
-                              bootstrapURLKeys={{ key: "AIzaSyAOMFAOII_uhdU3GVpRNFDrlvf7CsdC9Z4" }}
-                              defaultCenter={{ lat: place.longitude, lng: place.latitude }}
-                              defaultZoom={11}
-                            />
-                          </div>
+                          <MarkerInput
+                            marker={{ longitude: place.longitude, latitude: place.latitude }}
+                            center={{latitude: place.latitude, longitude: place.longitude}}
+                            disable={true}
+                          />
                         </div>
                         <div className="m-t-30">
                           <h6 className="underline-title">Description</h6>

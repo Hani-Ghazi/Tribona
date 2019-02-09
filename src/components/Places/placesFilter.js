@@ -82,11 +82,6 @@ class placesFilter extends React.Component {
                 onChange={e => this.onChange({ target: { name: "countryId", value: e.geonameId } })}/>
             </div>
           </div>
-          <div className="form-group row">
-            <div className="col-sm-12">
-              {/*<AutoCompleteInput list={this.props.countries} onChange={e => console.log(e)}/>*/}
-            </div>
-          </div>
           {this.renderCategoriesFilter()}
         </form>
       </div>
