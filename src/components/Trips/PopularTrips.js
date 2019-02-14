@@ -14,7 +14,9 @@ const PopularTrips = ({ trips }) => (
         <div className="row ">
           {
             trips.map(trip => (
-              <TripCard trip={trip}/>
+              <div className="col-xs-12 col-md-6 col-lg-4 mb-4">
+                <TripCard trip={trip}/>
+              </div>
             ))
           }
         </div>
