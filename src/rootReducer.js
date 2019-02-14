@@ -4,6 +4,7 @@ import countries from "./reducers/Countries";
 import places from "./reducers/Places";
 import journeys from "./reducers/Journey";
 import modals from "./reducers/Modals";
+import trips from "./reducers/Trips";
 import loaders from "./reducers/Loader";
 
 export default combineReducers({
@@ -12,5 +13,6 @@ export default combineReducers({
   places,
   journeys,
   modals,
-  loaders
+  loaders,
+  trips
 });
