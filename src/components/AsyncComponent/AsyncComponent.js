@@ -6,7 +6,7 @@ export const AsyncHomePage = Loadable({
   loader: () => import("../pages/HomePage"),
   loading: () => <PageLoader/>
 });
-
+// -------------------------------------------------------------------------- //
 export const AsyncPlacesListPage = Loadable({
   loader: () => import("../Places/PlacesListPage"),
   loading: () => <PageLoader/>
@@ -22,8 +22,7 @@ export const AsyncPlaceFormPage = Loadable({
   loader: () => import("../Places/PlaceForm"),
   loading: () => <PageLoader/>
 });
-
-
+// -------------------------------------------------------------------------- //
 export const AsyncJourneysListPage = Loadable({
   loader: () => import("../Journeys/JourneysList"),
   loading: () => <PageLoader/>
@@ -37,5 +36,21 @@ export const AsyncJourneyDetailsPage = Loadable({
 
 export const AsyncJourneyFormPage = Loadable({
   loader: () => import("../Journeys/JourneyForm"),
+  loading: () => <PageLoader/>
+});
+// -------------------------------------------------------------------------- //
+export const AsyncTripsListPage = Loadable({
+  loader: () => import("../Trips/TripsList"),
+  loading: () => <PageLoader/>
+});
+
+
+export const AsyncTripDetailsPage = Loadable({
+  loader: () => import("../Trips/TripDetails"),
+  loading: () => <PageLoader/>
+});
+
+export const AsyncTripFormPage = Loadable({
+  loader: () => import("../Trips/TripForm"),
   loading: () => <PageLoader/>
 });
