@@ -4,9 +4,13 @@ import { Route } from "react-router-dom";
 import { connect } from "react-redux";
 import { startLoading } from "../../actions/Loaders";
 
-const GuestRoute = ({ isAuthenticated, component: Component, ...rest }) => (
-  <Route {...rest} render={props => <Component {...props}/>}/>
-);
+const GuestRoute = ({ isAuthenticated, component: Component, ...rest }) => {
+  window.scrollTo({
+    top: 300,
+    behavior: "smooth"
+  });
+  return <Route {...rest} render={props => <Component {...props}/>}/>;
+};
 
 GuestRoute.propTypes = {
   component: PropTypes.func.isRequired,
