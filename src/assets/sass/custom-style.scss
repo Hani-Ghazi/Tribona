@@ -148,7 +148,7 @@ label {
 }
 
 .gold {
-  background-color: rgb(242, 176, 30);
+  background-color: #f2b01e;
 }
 
 .active-category {
@@ -207,7 +207,7 @@ ul.steps .active {
 
 .page-loader {
   height: 100vh;
-  z-index: 100;
+  z-index: 110 !important;
   width: 100%;
 }
 
@@ -216,6 +216,13 @@ ul.steps .active {
     margin-top: 0;
   }
 }
+
+
+.has-right-line {
+  padding-right: 20px;
+  border-right: 1px solid #ccc;
+}
+
 
 .navbar-brand img {
   width: 40px !important;
@@ -240,4 +247,32 @@ ul.steps .active {
 
 .relative {
   position: relative !important;
+}
+
+
+.steps-modal-container {
+  background-color: #ffffff !important;
+  z-index: 99 !important;
+  align-items: normal !important;
+}
+
+.steps-modal-container .steps {
+  padding-top: 150px;
+  margin-bottom: 3rem;
+}
+
+.steps-modal-container .steps-details {
+  padding-bottom: 60px;
+}
+
+.steps-modal-container .close-icon {
+  position: absolute;
+  right: 10%;
+  top: 15%;
+  z-index: 1000
+}
+
+.steps-modal-container > div:nth-child(2) {
+  width: 100% !important;
+  position: relative;
 }

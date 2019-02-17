@@ -15,7 +15,8 @@ import {
   rateJourney
 } from "../../actions/Journey";
 import {
-  openLoginModal
+  openLoginModal,
+  openStepsDrawer
 } from "../../actions/Modals";
 import {
   finishedLoading,
@@ -27,6 +28,7 @@ import { toast } from "react-toastify";
 import ActionLoader from "../Loaders/actionLoader";
 import PageLoader from "../Loaders/pageLoader";
 import { IoIosCreate } from "react-icons/io";
+import { FaMapMarkerAlt } from "react-icons/fa";
 
 
 class JourneyDetails extends Component {
@@ -42,7 +44,6 @@ class JourneyDetails extends Component {
   componentDidMount() {
     const id = this.props.match.params.id;
     const { getJourneyComments, getJourneySteps, getJourneyById } = this.props;
-    this.props.finishedLoading();
     getJourneyById(id)
       .then(res => {
         Promise.all([
@@ -64,6 +65,7 @@ class JourneyDetails extends Component {
     if (nextProps.journey && this.props.journey && nextProps.journey.id && this.props.journey.id && nextProps.journey.id !== this.props.journey.id) {
       const { id } = nextProps.journey;
       const { getJourneyComments, getJourneySteps } = this.props;
+      this.setState({ isLoading: true });
       Promise.all([
         getJourneyComments(id),
         getJourneySteps(id)
@@ -168,13 +170,17 @@ class JourneyDetails extends Component {
       .then(() => {
         this.setState({ journey: { ...this.state.journey, myRating: newRating }, isUpdating: false });
       });
+  };
 
+  onSelectStep = () => {
+    const { journey: { steps } } = this.state;
+    this.props.openStepsDrawer({ steps });
   };
 
   render() {
 
     const { popularJourneys, isAuthenticated, userId } = this.props;
-    const { currentIndex, journey, isLoading, isUpdating } = this.state;
+    const { currentIndex, journey, isLoading, isUpdating, isOpen } = this.state;
     let step = !!(journey || {}).steps ? journey.steps[currentIndex] : null;
 
     return (
@@ -221,8 +227,10 @@ class JourneyDetails extends Component {
                       {
                         isAuthenticated && userId === journey.ownerId &&
                         <div className="col align-self-md-center">
-                          <IoIosCreate size="2em" className="pointer"
-                                       onClick={() => this.props.history.push(`edit/${journey.id}`)}/>
+                          <IoIosCreate
+                            size="2em"
+                            className="pointer"
+                            onClick={() => this.props.history.push(`edit/${journey.id}`)}/>
                         </div>
                       }
                     </div>
@@ -232,7 +240,12 @@ class JourneyDetails extends Component {
                     </div>
                   </div>
                   <div className="col-xs-12 col-md-12 col-lg-8   single-tour">
-                    <h4 id="read-tour" className="black text-left mb-3  bold">{journey.name}</h4>
+                    <h4 id="read-tour" className="black text-left mb-3 flex-sb-m bold">
+                      {journey.name} <a role="button" className="d-lg-inline-block d-block pointer"
+                                        onClick={() => this.onSelectStep()}>
+                      <span className="btn btn-outline-danger pt-2 px-3 ">See Steps <FaMapMarkerAlt/></span>
+                    </a>
+                    </h4>
                     <div className="separator-tour"/>
                     <div className="row">
                       <div className="col-lg-3 col-6 order-5 order-lg-3">
@@ -250,25 +263,8 @@ class JourneyDetails extends Component {
                       <ImagesGallery images={journey.images}/>
                       <h6 className="black bold mt-4 mb-3 underline-title">Description</h6>
                       <p>{journey.description}</p>
-                      <h6 className="black bold mt-4 mb-3 underline-title">Steps</h6>
-                      <div className={"w-100 text-center"}>
-                        <ul className={"steps"}>
-                          {
-                            journey.steps
-                              .map((step, currentIndex) =>
-                                <li
-                                  key={currentIndex}
-                                  onClick={() => this.setState({ currentIndex })}
-                                  className={`pointer ${currentIndex === this.state.currentIndex && "active"}`}>{currentIndex + 1}</li>
-                              )
-                          }
-                        </ul>
-                      </div>
-                      <div className={"step-container"}>
-                        {
-                          step && <JourneyStep step={step}/>
-                        }
-                      </div>
+                      <h6 className="black bold mt-4 mb-3 underline-title">
+                      </h6>
                       <h6 className={"black bold mt-4 mb-3 underline-title"}>Journey Review Details</h6>
                       <DetailedRate ratings={journey.ratings} ratingsAvg={journey.ratingsAvg}/>
                       <h6 className={"black bold mt-4 mb-3 underline-title"}>Comments</h6>
@@ -300,12 +296,13 @@ JourneyDetails.propTypes = {
   finishedLoading: PropTypes.func.isRequired,
   startUpdating: PropTypes.func.isRequired,
   finishedUpdating: PropTypes.func.isRequired,
+  openStepsDrawer: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string.isRequired
     })
   }),
-  journey: PropTypes.object,
+  journey: PropTypes.shape({}),
   popularJourneys: PropTypes.array,
   isAuthenticated: PropTypes.bool.isRequired,
   userId: PropTypes.string
@@ -332,5 +329,6 @@ export default connect(initMapStateToProps, {
   rateJourney,
   finishedLoading,
   startUpdating,
-  finishedUpdating
+  finishedUpdating,
+  openStepsDrawer
 })(JourneyDetails);

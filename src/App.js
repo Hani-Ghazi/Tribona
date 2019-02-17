@@ -33,6 +33,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-image-lightbox/style.css";
 import ShouldLoginModal from "./components/Partials/ShouldLoginModal";
 import LightBox from "./components/Modals/LightBox";
+import StepsDrawer from "./components/Modals/StepsDrawer";
 
 const App = ({ location }) => {
   return (
@@ -59,6 +60,7 @@ const App = ({ location }) => {
       </Switch>
       <ShouldLoginModal/>
       <LightBox/>
+      <StepsDrawer/>
       <Footer/>
       <ToastContainer/>
 

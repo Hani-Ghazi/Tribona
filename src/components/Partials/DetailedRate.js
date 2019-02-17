@@ -17,8 +17,13 @@ const DetailedRate = ({ ratingsAvg, ratings }) => (
       {
         Object.keys(ratings)
           .map((key, index) =>
-            <Fragment key={index}><ProgressBar className={"m-b-10"} label={`${!!ratings[index]? ratings[index] + ' Stars': ''}`} bsStyle="warning" bsClass={'goldh'}
-                                                           now={(ratings[index]) * 20}/></Fragment>
+            <Fragment key={key}>
+              <ProgressBar
+                className={"m-b-10"}
+                label={`${!!ratings[key]? ratings[key] + ' Stars': ''}`}
+                bsStyle="warning"
+                bsClass={'gold'}
+                now={(ratings[key]) * 20}/></Fragment>
           )
       }
     </div>
