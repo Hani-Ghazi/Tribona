@@ -6,7 +6,6 @@ import { getTrips } from "../../actions/Trips";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import PageLoader from "../Loaders/pageLoader";
-import { scrollToTop } from "../../utils";
 
 class TripsList extends Component {
 
@@ -21,7 +20,6 @@ class TripsList extends Component {
   getTrips = (params) => {
     this.setState({ isLoading: true });
     this.props.getTrips(params).then(() => {
-      scrollToTop();
       this.setState({ isLoading: false });
     });
   };

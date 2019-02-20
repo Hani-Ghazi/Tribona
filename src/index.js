@@ -9,11 +9,13 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import rootReducer from "./rootReducer";
 import dotenv from "dotenv";
+import ScrollToTop from "./components/Partials/ScrollToTop";
 
 import { getMe } from "./actions/Auth";
 import { getCountries } from "./actions/Country";
 import { getPopularPlaces } from "./actions/Places";
 import { getPopularJourneys } from "./actions/Journey";
+import { getPopularTrips } from "./actions/Trips";
 
 dotenv.config();
 
@@ -33,12 +35,15 @@ if (localStorage.getItem("triponaUser")) {
 store.dispatch(getCountries());
 store.dispatch(getPopularPlaces());
 store.dispatch(getPopularJourneys());
+store.dispatch(getPopularTrips());
 
 
 ReactDOM.render(
   <BrowserRouter>
     <Provider store={store}>
-      <Route component={App}/>
+      <ScrollToTop>
+        <Route component={App}/>
+      </ScrollToTop>
     </Provider>
   </BrowserRouter>,
   document.getElementById("root"));

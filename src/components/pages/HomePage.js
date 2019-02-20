@@ -28,12 +28,12 @@ class HomePage extends Component {
   }
 
   render() {
-    const { popularPlaces } = this.props;
+    const { popularPlaces, popularTrips } = this.props;
     return (
       <Fragment>
         <StaticSlider curveImage={require("../../assets/svgs/curve.svg")}/>
         <HorizontalFilters/>
-        <PopularTrips trips={trips}/>
+        <PopularTrips trips={popularTrips || []}/>
         <PopularPlaces places={popularPlaces || []}/>
       </Fragment>
     );
@@ -46,7 +46,7 @@ HomePage.propTypes = {
 };
 
 const initMapStateToProps = state => {
-  return { popularPlaces: state.places.popular };
+  return { popularPlaces: state.places.popular, popularTrips: state.trips.popular };
 };
 
 export default connect(initMapStateToProps, { finishedLoading })(HomePage);
