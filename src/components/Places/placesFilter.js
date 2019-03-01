@@ -25,9 +25,7 @@ class placesFilter extends React.Component {
   onChange = e => this.setState({
     data: { ...this.state.data, [e.target.name]: e.target.value },
     errors: { ...this.state.errors, [e.target.name]: null }
-  }, () => {
-    this.getPlaces();
-  });
+  }, this.getPlaces);
 
   componentDidMount() {
     api.getPlacesCategories()

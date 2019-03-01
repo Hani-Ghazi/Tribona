@@ -4,7 +4,7 @@ export default {
   getTrips: (params) => api.get(`trips`, params),
   getPopularTrips: () => api.get(`trips`),
   getTripById: (id) => api.get(`trips/${id}`),
-  getTripComments: (id) => api(`trips/${id}/comments`),
+  getTripsComments: (id) => api(`trips/${id}/comments`),
   tripLike: (id) => api.put(`trips/${id}/like`),
   tripDisLike: (id) => api.delete(`trips/${id}/like`),
   tripFav: (id) => api.put(`trips/${id}/favorite`),

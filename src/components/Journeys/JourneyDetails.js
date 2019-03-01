@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import SliderWithScroll from "../sliders/SliderWithScroll";
 import { Favorite, Follow, Like, UserWidget, ImagesGallery, PopularAside, DetailedRate, Comments } from "../Partials";
 import StarRatings from "react-star-ratings";
-import JourneyStep from "./JourneyStep";
 import {
   getJourneyById,
   getJourneyComments,

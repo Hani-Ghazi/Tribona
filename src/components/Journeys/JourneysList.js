@@ -14,6 +14,7 @@ class JourneysList extends Component {
     isUpdating: true
   };
 
+
   componentDidMount() {
     this.props.getJourneys().then(() => this.setState({ isUpdating: false }));
   }
@@ -45,8 +46,13 @@ class JourneysList extends Component {
                 !isUpdating &&
                 <div className="col-xs-12 col-md-6 col-lg-4">
                   {
-                    journeys && journeys.slice(0, half).map((journey, key) => <JourneyCard key={key}
-                                                                                           journey={journey}/>)
+                    journeys &&
+                    journeys.slice(0, half)
+                      .map((journey, key) =>
+                        <JourneyCard
+                          key={key}
+                          journey={journey}/>
+                      )
                   }
                 </div>
               }
@@ -54,7 +60,13 @@ class JourneysList extends Component {
                 !isUpdating &&
                 <div className="col-xs-12 col-md-6 col-lg-4">
                   {
-                    journeys && journeys.slice(half).map((journey, key) => <JourneyCard key={key} journey={journey}/>)
+                    journeys &&
+                    journeys.slice(half)
+                      .map((journey, key) =>
+                        <JourneyCard
+                          key={key}
+                          journey={journey}/>
+                      )
                   }
                 </div>
               }

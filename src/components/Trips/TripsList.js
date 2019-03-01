@@ -5,7 +5,7 @@ import StaticSlider from "../sliders/StaticSlider";
 import { getTrips } from "../../actions/Trips";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import PageLoader from "../Loaders/pageLoader";
+import ActionLoader from "../Loaders/actionLoader";
 
 class TripsList extends Component {
 
@@ -28,11 +28,12 @@ class TripsList extends Component {
     const { trips } = this.props;
     const half = !!trips ? Math.ceil(trips.length / 2) : 0;
     const { isLoading } = this.state;
-    if (isLoading || !trips) {
-      return <PageLoader/>;
-    }
     return (
       <Fragment>
+        {
+          (isLoading || !trips) &&
+          <ActionLoader/>
+        }
         <StaticSlider curveImage={require("../../assets/svgs/curve.svg")}/>
         <section id="section3" className="tour-list-sidebar tour-list-sidebar-2-col">
           <div className="container-fluid">

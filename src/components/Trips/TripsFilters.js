@@ -17,12 +17,13 @@ class TripsFilters extends Component {
     this.props.getTrips({ filters: data });
   };
 
-  onChange = e => this.setState({
-    data: { ...this.state.data, [e.target.name]: e.target.value },
-    errors: { ...this.state.errors, [e.target.name]: null }
-  }, () => {
-    this.getTrips();
-  });
+  onChange = e => {
+    console.log({ e });
+    this.setState({
+      data: { ...this.state.data, [e.target.name]: e.target.value },
+      errors: { ...this.state.errors, [e.target.name]: null }
+    }, this.getTrips);
+  };
 
   render() {
     return (
@@ -39,12 +40,10 @@ class TripsFilters extends Component {
           </div>
         </div>
         <div className="form-group row">
-          <div className="col-sm-12">
-            <div className="input-group">
-              <AutoCompleteInput
-                list={this.props.countries} placeholder={"Select Country"} labelKey={"countryName"}
-                onChange={e => this.onChange({ target: { name: "countryId", value: e.geonameId } })}/>
-            </div>
+          <div className="col-sm-12 autoComplete-container">
+            <AutoCompleteInput
+              list={this.props.countries} placeholder={"Select Country"} labelKey={"countryName"}
+              onChange={e => this.onChange({ target: { name: "countryId", value: e.geonameId } })}/>
           </div>
         </div>
         <div className="form-group row">

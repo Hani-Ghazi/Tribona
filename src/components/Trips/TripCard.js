@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 const parseDate = (date) => {
   const diff = moment().diff(moment(date));
@@ -26,9 +27,9 @@ const TripCard = ({ trip }) => (
       <span className="far fa-clock mr-2 white"/>
       <strong>{parseDate(trip.createdAt)}</strong><br/>
     </small>
-    <a className="img-card" href="#">
+    <Link className="img-card" to={`/trips/${trip.id}`}>
       <img src={require("../../assets/images/switzerland.jpg")} alt=""/>
-    </a>
+    </Link>
     <div className="card-content">
       <div>
         <a className="btn btn-primary px-3 btn-sm float-left" href="#" role="button">{trip.type}</a>
