@@ -55,7 +55,8 @@ class JourneyForm extends Component {
             isLoading: false
           });
         });
-
+    } else {
+      this.setState({ isLoading: false });
     }
   }
 
@@ -69,13 +70,11 @@ class JourneyForm extends Component {
         toast.error("Image type not supported! Please try another one", {
           hideProgressBar: true
         });
-      }
-      else if (file.size > 1164642) {
+      } else if (file.size > 1164642) {
         toast.error("You can't upload an image with size more than 10MB", {
           hideProgressBar: true
         });
-      }
-      else {
+      } else {
         isValid = true;
         data.append("files", file, file.name);
       }
@@ -129,8 +128,7 @@ class JourneyForm extends Component {
           });
           this.setState({ data: { ...this.state.data, ...place } });
         });
-    }
-    else {
+    } else {
       toast.error("Invalid form Please check the form's data again!", {
         hideProgressBar: true
       });
@@ -162,8 +160,7 @@ class JourneyForm extends Component {
             data: { ...this.state.data, steps: this.state.data.steps.map(x => x.id === newStep.id ? step : x) },
             newStep: {}
           });
-        }
-        else {
+        } else {
           this.setState({
             isOpen: false,
             data: { ...this.state.data, steps: [...this.state.data.steps, step] },
@@ -231,6 +228,7 @@ class JourneyForm extends Component {
                             }
                           </ul>
                         </div>
+                        {data.id &&
                         <div className="form-group">
                           <label> Steps
                             <FaPlus
@@ -241,6 +239,7 @@ class JourneyForm extends Component {
                               })}/>
                           </label>
                         </div>
+                        }
                         <Modal classNames={{ modal: "rounded-modal badge-light" }} open={isOpen}
                                onClose={() => this.setState({ isOpen: false, currentIndex: null })} center>
                           <div className="row">
@@ -298,7 +297,7 @@ class JourneyForm extends Component {
                     <div className="row">
                       <div className={"col-md-3 offset-9 p-0"}>
                         <button type="submit" className="btn my-2 btn-primary mb-lg-0 mb-4 w-100"
-                                onClick={this.onSubmit}>{!!data.id ? "Save" : "Continue"}
+                                onClick={this.onSubmit}>{!!data.id ? "Save" : "Continue To Add Steps"}
                         </button>
                       </div>
                     </div>
