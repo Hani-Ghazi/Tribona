@@ -3,6 +3,11 @@ import PropTypes from "prop-types";
 import moment from "moment";
 import { Link } from "react-router-dom";
 
+const defaultImage = require("../../assets/images/switzerland.jpg");
+
+const { REACT_APP_PUBLIC_FILES } = process.env;
+
+
 const parseDate = (date) => {
   const diff = moment().diff(moment(date));
   const time = moment.duration(diff)._data;
@@ -25,10 +30,10 @@ const TripCard = ({ trip }) => (
   <div className="card m-b-30">
     <small className="white front">
       <span className="far fa-clock mr-2 white"/>
-      <strong>{parseDate(trip.createdAt)}</strong><br/>
+      <strong>{parseDate(trip.createdAt)}</strong>
     </small>
     <Link className="img-card" to={`/trips/${trip.id}`}>
-      <img src={require("../../assets/images/switzerland.jpg")} alt=""/>
+      <img src={trip.images.length ? REACT_APP_PUBLIC_FILES + trip.images[0] : defaultImage} alt=""/>
     </Link>
     <div className="card-content">
       <div>

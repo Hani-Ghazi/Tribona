@@ -285,3 +285,18 @@ ul.steps .active {
   width: 100% !important;
   height: 50px !important;
 }
+
+.company-logo {
+  display: inline-block;
+  max-width: 64px;
+  border-radius: 7px;
+  margin: 3px;
+  height: auto;
+}
+
+.white-popup a i {
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 20px;
+}
