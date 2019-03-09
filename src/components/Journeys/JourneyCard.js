@@ -4,6 +4,28 @@ import StarRatings from "react-star-ratings";
 import moment from "moment";
 import { Link } from "react-router-dom";
 
+const parseDate = (date) => {
+  const diff = moment().diff(moment(date));
+  const time = moment.duration(diff)._data;
+  let temp = "";
+  if (time.days) {
+    temp += `${time.days} days`;
+  }
+  if (time.hours) {
+    if (temp !== "") temp += ", ";
+    temp += `${time.hours} hours`;
+  }
+  if (time.minutes) {
+    if (temp !== "") temp += ", ";
+    temp += `${time.minutes} minutes`;
+  }
+  return `${temp} ago`;
+};
+
+const getTotalRatesCount = (journey) => {
+  return Object.values(journey.ratings).reduce((curr, acc) => acc + curr, 0);
+};
+
 const { REACT_APP_PUBLIC_FILES } = process.env;
 
 const JourneyCard = ({ journey }) => (
@@ -11,7 +33,7 @@ const JourneyCard = ({ journey }) => (
     <Link className="img-card" to={`/journeys/${journey.id}`}>
       <small className="white front tiny">
         <span className="far fa-clock mr-2 white"/>
-        {moment().diff(moment(journey.createdAt), "days")}<br/>days
+        <strong>{parseDate(journey.createdAt)}</strong>
       </small>
       <div className="review-card">
         <StarRatings
@@ -21,7 +43,7 @@ const JourneyCard = ({ journey }) => (
           starSpacing="1px"
         />
         <span className="tiny white p-l-2">
-          {journey.commentsCont ? journey.commentsCont : 0} reviews
+          {getTotalRatesCount(journey)} rates
         </span>
       </div>
       <div className="bottom-tour-background"/>
