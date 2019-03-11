@@ -3,11 +3,15 @@ import PropTypes from "prop-types";
 import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
-const LoginGuard = ({ isAuthenticated, component: Component, ...rest }) => (
-  <Route {...rest} render={props =>
+const LoginGuard = ({ isAuthenticated, component: Component, ...rest }) => {
+  window.scrollTo({
+    top: 300,
+    behavior: "smooth"
+  });
+  return <Route {...rest} render={props =>
     isAuthenticated ? <Redirect to={"/"}/> : <Component {...props}/>}
-  />
-);
+  />;
+};
 
 LoginGuard.propTypes = {
   component: PropTypes.func.isRequired,

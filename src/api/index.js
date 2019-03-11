@@ -23,7 +23,8 @@ instance.interceptors.response.use(res => {
   return res.data;
 }, error => {
   if (error.response.status === 401 || error.response.status === 403) {
-    window.location.href = "/access-denied";
+    localStorage.removeItem("triponaUser");
+    // window.location.href = "/";
   }
 
 });

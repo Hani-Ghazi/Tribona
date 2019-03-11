@@ -1,4 +1,8 @@
 import React, { Fragment } from "react";
+import "./assets/sass/_all.css";
+import "react-toastify/dist/ReactToastify.css";
+import "react-image-lightbox/style.css";
+import "react-datepicker/dist/react-datepicker.css";
 import { Switch } from "react-router-dom";
 import PropTypes from "prop-types";
 import LoginPage from "./components/pages/LoginPage";
@@ -21,16 +25,11 @@ import {
   AsyncTripFormPage,
   // -------------------- //
   AsyncHomePage
-
-
 } from "./components/AsyncComponent/AsyncComponent";
 import GuestRoute from "./components/Guard/GuestRoute";
 import LoginGuard from "./components/Guard/LoginGuard";
 import Header from "./components/header";
 import Footer from "./components/footer";
-import "./assets/sass/_all.css";
-import "react-toastify/dist/ReactToastify.css";
-import "react-image-lightbox/style.css";
 import ShouldLoginModal from "./components/Partials/ShouldLoginModal";
 import LightBox from "./components/Modals/LightBox";
 import StepsDrawer from "./components/Modals/StepsDrawer";
@@ -55,8 +54,9 @@ const App = ({ location }) => {
         <GuestRoute location={location} path="/journeys/edit/:id" exact component={AsyncJourneyFormPage}/>
         <GuestRoute location={location} path="/journeys/:id" exact component={AsyncJourneyDetailsPage}/>
         <GuestRoute location={location} path="/trips" exact component={AsyncTripsListPage}/>
+        <GuestRoute location={location} path="/trips/add" exact component={AsyncTripFormPage}/>
+        <GuestRoute location={location} path="/trips/:id/edit" exact component={AsyncTripDetailsPage}/>
         <GuestRoute location={location} path="/trips/:id" exact component={AsyncTripDetailsPage}/>
-        <GuestRoute location={location} path="/trips/:id" exact component={AsyncTripFormPage}/>
       </Switch>
       <ShouldLoginModal/>
       <LightBox/>
