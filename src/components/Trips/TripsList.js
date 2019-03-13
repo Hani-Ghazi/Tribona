@@ -1,11 +1,12 @@
 import React, { Component, Fragment } from "react";
 import TripsFilters from "./TripsFilters";
-import TripCard from "./TripCard";
+import TripsGrid from "./TripsGrid";
 import StaticSlider from "../sliders/StaticSlider";
 import { getTrips } from "../../actions/Trips";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import ActionLoader from "../Loaders/actionLoader";
+
 
 class TripsList extends Component {
 
@@ -26,7 +27,6 @@ class TripsList extends Component {
 
   render() {
     const { trips } = this.props;
-    const half = !!trips ? Math.ceil(trips.length / 2) : 0;
     const { isLoading } = this.state;
     return (
       <Fragment>
@@ -44,27 +44,7 @@ class TripsList extends Component {
                   <TripsFilters getTrips={this.getTrips}/>
                 </div>
               </div>
-
-              <div className="col-xs-12 col-md-6 col-lg-4">
-                {
-                  trips && trips
-                    .slice(0, half)
-                    .map((trip, key) =>
-                      <TripCard
-                        key={key}
-                        trip={trip}
-                      />)
-                }
-              </div>
-              <div className="col-xs-12 col-md-6 col-lg-4">
-                {
-                  trips && trips
-                    .slice(half)
-                    .map((trip, key) =>
-                      <TripCard key={key} trip={trip}/>)
-                }
-              </div>
-
+              <TripsGrid trips={trips}/>
             </div>
           </div>
         </section>

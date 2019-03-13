@@ -215,8 +215,6 @@ class TripForm extends Component {
 
   render() {
     const { data, newStep, isOpen, places, isLoading, tripTypes } = this.state;
-    // const { countries } = this.props;
-    console.log({ places });
     return (
       <Fragment>
         <StaticSlider curveImage={require("../../assets/svgs/curvegrey.svg")}/>
