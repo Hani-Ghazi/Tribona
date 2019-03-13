@@ -6,7 +6,7 @@ import { getJourneys } from "../../actions/Journey";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import ActionLoader from "../Loaders/actionLoader";
-
+import JourneysGrid from "./JourneysGrid";
 
 class JourneysList extends Component {
 
@@ -44,31 +44,7 @@ class JourneysList extends Component {
               }
               {
                 !isUpdating &&
-                <div className="col-xs-12 col-md-6 col-lg-4">
-                  {
-                    journeys &&
-                    journeys.slice(0, half)
-                      .map((journey, key) =>
-                        <JourneyCard
-                          key={key}
-                          journey={journey}/>
-                      )
-                  }
-                </div>
-              }
-              {
-                !isUpdating &&
-                <div className="col-xs-12 col-md-6 col-lg-4">
-                  {
-                    journeys &&
-                    journeys.slice(half)
-                      .map((journey, key) =>
-                        <JourneyCard
-                          key={key}
-                          journey={journey}/>
-                      )
-                  }
-                </div>
+                <JourneysGrid journeys={journeys}/>
               }
             </div>
           </div>
