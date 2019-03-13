@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import StaticSlider from "../sliders/StaticSlider";
 import PlacesFilter from "./placesFilter";
-import PlaceCard from "./PlaceCard";
+import PlacesGrid from "./PlacesGrid";
 import { connect } from "react-redux";
 import { getPlaces } from "../../actions/Places";
 import { startUpdating, finishedUpdating } from "../../actions/Loaders";
@@ -32,16 +32,7 @@ class PlacesListPage extends Component {
               <div className="col-md-12 col-lg-3 order-lg-first order-last mt-3 mt-lg-0">
                 <PlacesFilter placesCategories={placesCategories}/>
               </div>
-              <div className="col-lg-9 col-sm-6 col-xs-12">
-                <div className="row">
-                  {
-                    isUpdating ? <ActionLoader/> :
-                      (places || []).map((place, k) => <PlaceCard key={k} place={place}/>)
-                  }
-                </div>
-              </div>
-
-
+              <PlacesGrid places={places}/>
             </div>
           </div>
         </section>
