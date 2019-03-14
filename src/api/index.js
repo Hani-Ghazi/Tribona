@@ -6,15 +6,16 @@ const instance = axios.create({
   baseURL: process.env.REACT_APP_API_URL
 });
 
-const user = JSON.parse(localStorage.getItem("triponaUser"));
+
+const user = JSON.parse(localStorage.triponaUser === "undefined" ? "{}" : localStorage.getItem("triponaUser"));
 const access_token = (user && user.token && user.token !== "") ? `bearer ${user.token}` : null;
 
 // Alter defaults after instance has been created
 instance.defaults.headers.common["Authorization"] = access_token ? access_token : "";
 
 instance.interceptors.request.use(config => {
-  if (!!config.filters) {
-    config.url += `?${qs.stringify(config.filters)}`;
+  if (!!config.filters || !!config.pagination) {
+    config.url += `?${qs.stringify({ ...config.filters, ...config.pagination })}`;
   }
   return config;
 });
@@ -26,7 +27,7 @@ instance.interceptors.response.use(res => {
     localStorage.removeItem("triponaUser");
     // window.location.href = "/";
   }
-
+  return Promise.reject(error.response.data);
 });
 
 export default instance;

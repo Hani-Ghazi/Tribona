@@ -1,11 +1,51 @@
 import React from "react";
 import { connect } from "react-redux";
-import Select from "../Partials/Select";
+import Select, { components } from "react-select";
 
-const CountryFilter = ({ countries, onChange, classes}) => (
-  <Select onChange={onChange} list={countries || []}
-          labelKey={"countryName"} classes={classes} name=""
-          valueKey={"geonameId"} placeholder={"Select Country"}/>
+const { REACT_APP_PUBLIC_FILES } = process.env;
+
+const CustomOption = ({ isDisabled, innerProps, data }) =>
+  !isDisabled ? (
+    <div {...innerProps}>
+      <span className="p-l-10 pointer">
+        <img className="p-r-10" src={REACT_APP_PUBLIC_FILES + `flags/${data.countryCode}.png`} alt={data.countryCode}/>
+        {data.label}
+      </span>
+    </div>
+  ) : null;
+
+const SingleValue = ({ children, ...props }) => (
+  <components.SingleValue {...props}>
+    <span className="text-truncate pointer truncate-select-parent">
+        <img className="p-r-10" src={REACT_APP_PUBLIC_FILES + `flags/${props.data.countryCode}.png`}
+             alt={props.data.countryCode}/>
+      {props.data.label}
+      </span>
+  </components.SingleValue>
+);
+
+const CountryFilter = ({ countries, onFilter, classes, value }) => (
+  <Select
+    placeholder={"Please select country"}
+    name="country"
+    required
+    value={value}
+    styles={{
+      singleValue: (base) => (console.log({ base }) && {
+        ...base,
+        padding: 5,
+        courser: "pointer",
+        borderRadius: 5,
+        color: "white",
+        display: "flex"
+      })
+    }}
+    isClearable
+    options={(countries || []).map(x => ({ ...x, label: x.countryName, value: x.geonameId }))}
+    className="my-select"
+    components={{ Option: CustomOption, SingleValue }}
+    onChange={(selectedOption) => onFilter(selectedOption, "countryId")}
+  />
 );
 
 const initMapStateToProps = state => ({ countries: state.countries });

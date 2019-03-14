@@ -54,3 +54,8 @@ export const AsyncTripFormPage = Loadable({
   loader: () => import("../Trips/TripForm"),
   loading: () => <PageLoader/>
 });
+
+export const AsyncProfilePage = Loadable({
+  loader: () => import("../users/Profile"),
+  loading: () => <PageLoader/>
+});

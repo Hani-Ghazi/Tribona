@@ -4,10 +4,10 @@ import {
   USER_LOGGED_OUT,
   RESET_PASSWORD_SUCCEEDED,
   RESET_PASSWORD_EMAIL_SENT
-} from '../types';
+} from "../types";
 
 const INIT_STATE = {
-  ...JSON.parse(localStorage.getItem('triponaUser')),
+  ...JSON.parse(localStorage.triponaUser === "undefined" ? "{}" : localStorage.getItem("triponaUser"))
 };
 
 export default (state = INIT_STATE, action) => {
@@ -15,13 +15,13 @@ export default (state = INIT_STATE, action) => {
     case USER_LOGGED_IN:
       return action.payload;
     case USER_SIGNED_UP:
-      return {verificationToken: action.payload};
+      return { verificationToken: action.payload };
     case USER_LOGGED_OUT:
       return {};
     case RESET_PASSWORD_EMAIL_SENT:
-      return {resetToken: action.payload};
+      return { resetToken: action.payload };
     case RESET_PASSWORD_SUCCEEDED:
-      return {resetToken: null};
+      return { resetToken: null };
     default:
       return state;
   }

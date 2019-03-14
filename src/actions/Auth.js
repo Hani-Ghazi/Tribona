@@ -14,7 +14,7 @@ export const userLoggedIn = user => ({ type: USER_LOGGED_IN, payload: user });
 export const userLoggedOut = () => ({ type: USER_LOGGED_OUT, payload: {} });
 
 export const getMe = () => dispatch => {
-  const { token } = JSON.parse(localStorage.triponaUser || "");
+  const { token } = JSON.parse(localStorage.triponaUser === "undefined" ? "{}" : localStorage.getItem("triponaUser"));
   axiosInstence.defaults.headers.common["Authorization"] = `bearer ${token}`;
   return api.getMe().then(user => {
     user = { ...user, token };
@@ -33,12 +33,10 @@ export const login = (credentials) => (dispatch) =>
     if (user.token) {
       return dispatch(getMe());
     }
-
     else {
       dispatch(userLoggedIn(user));
       return user;
     }
-
   });
 
 export const loginViaFacebook = (credentials) => (dispatch) =>

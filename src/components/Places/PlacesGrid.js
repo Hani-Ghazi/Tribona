@@ -3,6 +3,15 @@ import PlaceCard from "./PlaceCard";
 
 const PlacesGrid = ({ places }) => {
   const three = !!places ? Math.ceil(places.length / 3) : 0;
+  if (places && !places.length) {
+    return (
+      <div className="col-xs-12 col-md-12 col-lg-8 align-self-center">
+        <div className="text-center">
+          <h6>There is no data yet</h6>
+        </div>
+      </div>
+    );
+  }
   return (
     <Fragment>
       <div className="col-lg-3 col-sm-6 col-xs-12">

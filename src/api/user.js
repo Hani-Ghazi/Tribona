@@ -11,5 +11,6 @@ export default {
   loginViaGoogle: (credentials) => api.post("auth/token_google", credentials),
   usersList: () => api.get("users"),
   followUser: (id) => api.put(`users/following/${id}`),
-  unFollowUser: (id) => api.delete(`users/following/${id}`)
+  unFollowUser: (id) => api.delete(`users/following/${id}`),
+  userById: (id) => api.get(`users/${id}`)
 };

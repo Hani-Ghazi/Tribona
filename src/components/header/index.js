@@ -36,12 +36,14 @@ const Header = ({ isAuthenticated, logout, user }) => (
               :
               <li className="nav-item dropdown">
                 <a className="nav-link dropdown-toggle dropdown-menu-right  ml-lg-0 ml-3 mr-4 my-lg-0 my-2 lastitem"
-                   href="#" id="navbarDropdown6" role="button" data-toggle="dropdown" aria-haspopup="true"
+                   id="navbarDropdown6" role="button" data-toggle="dropdown" aria-haspopup="true"
                    aria-expanded="false">
                   {user.firstName + " " + user.lastName}
                 </a>
                 <div className="dropdown-divider d-lg-none"/>
                 <div className="dropdown-menu dropdownId dropdown-menu-right" aria-labelledby="navbarDropdown6">
+                  <Link to={`/users/profile/${user.id}`} className="dropdown-item mt-1">Profile</Link>
+                  <div className="dropdown-divider"/>
                   <Link to={"/places/add"} className="dropdown-item mt-1">New Place</Link>
                   <div className="dropdown-divider"/>
                   <Link to={"/journeys/add"} className="dropdown-item mt-1">New Journey</Link>

@@ -15,7 +15,7 @@ const SliderWithScroll = ({ slide }) => (
       <img className="w-100 h-100" src={defaultImage} alt=""/>
     }
     <h1 className="white text-center front shadow-text center-text">{slide.name}</h1>
-    <a className="smooth-scroll" href="#read-tour">
+    <a className="smooth-scroll pointer">
       <img className="curvechevron" src={scrollBG} alt=""/>
       <div className="chevroncurve">
         <i className="fas  hoverchevron white fa-chevron-down"/>
