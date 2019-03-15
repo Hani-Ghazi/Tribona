@@ -6,12 +6,12 @@ import {
 } from "../types";
 import api from "../api/places";
 
-export const getPlaces = (filters) => dispatch =>
-  api.getPlaces(filters).then(places => dispatch({ type: PLACES_FETCHED, payload: places }));
+export const getPlaces = (params) => dispatch =>
+  api.getPlaces(params).then(places => dispatch({ type: PLACES_FETCHED, payload: places }));
 
 
-export const getPopularPlaces = () => dispatch =>
-  api.getPlaces().then(places => dispatch({ type: POPULAR_PLACES_FETCHED, payload: places }));
+export const getPopularPlaces = (params) => dispatch =>
+  api.getPlaces(params).then(places => dispatch({ type: POPULAR_PLACES_FETCHED, payload: places }));
 
 export const getPlaceById = (id) => (dispatch) =>
   api.getPlaceById(id).then(place => dispatch({ type: PLACE_FETCHED, payload: place }));

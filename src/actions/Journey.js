@@ -11,8 +11,8 @@ import api from "../api/journeys";
 export const getJourneys = (params) => (dispatch) =>
   api.getJourneys(params)
     .then(journeys => dispatch({ type: JOURNEYS_FETCHED, payload: journeys }));
-export const getPopularJourneys = () => (dispatch) =>
-  api.getPopularJourneys()
+export const getPopularJourneys = (params) => (dispatch) =>
+  api.getPopularJourneys(params)
     .then(journeys => dispatch({ type: POPULAR_JOURNEYS_FETCHED, payload: journeys }));
 export const getJourneyById = (id) => (dispatch) =>
   api.getJourneyById(id)

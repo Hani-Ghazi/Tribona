@@ -9,8 +9,8 @@ import api from "../api/trips";
 export const getTrips = (params) => (dispatch) =>
   api.getTrips(params).then(trips => dispatch({ type: TRIPS_FETCHED, payload: trips }));
 
-export const getPopularTrips = () => (dispatch) =>
-  api.getPopularTrips().then(trips => dispatch({ type: POPULAR_TRIPS_FETCHED, payload: trips }));
+export const getPopularTrips = (params) => (dispatch) =>
+  api.getPopularTrips(params).then(trips => dispatch({ type: POPULAR_TRIPS_FETCHED, payload: trips }));
 
 export const getTripById = (id) => (dispatch) =>
   api.getTripById(id).then(trip => dispatch({ type: TRIP_FETCHED, payload: trip }));

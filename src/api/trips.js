@@ -2,7 +2,7 @@ import api from "./index";
 
 export default {
   getTrips: (params) => api.get(`trips`, params),
-  getPopularTrips: () => api.get(`trips`),
+  getPopularTrips: (params) => api.get(`trips`, params),
   getTripById: (id) => api.get(`trips/${id}`),
   getTripsComments: (id) => api(`trips/${id}/comments`),
   tripLike: (id) => api.put(`trips/${id}/like`),
