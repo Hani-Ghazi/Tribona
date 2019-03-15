@@ -9,7 +9,7 @@ const PopularTrips = ({ trips }) => (
         <div className="text-center">
           <h3 className="black front bold text-center">Popular Trips to discover and try</h3>
           <div className="separator text-center svgcenter"/>
-          <h5 className="primary-color text-center mb-5">This are static trips, waiting the real trips</h5>
+          <h5 className="primary-color text-center mb-5">Find what trips can suit you</h5>
         </div>
         <div className="row ">
           {

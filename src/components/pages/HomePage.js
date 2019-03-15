@@ -33,8 +33,10 @@ class HomePage extends Component {
       <Fragment>
         <StaticSlider curveImage={require("../../assets/svgs/curve.svg")}/>
         {/*<HorizontalFilters/>*/}
-        <PopularTrips trips={popularTrips || []}/>
-        <PopularPlaces places={popularPlaces || []}/>
+        <div className="p-t-100 pb-3">
+          <PopularTrips trips={popularTrips || []}/>
+          <PopularPlaces places={popularPlaces || []}/>
+        </div>
       </Fragment>
     );
   }
