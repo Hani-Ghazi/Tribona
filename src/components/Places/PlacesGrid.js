@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import PlaceCard from "./PlaceCard";
 
-const PlacesGrid = ({ places }) => {
+const PlacesGrid = ({ places, classes = "" }) => {
   const three = !!places ? Math.ceil(places.length / 3) : 0;
   if (places && !places.length) {
     return (
@@ -14,7 +14,7 @@ const PlacesGrid = ({ places }) => {
   }
   return (
     <Fragment>
-      <div className="col-lg-3 col-sm-6 col-xs-12">
+      <div className={`col-lg-3 col-sm-6 col-xs-12 ${classes}`}>
         {
           places &&
           places.slice(0, three)
@@ -25,7 +25,7 @@ const PlacesGrid = ({ places }) => {
             )
         }
       </div>
-      <div className="col-lg-3 col-sm-6 col-xs-12">
+      <div className={`col-lg-3 col-sm-6 col-xs-12 ${classes}`}>
         {
           places &&
           places.slice(three, three * 2)
@@ -36,7 +36,7 @@ const PlacesGrid = ({ places }) => {
             )
         }
       </div>
-      <div className="col-lg-3 col-sm-6 col-xs-12">
+      <div className={`col-lg-3 col-sm-6 col-xs-12 ${classes}`}>
         {
           places &&
           places.slice(three * 2)

@@ -6,7 +6,7 @@ import { startLoading } from "../../actions/Loaders";
 
 const GuestRoute = ({ isAuthenticated, component: Component, ...rest }) => {
   window.scrollTo({
-    top: 300,
+    top: 0,
     behavior: "smooth"
   });
   return <Route {...rest} render={props => <Component {...props}/>}/>;

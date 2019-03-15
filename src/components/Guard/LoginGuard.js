@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 
 const LoginGuard = ({ isAuthenticated, component: Component, ...rest }) => {
   window.scrollTo({
-    top: 300,
+    top: 0,
     behavior: "smooth"
   });
   return <Route {...rest} render={props =>

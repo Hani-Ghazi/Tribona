@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import PlaceCard from "./PlaceCard";
+import PlacesGrid from "./PlacesGrid";
 
 class PopularPlaces extends Component {
 
@@ -27,7 +27,7 @@ class PopularPlaces extends Component {
         <div className="container destination-section">
           <div className="row">
             {
-              places.map(place => <PlaceCard place={place}/>)
+              places && <PlacesGrid places={places} classes={"col-lg-4"}/>
             }
           </div>
         </div>

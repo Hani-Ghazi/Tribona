@@ -59,3 +59,8 @@ export const AsyncProfilePage = Loadable({
   loader: () => import("../users/Profile"),
   loading: () => <PageLoader/>
 });
+
+export const AsyncMyFavoritePage = Loadable({
+  loader: () => import("../users/myFavorite"),
+  loading: () => <PageLoader/>
+});
