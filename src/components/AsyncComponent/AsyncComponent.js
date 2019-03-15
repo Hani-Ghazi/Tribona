@@ -64,3 +64,8 @@ export const AsyncMyFavoritePage = Loadable({
   loader: () => import("../users/myFavorite"),
   loading: () => <PageLoader/>
 });
+
+export const AsyncContactUsPage = Loadable({
+  loader: () => import("../pages/ContactPage"),
+  loading: () => <PageLoader/>
+});
