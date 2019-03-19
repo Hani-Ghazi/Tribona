@@ -246,28 +246,6 @@ class TripForm extends Component {
                         onChange={(selectedOption) => this.onSelect(selectedOption, "type")}
                       />
                     </div>
-                    {/*<div className="form-group">*/}
-                    {/*<label htmlFor="form_name p-l-10">countries</label>*/}
-                    {/*<Select*/}
-                    {/*placeholder={"Please select country type"}*/}
-                    {/*name="country"*/}
-                    {/*required*/}
-                    {/*value={data.country}*/}
-                    {/*styles={{*/}
-                    {/*singleValue: (base) => (console.log({ base }) && {*/}
-                    {/*...base,*/}
-                    {/*padding: 5,*/}
-                    {/*borderRadius: 5,*/}
-                    {/*color: "white",*/}
-                    {/*display: "flex"*/}
-                    {/*})*/}
-                    {/*}}*/}
-                    {/*options={(countries || []).map(x => ({ ...x, label: x.countryName, value: x.geonameId }))}*/}
-                    {/*className="my-select"*/}
-                    {/*components={{ Option: CustomOption, SingleValue }}*/}
-                    {/*onChange={(selectedOption) => this.onSelect(selectedOption, "country")}*/}
-                    {/*/>*/}
-                    {/*</div>*/}
                     <div className="form-group">
                       <label>Capacity</label>
                       <input type="number" name="capacity" className="form-control"

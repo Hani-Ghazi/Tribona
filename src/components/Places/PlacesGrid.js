@@ -5,7 +5,7 @@ const PlacesGrid = ({ places, classes = "" }) => {
   const three = !!places ? Math.ceil(places.length / 3) : 0;
   if (places && !places.length) {
     return (
-      <div className="col-xs-12 col-md-12 col-lg-8 align-self-center">
+      <div className="w-100 align-self-center">
         <div className="text-center">
           <h6>There is no data yet</h6>
         </div>

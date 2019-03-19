@@ -12,5 +12,6 @@ export default {
   usersList: () => api.get("users"),
   followUser: (id) => api.put(`users/following/${id}`),
   unFollowUser: (id) => api.delete(`users/following/${id}`),
-  userById: (id) => api.get(`users/${id}`)
+  userById: (id) => api.get(`users/${id}`),
+  updateUser: (user) => api.put(`users/${user.id}`, user)
 };

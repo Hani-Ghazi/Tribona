@@ -33,9 +33,9 @@ if (localStorage.getItem("triponaUser")) {
   store.dispatch(getMe());
 }
 store.dispatch(getCountries());
-store.dispatch(getPopularPlaces({ pagination: { first: 6 } }));
-store.dispatch(getPopularJourneys({ pagination: { first: 6 } }));
-store.dispatch(getPopularTrips({ pagination: { first: 6 } }));
+store.dispatch(getPopularPlaces({ pagination: { first: 6, orderBy: 'views_DESC'} }));
+store.dispatch(getPopularJourneys({ pagination: { first: 6, orderBy: 'views_DESC' } }));
+store.dispatch(getPopularTrips({ pagination: { first: 6, orderBy: 'views_DESC'} }));
 
 
 ReactDOM.render(

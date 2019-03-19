@@ -28,6 +28,7 @@ import {
   AsyncContactUsPage,
   // -------------------- //
   AsyncProfilePage,
+  AsyncEditProfilePage,
   AsyncMyFavoritePage
 } from "./components/AsyncComponent/AsyncComponent";
 import GuestRoute from "./components/Guard/GuestRoute";
@@ -63,6 +64,7 @@ const App = ({ location }) => {
         <GuestRoute location={location} path="/trips/:id" exact component={AsyncTripDetailsPage}/>
         <GuestRoute location={location} path="/users/profile/:ownerId" exact component={AsyncProfilePage}/>
         <GuestRoute location={location} path="/users/my-favorite" exact component={AsyncMyFavoritePage}/>
+        <GuestRoute location={location} path="/profile" exact component={AsyncEditProfilePage}/>
         <GuestRoute location={location} path="/contact-us" exact component={AsyncContactUsPage}/>
       </Switch>
       <ShouldLoginModal/>

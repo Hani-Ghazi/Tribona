@@ -3,7 +3,8 @@ import {
   USER_SIGNED_UP,
   USER_LOGGED_OUT,
   RESET_PASSWORD_SUCCEEDED,
-  RESET_PASSWORD_EMAIL_SENT
+  RESET_PASSWORD_EMAIL_SENT,
+  USER_UPDATE_PROFILE
 } from "../types";
 
 const INIT_STATE = {
@@ -15,13 +16,15 @@ export default (state = INIT_STATE, action) => {
     case USER_LOGGED_IN:
       return action.payload;
     case USER_SIGNED_UP:
-      return { verificationToken: action.payload };
+      return { ...state, verificationToken: action.payload };
     case USER_LOGGED_OUT:
       return {};
     case RESET_PASSWORD_EMAIL_SENT:
-      return { resetToken: action.payload };
+      return { ...state, resetToken: action.payload };
     case RESET_PASSWORD_SUCCEEDED:
-      return { resetToken: null };
+      return { ...state, resetToken: null };
+    case USER_UPDATE_PROFILE:
+      return { ...state, ...action.payload };
     default:
       return state;
   }

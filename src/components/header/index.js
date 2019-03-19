@@ -55,6 +55,8 @@ const Header = ({ isAuthenticated, logout, user }) => (
                   <div className="dropdown-divider"/>
                   <Link to={"/trips/add"} className="dropdown-item mt-1">New Trip</Link>
                   <div className="dropdown-divider"/>
+                  <Link to={"/profile"} className="dropdown-item mt-1">Edit Profile</Link>
+                  <div className="dropdown-divider"/>
                   <Link to={"/"} onClick={() => logout()} className="dropdown-item mt-1">Logout</Link>
                 </div>
               </li>

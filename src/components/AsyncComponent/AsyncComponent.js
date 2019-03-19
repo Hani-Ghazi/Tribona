@@ -60,6 +60,11 @@ export const AsyncProfilePage = Loadable({
   loading: () => <PageLoader/>
 });
 
+export const AsyncEditProfilePage = Loadable({
+  loader: () => import("../users/ProfileForm"),
+  loading: () => <PageLoader/>
+});
+
 export const AsyncMyFavoritePage = Loadable({
   loader: () => import("../users/myFavorite"),
   loading: () => <PageLoader/>
