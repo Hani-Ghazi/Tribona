@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import Select, { components } from "react-select";
+import PropTypes from "prop-types";
 
 const { REACT_APP_PUBLIC_FILES } = process.env;
 
@@ -31,7 +32,7 @@ const CountryFilter = ({ countries, onFilter, classes, value }) => (
     required
     value={value}
     styles={{
-      singleValue: (base) => (console.log({ base }) && {
+      SingleValue: (base) => (console.log({ base }) && {
         ...base,
         padding: 5,
         courser: "pointer",
@@ -41,12 +42,20 @@ const CountryFilter = ({ countries, onFilter, classes, value }) => (
       })
     }}
     isClearable
-    options={(countries || []).map(x => ({ ...x, label: x.countryName, valueKey: 'geonameId', value: x.geonameId }))}
+    options={(countries || []).map(x => ({ ...x, label: x.countryName, valueKey: "geonameId", value: x.geonameId }))}
     className="my-select"
     components={{ Option: CustomOption, SingleValue }}
     onChange={(selectedOption) => onFilter(selectedOption, "countryId")}
   />
 );
+
+CountryFilter.propTypes = {
+  countries: PropTypes.array.isRequired,
+  onFilter: PropTypes.func.isRequired,
+  classes: PropTypes.string,
+  value: PropTypes.shape({})
+};
+
 
 const initMapStateToProps = state => ({ countries: state.countries });
 

@@ -5,10 +5,13 @@ import {
   POPULAR_PLACES_FETCHED
 } from "../types";
 import api from "../api/places";
-import {defaultPagination} from "../utils";
+import { defaultPagination } from "../utils";
 
 export const getPlaces = (params) => dispatch =>
-  api.getPlaces(params).then(places => dispatch({ type: PLACES_FETCHED, payload: places }));
+  api.getPlaces({ ...params, pagination: defaultPagination }).then(places => dispatch({
+    type: PLACES_FETCHED,
+    payload: places
+  }));
 
 
 export const getPopularPlaces = (params) => dispatch =>
@@ -41,4 +44,4 @@ export const updatePlace = (place) => (dispatch) => api.updatePlace(place).then(
 }));
 
 
-export const ratePlace = (id, newRating) => () => api.ratePlace(id, newRating)
+export const ratePlace = (id, newRating) => () => api.ratePlace(id, newRating);

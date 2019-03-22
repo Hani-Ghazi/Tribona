@@ -1,14 +1,16 @@
 import React, { Component, Fragment } from "react";
 import StaticSlider from "../sliders/StaticSlider";
+import api from "../../api/utils";
+import _ from "lodash";
+import { CountryFilter, CityFilter, PlaceCategorySelect } from "../filters";
 import { FaImages } from "react-icons/fa";
 import { toast } from "react-toastify";
-import api from "../../api/utils";
-import { Images, AutoCompleteInput } from "../Partials";
+import { Images } from "../Partials";
 import { connect } from "react-redux";
 import { getPlacesCategories, createPlace, updatePlace, getPlaceById } from "../../actions/Places";
 import { getCitiesByCountryId } from "../../actions/Country";
-import isEmpty from "lodash/isEmpty";
-import { finishedLoading, finishedUpdating, startUpdating } from "../../actions/Loaders";
+import { scrollToTop } from "../../utils";
+
 import MarkerInput from "../Partials/MarkerInput";
 
 class PlaceForm extends Component {
@@ -17,11 +19,11 @@ class PlaceForm extends Component {
       images: [],
       name: "",
       description: "",
-      latitude: "",
-      longitude: "",
+      latitude: 41.0111558,
+      longitude: 29.0381558,
       countryId: "",
       cityId: "",
-      categoryId: "",
+      categoryId: ""
     },
     loading: false,
     categories: [],
@@ -29,23 +31,24 @@ class PlaceForm extends Component {
   };
 
   componentDidMount() {
-    if (!!this.props.place) {
-      this.setState({ data: this.props.place });
-      this.props.finishedLoading();
-    }
-    else if (!!this.props.match.params.id) {
-      this.props.getPlaceById(this.props.match.params.id).then(res => {
-        this.props.finishedLoading();
-        this.setState(
-          { data: { ...res.payload, categoryId: res.payload.category.id } },
-          () => this.props.getCitiesByCountryId(this.state.data.countryId)
-            .then(cities => this.setState({ cities })));
+    const id = this.props.match.params.id;
+    if (id) {
+      Promise.all([
+        this.props.getPlaceById(id),
+        this.props.getPlacesCategories()
+      ]).then(res => {
+        this.setState({
+          data: { ...res[0].payload },
+          categories: res[1]
+        }, scrollToTop);
+      }).catch(e => {
+        console.log(e);
+        this.props.history.push("/");
       });
+    } else {
+      this.props.getPlacesCategories()
+        .then(categories => this.setState({ categories }, scrollToTop));
     }
-    this.props.getPlacesCategories()
-      .then(categories => {
-        this.setState({ categories });
-      });
   }
 
   onUpload = (e) => {
@@ -58,13 +61,11 @@ class PlaceForm extends Component {
         toast.error("Image type not supported! Please try another one", {
           hideProgressBar: true
         });
-      }
-      else if (file.size > 1164642) {
+      } else if (file.size > 1164642) {
         toast.error("You can't upload an image with size more than 10MB", {
           hideProgressBar: true
         });
-      }
-      else {
+      } else {
         isValid = true;
         data.append("files", file, file.name);
       }
@@ -82,7 +83,6 @@ class PlaceForm extends Component {
   };
 
   onChange = e => {
-    console.log(e)
     if (e.target.name === "countryId" && e.target.value) {
       this.props.getCitiesByCountryId(e.target.value)
         .then(cities => this.setState({ cities }));
@@ -98,22 +98,37 @@ class PlaceForm extends Component {
     this.setState({ data: { ...this.state.data, images: images.filter(img => img !== image) } });
   };
 
-  onSubmit = e => {
+  onFilter = (value, key) => {
+    if (key === "countryId") {
+      if (value) {
+        this.props.getCitiesByCountryId(value[value.valueKey])
+          .then(cities => this.setState({ cities }));
+      } else {
+        this.setState({ cities: [] });
+      }
 
+    }
+    this.setState({
+      data: { ...this.state.data, [key]: _.get(value, `${(value || {}).valueKey}`, undefined) },
+      [key]: value,
+      isUpdating: true
+    });
+  };
+
+  onSubmit = e => {
     e.preventDefault();
     const { data } = this.state;
     const errors = this.validate(data);
-    if (isEmpty(errors)) {
+    if (_.isEmpty(errors)) {
       const { createPlace, updatePlace } = this.props;
       (!!data.id ? updatePlace(data) : createPlace(data))
         .then(place => {
           toast.success("Place Saved Successfully", {
             hideProgressBar: true
           });
-          this.props.history.push(`/places/${data.id || place.payload.id}`);
+          this.props.history.push(`/places`);
         });
-    }
-    else {
+    } else {
       toast.error("Invalid form Please check the form's data again!", {
         hideProgressBar: true
       });
@@ -135,7 +150,7 @@ class PlaceForm extends Component {
   };
 
   render() {
-    const { data, cities, categories } = this.state;
+    const { data, cities, categories, country, city } = this.state;
     return (
       <Fragment>
         <StaticSlider curveImage={require("../../assets/svgs/curvegrey.svg")}/>
@@ -154,24 +169,23 @@ class PlaceForm extends Component {
                   </div>
                   <div className="form-group pos-relative">
                     <label htmlFor="">Select Category</label>
-                    <AutoCompleteInput
-                      list={categories || []} placeholder={"Select Category"} labelKey={"nameEn"}
-                      onChange={e => this.onChange({ target: { name: "categoryId", value: e.id } })}
-                    />
+                    <PlaceCategorySelect onFilter={this.onFilter} categories={categories}/>
                   </div>
                   <div className="form-group pos-relative">
                     <label htmlFor="">Select Country</label>
-                    <AutoCompleteInput
-                      list={this.props.countries} placeholder={"Select Country"} labelKey={"countryName"}
-                      onChange={e => this.onChange({ target: { name: "countryId", value: e.geonameId } })}
-                    />
+                    <CountryFilter onFilter={this.onFilter} value={country}/>
                   </div>
                   <div className="form-group pos-relative">
                     <label htmlFor="">Select City</label>
-                    <AutoCompleteInput
-                      list={cities || []} placeholder={"Select City"} labelKey={"cityName"}
-                      onChange={e => this.onChange({ target: { name: "cityId", value: e.geonameId } })}
+                    <CityFilter cities={cities} onFilter={this.onFilter} value={city}
                     />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="form_message p-l-10">Description</label>
+                    <textarea id="form_message" name="description" className="form-control" value={data.description}
+                              onChange={this.onChange}
+                              placeholder="Place Description" rows="10" required="required"/>
+                    <div className="help-block with-errors tiny mt-2"/>
                   </div>
                   <div className="form-group">
                     <label htmlFor="form_message p-l-10">Map</label>
@@ -193,13 +207,6 @@ class PlaceForm extends Component {
                     </div>
                     <MarkerInput marker={{ longitude: data.longitude, latitude: data.latitude }}
                                  onChange={this.onMarkerChange}/>
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="form_message p-l-10">Description</label>
-                    <textarea id="form_message" name="description" className="form-control" value={data.description}
-                              onChange={this.onChange}
-                              placeholder="Place Description" rows="4" required="required"/>
-                    <div className="help-block with-errors tiny mt-2"/>
                   </div>
                   <div className="form-group">
                     <label htmlFor="multi">
@@ -240,8 +247,5 @@ export default connect(initMapStateToProps, {
   getCitiesByCountryId,
   createPlace,
   updatePlace,
-  getPlaceById,
-  finishedLoading,
-  finishedUpdating,
-  startUpdating
+  getPlaceById
 })(PlaceForm);

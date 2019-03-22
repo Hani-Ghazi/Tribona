@@ -3,13 +3,12 @@ import PropTypes from "prop-types";
 import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { scrollToTop } from "../../utils";
-import constants from "../../constans";
 
 const TouristRoute = ({ isAuthenticated, user, component: Component, ...rest }) => {
   scrollToTop();
   return (
     <Route {...rest} render={props =>
-      isAuthenticated && user.role === constants.users.roles.TOURIST ? <Component {...props}/> : <Redirect to={"/"}/>
+      isAuthenticated ? <Component {...props}/> : <Redirect to={"/"}/>
     }/>
   );
 };
@@ -20,7 +19,7 @@ TouristRoute.propTypes = {
 };
 
 const mapToProps = state => {
-  return { isAuthenticated: !!state.user.id, user: state.user };
+  return { isAuthenticated: !!state.user.id };
 };
 
 export default connect(mapToProps)(TouristRoute);
