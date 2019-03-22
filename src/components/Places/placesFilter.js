@@ -1,41 +1,67 @@
 import React from "react";
-import { FaGlobeAsia } from "react-icons/fa";
-import { getPlaces } from "../../actions/Places";
-import { Select, AutoCompleteInput } from "../Partials";
-import api from "../../api/places";
+import _ from "lodash";
+import { debounce } from "throttle-debounce";
+import { getPlaces, getPlacesCategories } from "../../actions/Places";
+import { getCitiesByCountryId } from "../../actions/Country";
 import { connect } from "react-redux";
+import { CityFilter, CountryFilter, SortFilter } from "../filters";
+import { ActionLoader } from "../Loaders";
 
+const { filters: { sort } } = require("../../constans");
 
 class placesFilter extends React.Component {
 
-
-  state = {
-    data: {
+  constructor(props) {
+    super(props);
+    this.state = {
+      filters: {
+        countryId: undefined,
+        categoryId: undefined,
+        search: "",
+        orderBy: ""
+      },
       countryId: undefined,
-      categoryId: undefined
-    },
-    categories: []
-  };
+      cityId: undefined,
+      orderBy: sort.defaultOption,
+      categories: [],
+      getPlacesThrottled: debounce(500, this.getPlaces)
+    };
+  }
+
+  componentDidMount() {
+    this.props.getPlacesCategories().then(categories => this.setState({ categories }));
+  }
 
   getPlaces = () => {
-    const { data } = this.state;
-    this.props.getPlaces({ filters: data });
+    const { filters } = this.state;
+    this.props.getPlaces({ filters }).then(() => this.setState({ isUpdating: false }));
   };
 
   onChange = e => this.setState({
-    data: { ...this.state.data, [e.target.name]: e.target.value },
+    filters: { ...this.state.filters, [e.target.name]: e.target.value },
+    isUpdating: true,
     errors: { ...this.state.errors, [e.target.name]: null }
-  }, this.getPlaces);
+  }, this.state.getPlacesThrottled);
 
-  componentDidMount() {
-    api.getPlacesCategories()
-      .then(categories => {
-        this.setState({ categories });
-      });
-  }
+  onFilter = (value, key) => {
+    if (key === "countryId") {
+      if (value) {
+        this.props.getCitiesByCountryId(value[value.valueKey])
+          .then(cities => this.setState({ cities }));
+      } else {
+        this.setState({ cities: [] });
+      }
+
+    }
+    this.setState({
+      filters: { ...this.state.filters, [key]: _.get(value, `${(value || {}).valueKey}`, undefined) },
+      [key]: value,
+      isUpdating: true
+    }, this.state.getPlacesThrottled);
+  };
 
   renderCategoriesFilter = () => {
-    const { categories, data: { categoryId } } = this.state;
+    const { categories, filters: { categoryId } } = this.state;
     return (
       <div className="more-info tags my-4">
         <h6 className="black semibold text-center mx-4 mt-3 mb-3 info-title">Popular Places Categories</h6>
@@ -60,13 +86,22 @@ class placesFilter extends React.Component {
   };
 
   render() {
-    return (<div className="form-container py-3">
+    const { countryId, isUpdating, cities, cityId, filters, orderBy } = this.state;
+    return (
+      <div className="form-container py-3">
+        {
+          isUpdating && <ActionLoader/>
+        }
         <h4 className="black bold mt-3 px-4 pb-2 text-center">Search your Places</h4>
         <form id="sidebar-form" className="px-4">
           <div className="form-group row">
             <div className="col-sm-12">
               <div className="input-group">
-                <input type="email" className="form-control" id="inputEmail3" placeholder="Search Places"/>
+                <input type="text" className="form-control"
+                       name="search"
+                       onChange={this.onChange}
+                       value={filters.search}
+                       placeholder="Search Places"/>
                 <div className="input-group-append">
                   <div className="input-group-text"><i className="fa fa-search"/></div>
                 </div>
@@ -74,10 +109,18 @@ class placesFilter extends React.Component {
             </div>
           </div>
           <div className="form-group row">
-            <div className="col-sm-12 autoComplete-container">
-              <AutoCompleteInput
-                list={this.props.countries} placeholder={"Select Country"} labelKey={"countryName"}
-                onChange={e => this.onChange({ target: { name: "countryId", value: e.geonameId } })}/>
+            <div className="col-sm-12">
+              <CountryFilter onFilter={this.onFilter} value={countryId}/>
+            </div>
+          </div>
+          <div className="form-group row">
+            <div className="col-sm-12">
+              <CityFilter cities={cities} onFilter={this.onFilter} value={cityId}/>
+            </div>
+          </div>
+          <div className="form-group row">
+            <div className="col-sm-12">
+              <SortFilter onFilter={this.onFilter} value={orderBy}/>
             </div>
           </div>
           {this.renderCategoriesFilter()}
@@ -85,7 +128,7 @@ class placesFilter extends React.Component {
       </div>
     );
   }
-};
+}
 
 const initMapStateToProps = state => {
   return {
@@ -93,4 +136,9 @@ const initMapStateToProps = state => {
   };
 };
 
-export default connect(initMapStateToProps, { getPlaces })(placesFilter);
+export default connect(initMapStateToProps,
+  {
+    getPlaces,
+    getPlacesCategories,
+    getCitiesByCountryId
+  })(placesFilter);

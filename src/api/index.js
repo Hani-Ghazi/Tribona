@@ -1,6 +1,6 @@
 import axios from "axios";
 import qs from "query-string";
-
+import { clearObject } from "../utils";
 
 const instance = axios.create({
   baseURL: process.env.REACT_APP_API_URL
@@ -15,7 +15,8 @@ instance.defaults.headers.common["Authorization"] = access_token ? access_token 
 
 instance.interceptors.request.use(config => {
   if (!!config.filters || !!config.pagination) {
-    config.url += `?${qs.stringify({ ...config.filters, ...config.pagination })}`;
+    const filters = clearObject(Object.assign({}, config.filters, config.pagination));
+    config.url += `?${qs.stringify(filters)}`;
   }
   return config;
 });
@@ -23,9 +24,10 @@ instance.interceptors.request.use(config => {
 instance.interceptors.response.use(res => {
   return res.data;
 }, error => {
-  if (error.response.status === 401 || error.response.status === 403) {
+  if (error && error.response && error.response.status &&
+    (error.response.status === 401 || error.response.status === 403)) {
     localStorage.removeItem("triponaUser");
-    // window.location.href = "/";
+    window.location.href = "/";
   }
   return Promise.reject(error.response.data);
 });

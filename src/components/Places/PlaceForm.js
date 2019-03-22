@@ -3,7 +3,7 @@ import StaticSlider from "../sliders/StaticSlider";
 import { FaImages } from "react-icons/fa";
 import { toast } from "react-toastify";
 import api from "../../api/utils";
-import { Images, Select, AutoCompleteInput } from "../Partials";
+import { Images, AutoCompleteInput } from "../Partials";
 import { connect } from "react-redux";
 import { getPlacesCategories, createPlace, updatePlace, getPlaceById } from "../../actions/Places";
 import { getCitiesByCountryId } from "../../actions/Country";

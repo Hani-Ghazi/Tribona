@@ -41,7 +41,7 @@ const CountryFilter = ({ countries, onFilter, classes, value }) => (
       })
     }}
     isClearable
-    options={(countries || []).map(x => ({ ...x, label: x.countryName, value: x.geonameId }))}
+    options={(countries || []).map(x => ({ ...x, label: x.countryName, valueKey: 'geonameId', value: x.geonameId }))}
     className="my-select"
     components={{ Option: CustomOption, SingleValue }}
     onChange={(selectedOption) => onFilter(selectedOption, "countryId")}

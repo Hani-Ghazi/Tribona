@@ -5,6 +5,7 @@ import {
   POPULAR_PLACES_FETCHED
 } from "../types";
 import api from "../api/places";
+import {defaultPagination} from "../utils";
 
 export const getPlaces = (params) => dispatch =>
   api.getPlaces(params).then(places => dispatch({ type: PLACES_FETCHED, payload: places }));

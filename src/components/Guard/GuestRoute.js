@@ -3,12 +3,11 @@ import PropTypes from "prop-types";
 import { Route } from "react-router-dom";
 import { connect } from "react-redux";
 import { startLoading } from "../../actions/Loaders";
+import { scrollToTop } from "../../utils";
+
 
 const GuestRoute = ({ isAuthenticated, component: Component, ...rest }) => {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
+  scrollToTop();
   return <Route {...rest} render={props => <Component {...props}/>}/>;
 };
 

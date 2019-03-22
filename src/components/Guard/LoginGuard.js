@@ -2,12 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
+import {scrollToTop} from "../../utils";
 
 const LoginGuard = ({ isAuthenticated, component: Component, ...rest }) => {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
+  scrollToTop();
   return <Route {...rest} render={props =>
     isAuthenticated ? <Redirect to={"/"}/> : <Component {...props}/>}
   />;

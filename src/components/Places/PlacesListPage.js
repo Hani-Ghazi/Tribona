@@ -4,25 +4,25 @@ import PlacesFilter from "./placesFilter";
 import PlacesGrid from "./PlacesGrid";
 import { connect } from "react-redux";
 import { getPlaces } from "../../actions/Places";
-import { startUpdating, finishedUpdating } from "../../actions/Loaders";
-import ActionLoader from "../Loaders/actionLoader";
-
+import { PageLoader } from "../Loaders";
+import { scrollToTop } from "../../utils";
 
 class PlacesListPage extends Component {
 
   state = {
-    isUpdating: true
+    isLoading: true
   };
 
   componentDidMount() {
-    this.props.startUpdating();
-    this.props.getPlaces().then(() => this.setState({ isUpdating: false }));
+    this.props.getPlaces().then(() => this.setState({ isLoading: false }, scrollToTop));
   }
-
 
   render() {
     const { places, placesCategories } = this.props;
-    const { isUpdating } = this.state;
+    const { isLoading } = this.state;
+    if (isLoading) {
+      return <PageLoader/>;
+    }
     return (
       <Fragment>
         <StaticSlider curveImage={require("../../assets/svgs/curve.svg")}/>
@@ -47,4 +47,4 @@ const initMapStateToProps = state => {
   };
 };
 
-export default connect(initMapStateToProps, { getPlaces, startUpdating, finishedUpdating })(PlacesListPage);
+export default connect(initMapStateToProps, { getPlaces })(PlacesListPage);

@@ -9,7 +9,7 @@ const CityFilter = ({ cities, onFilter, classes, value }) => (
     required
     value={value}
     isClearable
-    options={(cities || []).map(x => ({ ...x, label: x.cityName, value: x.geonameId }))}
+    options={(cities || []).map(x => ({ ...x, label: x.cityName, valueKey: 'geonameId', value: x.geonameId }))}
     className="my-select"
     onChange={(selectedOption) => onFilter(selectedOption, "cityId")}
   />

@@ -31,8 +31,7 @@ import {
   AsyncEditProfilePage,
   AsyncMyFavoritePage
 } from "./components/AsyncComponent/AsyncComponent";
-import GuestRoute from "./components/Guard/GuestRoute";
-import LoginGuard from "./components/Guard/LoginGuard";
+import { GuestRoute, TorristRoute, NotAuthenticatedRoute } from "./components/Guard";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import ShouldLoginModal from "./components/Partials/ShouldLoginModal";
@@ -44,15 +43,15 @@ const App = ({ location }) => {
     <Fragment>
       <Header/>
       <Switch>
-        <LoginGuard location={location} path="/login" exact component={LoginPage}/>
-        <LoginGuard location={location} path="/sign-up" exact component={SignUpPage}/>
-        <LoginGuard location={location} path="/forget-password" exact component={ForgetPasswordPage}/>
-        <LoginGuard location={location} path="/verify" exact component={VerifyPage}/>
-        <LoginGuard location={location} path="/reset" exact component={ResetPAge}/>
+        <NotAuthenticatedRoute location={location} path="/login" exact component={LoginPage}/>
+        <NotAuthenticatedRoute location={location} path="/sign-up" exact component={SignUpPage}/>
+        <NotAuthenticatedRoute location={location} path="/forget-password" exact component={ForgetPasswordPage}/>
+        <NotAuthenticatedRoute location={location} path="/verify" exact component={VerifyPage}/>
+        <NotAuthenticatedRoute location={location} path="/reset" exact component={ResetPAge}/>
         <GuestRoute location={location} path="/" exact component={AsyncHomePage}/>
         <GuestRoute location={location} path="/places" exact component={AsyncPlacesListPage}/>
-        <GuestRoute location={location} path="/places/add" exact component={AsyncPlaceFormPage}/>
-        <GuestRoute location={location} path="/places/edit/:id" exact component={AsyncPlaceFormPage}/>
+        <TorristRoute location={location} path="/places/add" exact component={AsyncPlaceFormPage}/>
+        <TorristRoute location={location} path="/places/edit/:id" exact component={AsyncPlaceFormPage}/>
         <GuestRoute location={location} path="/places/:id" exact component={AsyncPlaceDetailsPage}/>
         <GuestRoute location={location} path="/journeys" exact component={AsyncJourneysListPage}/>
         <GuestRoute location={location} path="/journeys/add" exact component={AsyncJourneyFormPage}/>
