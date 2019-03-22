@@ -7,13 +7,16 @@ const { REACT_APP_PUBLIC_FILES } = process.env;
 
 
 const ImagesGallery = ({ images, openLightBoxModal }) => (
-  <div className="cardHolder album">
+  <div className="row p-t-10">
     {
-      images.map((img, key) =>
-        <div key={key} className="image-link"
-             onClick={() => openLightBoxModal(images)}>
-          <img className="card-grid-popup2 test" src={`${REACT_APP_PUBLIC_FILES + img}`}
-               alt=""/>
+      images.map((image, key) =>
+        <div className="col-md-3 dis-inline" key={key}>
+          <img
+            onClick={() => openLightBoxModal(images)}
+            src={REACT_APP_PUBLIC_FILES + image}
+            alt=''
+            className="img-border img-fluid"
+          />
         </div>
       )
     }

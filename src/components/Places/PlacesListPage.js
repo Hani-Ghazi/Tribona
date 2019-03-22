@@ -7,6 +7,13 @@ import { getPlaces } from "../../actions/Places";
 import { PageLoader } from "../Loaders";
 import { scrollToTop } from "../../utils";
 
+
+const defaultPlacesFilters = {
+  filters: {
+    orderBy: "updatedAt_DESC"
+  }
+};
+
 class PlacesListPage extends Component {
 
   state = {
@@ -14,7 +21,7 @@ class PlacesListPage extends Component {
   };
 
   componentDidMount() {
-    this.props.getPlaces().then(() => this.setState({ isLoading: false }, scrollToTop));
+    this.props.getPlaces(defaultPlacesFilters).then(() => this.setState({ isLoading: false }, scrollToTop));
   }
 
   render() {

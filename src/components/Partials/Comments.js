@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
+import { FaRegTrashAlt } from "react-icons/fa";
 import { connect } from "react-redux";
 
 const { REACT_APP_PUBLIC_FILES } = process.env;
@@ -69,7 +69,7 @@ class Comments extends React.Component {
             !!commentsCount && comments.map((comment, key) => this.renderComment(comment, key))
           }
         </ul>
-        <div className="mt-5  mx-auto my-auto form-comment">
+        <div className="mt-5 form-comment">
           <div className="row mt-3">
             <div className="col-12 ">
               <div className="form-group text-center">

@@ -37,6 +37,10 @@ class PlaceForm extends Component {
         this.props.getPlaceById(id),
         this.props.getPlacesCategories()
       ]).then(res => {
+        if (res[0].payload.countryId) {
+          this.props.getCitiesByCountryId(res[0].payload.countryId)
+            .then(cities => this.setState({ cities }));
+        }
         this.setState({
           data: { ...res[0].payload },
           categories: res[1]
@@ -150,7 +154,7 @@ class PlaceForm extends Component {
   };
 
   render() {
-    const { data, cities, categories, country, city } = this.state;
+    const { data, cities, categories, country, city, categoryId } = this.state;
     return (
       <Fragment>
         <StaticSlider curveImage={require("../../assets/svgs/curvegrey.svg")}/>
@@ -169,15 +173,20 @@ class PlaceForm extends Component {
                   </div>
                   <div className="form-group pos-relative">
                     <label htmlFor="">Select Category</label>
-                    <PlaceCategorySelect onFilter={this.onFilter} categories={categories}/>
+                    <PlaceCategorySelect
+                      onFilter={this.onFilter}
+                      categories={categories}
+                      value={categoryId}
+                      categoryId={(data.category || {}).id}
+                    />
                   </div>
                   <div className="form-group pos-relative">
                     <label htmlFor="">Select Country</label>
-                    <CountryFilter onFilter={this.onFilter} value={country}/>
+                    <CountryFilter onFilter={this.onFilter} value={country} geonameId={data.countryId}/>
                   </div>
                   <div className="form-group pos-relative">
                     <label htmlFor="">Select City</label>
-                    <CityFilter cities={cities} onFilter={this.onFilter} value={city}
+                    <CityFilter cities={cities} onFilter={this.onFilter} geonameId={data.cityId} value={city}
                     />
                   </div>
                   <div className="form-group">

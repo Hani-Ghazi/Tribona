@@ -14,9 +14,7 @@ import {
 import {
   openLoginModal
 } from "../../actions/Modals";
-import { finishedLoading, finishedUpdating, startUpdating } from "../../actions/Loaders";
 import PropTypes from "prop-types";
-import GoogleMapReact from "google-map-react";
 import {
   Favorite,
   Comments,
@@ -28,31 +26,32 @@ import {
   PopularAside,
   MarkerInput
 } from "../Partials";
-import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { IoIosCreate } from "react-icons/io";
-import ActionLoader from "../Loaders/actionLoader";
+import { PageLoader, ActionLoader } from "../Loaders";
+import { scrollToTop } from "../../utils";
 
 class PlaceDetails extends Component {
   state = {
     isOpen: false,
     currentIndex: 0,
     place: null,
-    isUpdating: false
+    isUpdating: false,
+    isLoading: true
   };
 
   componentDidMount() {
     const id = this.props.match.params.id;
     this.props.getPlaceById(id).then(() => {
-      this.setState({ place: this.props.place });
+      this.setState({ place: this.props.place }, scrollToTop);
       this.props.getPlaceComments(id).then(comments => {
-        this.props.finishedLoading();
         this.setState({
           place: {
             ...this.props.place,
             comments: comments.payload
-          }
-        });
+          },
+          isLoading: false
+        }, scrollToTop);
       });
     });
   }
@@ -108,13 +107,14 @@ class PlaceDetails extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.place && this.props.place && nextProps.place.id && this.props.place.id && nextProps.place.id !== this.props.place.id) {
       const { id } = nextProps.place;
-      this.setState({ place: nextProps.place });
+      this.setState({ place: nextProps.place, isUpdating: true });
       this.props.getPlaceComments(id).then(comments => this.setState({
         place: {
           ...nextProps.place,
           comments: comments.payload
-        }
-      }));
+        },
+        isUpdating: false
+      }, scrollToTop));
     }
   }
 
@@ -153,110 +153,115 @@ class PlaceDetails extends Component {
   changeRating = newRating => {
     this.setState({ isUpdating: true });
     const { place: { id } } = this.state;
-    this.setState({ isUpdating: true });
     this.props.ratePlace(id, newRating)
       .then(() => {
-        this.setState({ place: { ...this.state.place, myRating: newRating }, isUpdating: false });
+        this.setState({
+          place: {
+            ...this.state.place, myRating: newRating
+          },
+          isUpdating: false
+        });
       });
 
   };
 
   render() {
     const { popularPlaces, isAuthenticated, userId } = this.props;
-    const { place, isUpdating } = this.state;
+    const { place, isUpdating, isLoading } = this.state;
+    if (isLoading) {
+      return <PageLoader/>;
+    }
     return (
       <Fragment>
         {
           isUpdating && <ActionLoader/>
         }
-        {
-          place &&
-          <Fragment>
-            <SliderWithScroll slide={place}/>
-            <section id="section3" className="tour-list-sidebar tour-list-sidebar-2-col">
-              <div className="container-fluid">
-                <div className="row">
-                  <div className="col-xs-12 col-md-6 col-lg-3 ml-lg-5 mt-5 mt-lg-0 mx-auto my-3">
-                    <UserWidget user={place}/>
-                    <div className="mb-lg-3 mb-4  text-center">
-                      <Link to={"/places"} role="button" className="btn-gallery mb-2 w-100 d-lg-inline-block d-block">
-                        <span id="btnFA"
-                              className="btn  btn-outline-danger pt-2 mr-1  px-3 w-100">#{place.category.nameEn}</span>
-                      </Link>
-                    </div>
-                    <div className="row">
-                      <div className="col text-center">
-                        <StarRatings
-                          changeRating={this.changeRating}
-                          numberOfStars={5}
-                          name='rating'
-                          rating={place.myRating || 0}
-                          starRatedColor="#f2b01e"
-                          starDimension="40px"
-                          starSpacing="8px"
-                        />
-                      </div>
-                    </div>
-                    <div className="row text-center">
-                      <div className="col align-self-md-center">
-                        <Like isLike={!!place.isLiked} onChange={this.changeLikeStatus}/>
-                      </div>
-                      <div className="col align-self-md-center">
-                        <Favorite isFav={!!place.isFavorite} onChange={this.changeFavStatus}/>
-                      </div>
-                      <div className="col align-self-md-center">
-                        <Follow isFollowOwner={!!place.isFollowOwner} userId={place.ownerId}
-                                cb={this.changeFollowStatus}/>
-                      </div>
-                      {
-                        isAuthenticated && userId === place.ownerId &&
-                        <div className="col align-self-md-center">
-                          <IoIosCreate size="2em" className="pointer"
-                                       onClick={() => this.props.history.push(`edit/${place.id}`)}/>
-                        </div>
-                      }
-                    </div>
-                    <div id="instasidebar" className="grid2 runsidebar  text-center">
-                      <h6 className="black semibold mx-4 mt-3 mb-2 underline-title">Popular PLaces</h6>
-                      <PopularAside list={popularPlaces} action={this.props.getPlaceById}/>
+        <Fragment>
+          <SliderWithScroll slide={place}/>
+          <section id="section3" className="tour-list-sidebar tour-list-sidebar-2-col">
+            <div className="container-fluid">
+              <div className="row">
+                <div className="col-xs-12 col-md-6 col-lg-3 ml-lg-5 mt-5 mt-lg-0 mx-auto my-3">
+                  <UserWidget user={place}/>
+                  <span className="btn active-category w-100 btn-outline-danger pt-2 mr-1 mb-4 px-3 w-100">
+                    #{place.category.nameEn}
+                  </span>
+                  <div className="row">
+                    <div className="col text-center">
+                      <StarRatings
+                        changeRating={this.changeRating}
+                        numberOfStars={5}
+                        name='rating'
+                        rating={place.myRating || 0}
+                        starRatedColor="#f2b01e"
+                        starDimension="40px"
+                        starSpacing="8px"
+                      />
                     </div>
                   </div>
-                  <div className="col-xs-12 col-md-11 col-lg-8 single-tour">
-                    <div className="row">
-                      <div className="col-xs-12 col-md-12 col-lg-12">
-                        <h6 className="underline-title">Images</h6>
-                        <ImagesGallery images={place.images}/>
-                        <div className="m-t-30">
-                          <h6 className="underline-title">Map Location</h6>
-                          <MarkerInput
-                            marker={{ longitude: place.longitude, latitude: place.latitude }}
-                            center={{latitude: place.latitude, longitude: place.longitude}}
-                            disable={true}
-                          />
-                        </div>
-                        <div className="m-t-30">
-                          <h6 className="underline-title">Description</h6>
-                          {place.description}
-                        </div>
-                        <div className="m-t-30">
-                          <h6 className="underline-title">Review Details</h6>
-                          <DetailedRate ratings={place.ratings} ratingsAvg={place.ratingsAvg}/>
-                        </div>
-                        <div className="m-t-30">
-                          <h6 className="underline-title m-b-0">Comments</h6>
-                          <Comments comments={place.comments || []} onAdd={this.onComment}
-                                    onRemove={this.onRemoveComment}/>
+                  <div className="row text-center">
+                    <div className="col align-self-md-center">
+                      <Like isLike={!!place.isLiked} onChange={this.changeLikeStatus}/>
+                    </div>
+                    <div className="col align-self-md-center">
+                      <Favorite isFav={!!place.isFavorite} onChange={this.changeFavStatus}/>
+                    </div>
+                    <div className="col align-self-md-center">
+                      <Follow isFollowOwner={!!place.isFollowOwner} userId={place.ownerId}
+                              cb={this.changeFollowStatus}/>
+                    </div>
+                    {
+                      isAuthenticated && userId === place.ownerId &&
+                      <div className="col align-self-md-center">
+                        <IoIosCreate size="2em" className="pointer"
+                                     onClick={() => this.props.history.push(`edit/${place.id}`)}/>
+                      </div>
+                    }
+                  </div>
+                  <div id="instasidebar" className="grid2 runsidebar  text-center">
+                    <h6 className="black semibold mx-4 mt-3 mb-2 underline-title">Popular PLaces</h6>
+                    <PopularAside list={popularPlaces} action={this.props.getPlaceById}/>
+                  </div>
+                </div>
+                <div className="col-xs-12 col-md-11 col-lg-8 single-tour">
+                  <div className="row">
+                    <div className="col-xs-12 col-md-12 col-lg-12">
+                      {
+                        (place.images && place.images.length) ?
+                        [
+                          <h6 key={1} className="underline-title" tabIndex="0">Images</h6>,
+                          <ImagesGallery key={2} images={place.images}/>
+                        ] : <Fragment/>
+                      }
+                      <div className="m-t-30">
+                        <h6 className="underline-title">Map Location</h6>
+                        <MarkerInput
+                          marker={{ longitude: place.longitude, latitude: place.latitude }}
+                          center={{ latitude: place.latitude, longitude: place.longitude }}
+                          disable={true}
+                        />
+                      </div>
+                      <div className="m-t-30">
+                        <h6 className="underline-title">Description</h6>
+                        {place.description}
+                      </div>
+                      <div className="m-t-30">
+                        <h6 className="underline-title">Review Details</h6>
+                        <DetailedRate ratings={place.ratings} ratingsAvg={place.ratingsAvg}/>
+                      </div>
+                      <div className="m-t-30">
+                        <h6 className="underline-title m-b-0">Comments</h6>
+                        <Comments comments={place.comments || []} onAdd={this.onComment}
+                                  onRemove={this.onRemoveComment}/>
 
-                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </section>
-          </Fragment>
-        }
-
+            </div>
+          </section>
+        </Fragment>
       </Fragment>
     );
   }
@@ -271,9 +276,6 @@ PlaceDetails.propTypes = {
   openLoginModal: PropTypes.func.isRequired,
   deleteComment: PropTypes.func.isRequired,
   ratePlace: PropTypes.func.isRequired,
-  finishedLoading: PropTypes.func.isRequired,
-  finishedUpdating: PropTypes.func.isRequired,
-  startUpdating: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string.isRequired
@@ -303,8 +305,5 @@ export default connect(initMapStateToProps, {
   addOrUpdateComment,
   openLoginModal,
   deleteComment,
-  ratePlace,
-  finishedLoading,
-  finishedUpdating,
-  startUpdating
+  ratePlace
 })(PlaceDetails);

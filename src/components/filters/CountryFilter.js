@@ -25,12 +25,22 @@ const SingleValue = ({ children, ...props }) => (
   </components.SingleValue>
 );
 
-const CountryFilter = ({ countries, onFilter, classes, value }) => (
+const getData = (countries) => {
+  return (countries || [])
+    .map(x => ({ ...x, label: x.countryName, valueKey: "geonameId", value: x.geonameId }));
+};
+
+const getValue = (geonameId, countries) =>
+  geonameId ?
+    getData(countries).find(x => x.geonameId === geonameId.toString())
+    : undefined;
+
+const CountryFilter = ({ countries, onFilter, classes, value, geonameId }) => (
   <Select
     placeholder={"Please select country"}
     name="country"
     required
-    value={value}
+    value={value || getValue(geonameId, countries)}
     styles={{
       SingleValue: (base) => (console.log({ base }) && {
         ...base,
@@ -42,7 +52,7 @@ const CountryFilter = ({ countries, onFilter, classes, value }) => (
       })
     }}
     isClearable
-    options={(countries || []).map(x => ({ ...x, label: x.countryName, valueKey: "geonameId", value: x.geonameId }))}
+    options={getData(countries)}
     className="my-select"
     components={{ Option: CustomOption, SingleValue }}
     onChange={(selectedOption) => onFilter(selectedOption, "countryId")}
