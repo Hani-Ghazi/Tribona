@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const scrollToTop = () =>
   window.scrollTo({
     top: 300,
@@ -16,4 +18,23 @@ export const clearObject = (obj) => {
       delete obj[key];
   });
   return obj;
+};
+
+
+export const parseDate = (date) => {
+  const diff = moment().diff(moment(date));
+  const time = moment.duration(diff)._data;
+  let temp = "";
+  if (time.days) {
+    temp += `${time.days} days`;
+  }
+  if (time.hours) {
+    if (temp !== "") temp += ", ";
+    temp += `${time.hours} hours`;
+  }
+  if (time.minutes) {
+    if (temp !== "") temp += ", ";
+    temp += `${time.minutes} minutes`;
+  }
+  return `${temp} ago`;
 };

@@ -5,9 +5,11 @@ import {
   TRIP_FETCHED
 } from "../types";
 import api from "../api/trips";
+import { defaultPagination } from "../utils";
 
 export const getTrips = (params) => (dispatch) =>
-  api.getTrips(params).then(trips => dispatch({ type: TRIPS_FETCHED, payload: trips }));
+  api.getTrips({ ...params, pagination: defaultPagination })
+    .then(trips => dispatch({ type: TRIPS_FETCHED, payload: trips }));
 
 export const getPopularTrips = (params) => (dispatch) =>
   api.getPopularTrips(params).then(trips => dispatch({ type: POPULAR_TRIPS_FETCHED, payload: trips }));

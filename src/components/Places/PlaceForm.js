@@ -108,7 +108,7 @@ class PlaceForm extends Component {
         this.props.getCitiesByCountryId(value[value.valueKey])
           .then(cities => this.setState({ cities }));
       } else {
-        this.setState({ cities: [] });
+        this.setState({ cities: [], cityId: undefined });
       }
 
     }

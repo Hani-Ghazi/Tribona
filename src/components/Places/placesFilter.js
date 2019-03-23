@@ -49,7 +49,7 @@ class placesFilter extends React.Component {
         this.props.getCitiesByCountryId(value[value.valueKey])
           .then(cities => this.setState({ cities }));
       } else {
-        this.setState({ cities: [] });
+        this.setState({ cities: [], cityId: undefined});
       }
 
     }
