@@ -31,7 +31,7 @@ import {
   AsyncEditProfilePage,
   AsyncMyFavoritePage
 } from "./components/AsyncComponent/AsyncComponent";
-import { GuestRoute, TorristRoute, NotAuthenticatedRoute } from "./components/Guard";
+import { GuestRoute, TorristRoute, NotAuthenticatedRoute, CompanyRoute } from "./components/Guard";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import ShouldLoginModal from "./components/Partials/ShouldLoginModal";
@@ -58,8 +58,8 @@ const App = ({ location }) => {
         <GuestRoute location={location} path="/journeys/edit/:id" exact component={AsyncJourneyFormPage}/>
         <GuestRoute location={location} path="/journeys/:id" exact component={AsyncJourneyDetailsPage}/>
         <GuestRoute location={location} path="/trips" exact component={AsyncTripsListPage}/>
-        <GuestRoute location={location} path="/trips/add" exact component={AsyncTripFormPage}/>
-        <GuestRoute location={location} path="/trips/:id/edit" exact component={AsyncTripDetailsPage}/>
+        <CompanyRoute location={location} path="/trips/add" exact component={AsyncTripFormPage}/>
+        <CompanyRoute location={location} path="/trips/:id/edit" exact component={AsyncTripDetailsPage}/>
         <GuestRoute location={location} path="/trips/:id" exact component={AsyncTripDetailsPage}/>
         <GuestRoute location={location} path="/users/profile/:ownerId" exact component={AsyncProfilePage}/>
         <GuestRoute location={location} path="/users/my-favorite" exact component={AsyncMyFavoritePage}/>

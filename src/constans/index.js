@@ -1,14 +1,17 @@
 const constants = {
   trips: {
     types: {
-      GROUP: "GROUP",
-      EXCLUSIVE: "EXCLUSIVE"
+      all: ["EXCLUSIVE", "GROUP_ONETIME", "GROUP_PERIODIC"],
+      EXCLUSIVE: "EXCLUSIVE",
+      GROUP_ONETIME: "GROUP_ONETIME",
+      GROUP_PERIODIC: "GROUP_PERIODIC"
     }
   },
   users: {
     roles: {
       TOURIST: "TOURIST",
-      COMPANY: "COMPANY"
+      COMPANY: "COMPANY",
+      ADMIN: "ADMIN"
     }
   },
   filters: {
