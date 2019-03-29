@@ -19,5 +19,11 @@ export default {
   deleteStep: (id) => api.delete(`trips/steps/${id}`),
   stepDisLike: (id) => api.delete(`trips/steps/${id}/like`),
   stepLike: (id) => api.put(`trips/steps/${id}/like`),
-  rateTrip: (id, newRating) => api.post(`trips/${id}/rating`, { value: newRating })
+  rateTrip: (id, newRating) => api.post(`trips/${id}/rating`, { value: newRating }),
+  stepComment: (stepId, comment) =>
+    api.post(`trips/steps/${stepId}/comments${comment.id ? "/" + comment.id : ""}`, comment),
+  rateStep: (stepId, value) => api.post(`trips/steps/${stepId}/rating`, { value }),
+  getStepsComments: (stepId) => api.get(`trips/steps/${stepId}/comments`),
+  deleteStepComment: (stepId, commentId) => api.delete(`trips/steps/${stepId}/comments/${commentId}`),
+  getFeatures: () => api.get(`trips/features`)
 };

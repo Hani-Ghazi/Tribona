@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 import Select from "react-select";
 import constants from "../../constans";
 
@@ -15,4 +14,4 @@ const SortFilter = ({ onFilter, classes, value }) => (
   />
 );
 
-export default connect()(SortFilter);
+export default SortFilter;

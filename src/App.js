@@ -59,7 +59,7 @@ const App = ({ location }) => {
         <GuestRoute location={location} path="/journeys/:id" exact component={AsyncJourneyDetailsPage}/>
         <GuestRoute location={location} path="/trips" exact component={AsyncTripsListPage}/>
         <CompanyRoute location={location} path="/trips/add" exact component={AsyncTripFormPage}/>
-        <CompanyRoute location={location} path="/trips/:id/edit" exact component={AsyncTripDetailsPage}/>
+        <CompanyRoute location={location} path="/trips/edit/:id" exact component={AsyncTripFormPage}/>
         <GuestRoute location={location} path="/trips/:id" exact component={AsyncTripDetailsPage}/>
         <GuestRoute location={location} path="/users/profile/:ownerId" exact component={AsyncProfilePage}/>
         <GuestRoute location={location} path="/users/my-favorite" exact component={AsyncMyFavoritePage}/>

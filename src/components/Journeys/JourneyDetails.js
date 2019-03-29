@@ -28,6 +28,7 @@ import ActionLoader from "../Loaders/actionLoader";
 import PageLoader from "../Loaders/pageLoader";
 import { IoIosCreate } from "react-icons/io";
 import { FaMapMarkerAlt } from "react-icons/fa";
+import JourneyStep from "./JourneyStep";
 
 
 class JourneyDetails extends Component {
@@ -173,7 +174,7 @@ class JourneyDetails extends Component {
 
   onSelectStep = () => {
     const { journey: { steps } } = this.state;
-    this.props.openStepsDrawer({ steps });
+    this.props.openStepsDrawer({ steps, StopComponent: JourneyStep });
   };
 
   render() {

@@ -1,17 +1,18 @@
 import React, { Component, Fragment } from "react";
-import { connect } from "react-redux";
+import StarRatings from "react-star-ratings";
 import SliderWithScroll from "../sliders/SliderWithScroll";
 import PropTypes from "prop-types";
-import ActionLoader from "../Loaders/actionLoader";
+import moment from "moment";
+import TripStep from "./TripStep";
 
+import { connect } from "react-redux";
+import { ActionLoader, PageLoader } from "../Loaders";
 import {
   openLoginModal,
   openStepsDrawer
 } from "../../actions/Modals";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { IoIosCreate } from "react-icons/io";
-import constants from "../../constans";
-import moment from "moment";
 import {
   getTripById,
   getTripsComments,
@@ -24,10 +25,11 @@ import {
 } from "../../actions/Trips";
 import { Favorite, Follow, Like, DetailedRate, Comments } from "../Partials";
 import { toast } from "react-toastify";
-import PageLoader from "../Loaders/pageLoader";
-import StarRatings from "react-star-ratings";
+import {scrollToTop} from "../../utils";
 
 const { REACT_APP_PUBLIC_FILES } = process.env;
+const { trips: { types } } = require("../../constans");
+
 
 class TripDetails extends Component {
   state = {
@@ -52,7 +54,7 @@ class TripDetails extends Component {
                 steps: temp[1]
               },
               isLoading: false
-            });
+            }, scrollToTop);
           });
       });
   }
@@ -78,7 +80,7 @@ class TripDetails extends Component {
 
   onSelectStep = () => {
     const { trip: { steps } } = this.state;
-    this.props.openStepsDrawer({ steps });
+    this.props.openStepsDrawer({ steps, StopComponent: TripStep });
   };
 
   onComment = (text) => {
@@ -235,12 +237,15 @@ class TripDetails extends Component {
                       <span className="btn btn-outline-danger pt-2 px-3 float-right"
                             onClick={() => this.onSelectStep()}>See Steps <FaMapMarkerAlt/></span></h4>
                     <div className="row">
-                      <div className="col-lg-9 col-sm-6 col-12 text-left">
-                        <h6 className="primary-color semibold price-big">${trip.price}<span
-                          className="semibold subtitle">&nbsp;/ {trip.type}</span>
+                      <div className="col-lg-8 col-sm-6 col-12 text-left">
+                        <h6 className="primary-color semibold price-big">${trip.price}
+                          {
+                            types.all.includes(trip.type) &&
+                            <span className="semibold subtitle">&nbsp;/ {types[trip.type]}</span>
+                          }
                         </h6>
                       </div>
-                      <div className="col-sm-6 col-lg-3 text-left ml-sm-0">
+                      <div className="col-sm-6 col-lg-4 text-left ml-sm-0">
                         <div className="row text-center">
                           <div className="col align-self-md-center">
                             <Like isLike={!!trip.isLiked} onChange={this.changeLikeStatus}/>

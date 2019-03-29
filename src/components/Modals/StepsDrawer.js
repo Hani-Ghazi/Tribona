@@ -12,7 +12,7 @@ class StepsDrawer extends Component {
   };
 
   render() {
-    const { isStepsDrawerOpen, steps, closeStepsDrawer } = this.props;
+    const { isStepsDrawerOpen, steps, closeStepsDrawer, StopComponent } = this.props;
     const { currentIndex } = this.state;
     if (!isStepsDrawerOpen) {
       return <Fragment/>;
@@ -43,7 +43,7 @@ class StepsDrawer extends Component {
               </ul>
             </div>
           </div>
-          {step && <JourneyStep step={step}/>}
+          {step && <StopComponent step={step}/>}
         </div>
       </Drawer>
     );

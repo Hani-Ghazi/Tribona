@@ -1,10 +1,16 @@
 import React, { Component, Fragment } from "react";
 import StaticSlider from "../sliders/StaticSlider";
+import DatePicker from "react-datepicker";
+import moment from "moment";
 import { FaImages } from "react-icons/fa";
 import { toast } from "react-toastify";
 import api from "../../api/utils";
-import { Images } from "../Partials";
-import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import Modal from "react-responsive-modal";
+import _ from "lodash";
+import placesAPI from "../../api/places";
+import TripAPI from "../../api/trips";
+
 import {
   createTrip,
   updateTrip,
@@ -14,40 +20,15 @@ import {
   createStep,
   updateStep
 } from "../../actions/Trips";
-import { getCitiesByCountryId } from "../../actions/Country";
-import { getPlaces } from "../../actions/Places";
-import isEmpty from "lodash/isEmpty";
-import PropTypes from "prop-types";
+import { Images } from "../Partials";
+import { connect } from "react-redux";
 import { FaPlus } from "react-icons/fa";
-import Modal from "react-responsive-modal";
-import { finishedLoading, startUpdating, finishedUpdating } from "../../actions/Loaders";
-import Select, { components } from "react-select";
-import constants from "../../constans";
-import PageLoader from "../Loaders/pageLoader";
+import { TripTypeSelector, PlaceSelector } from "../filters";
+import { TripFeaturesSelector } from "../filters";
+import { PageLoader, ActionLoader } from "../Loaders";
 
+const { trips: { types } } = require("../../constans");
 
-const { REACT_APP_PUBLIC_FILES } = process.env;
-
-
-const CustomOption = ({ isDisabled, innerProps, data }) =>
-  !isDisabled ? (
-    <div {...innerProps}>
-      <span className="p-l-10">
-        <img className="p-r-10" src={REACT_APP_PUBLIC_FILES + `flags/${data.countryCode}.png`} alt={data.countryCode}/>
-        {data.label}
-      </span>
-    </div>
-  ) : null;
-
-const SingleValue = ({ children, ...props }) => (
-  <components.SingleValue {...props}>
-    <span className="p-l-10">
-        <img className="p-r-10" src={REACT_APP_PUBLIC_FILES + `flags/${props.data.countryCode}.png`}
-             alt={props.data.countryCode}/>
-      {props.data.label}
-      </span>
-  </components.SingleValue>
-);
 
 class TripForm extends Component {
   state = {
@@ -55,6 +36,9 @@ class TripForm extends Component {
       images: [],
       name: "",
       description: "",
+      duration: 0,
+      startDate: new Date(),
+      features: [],
       steps: []
     },
     places: [],
@@ -62,29 +46,39 @@ class TripForm extends Component {
     newStep: {},
     steps: [],
     isLoading: true,
-    tripTypes: Object.values(constants.trips.types)
+    isUpdating: false
   };
 
   componentDidMount() {
     if (!!this.props.match.params.id) {
       const id = this.props.match.params.id;
-      const { getTripById, getTripSteps, getPlaces } = this.props;
+      const { getTripById, getTripSteps } = this.props;
       Promise.all([
         getTripById(id),
         getTripSteps(id),
-        getPlaces()
+        placesAPI.getPlaces(),
+        TripAPI.getFeatures()
       ])
         .then(temp => {
-          this.props.finishedLoading();
           this.setState({
             data: { ...temp[0].payload },
             steps: temp[1],
             places: temp[2],
+            featuresOptions: temp[3],
             isLoading: false
           });
         });
     } else {
-      this.props.getPlaces().then(res => this.setState({ places: res.payload, isLoading: false }));
+      Promise.all([
+        placesAPI.getPlaces(),
+        TripAPI.getFeatures()
+      ]).then(res => {
+        this.setState({
+          places: res[0],
+          featuresOptions: res[1],
+          isLoading: false
+        });
+      });
     }
   }
 
@@ -93,6 +87,7 @@ class TripForm extends Component {
     const types = ["image/png", "image/jpeg", "image/jpg", "image/gif"];
     const files = Array.from(e.target.files);
     let isValid = false;
+    this.setState({ isUpdating: true });
     files.forEach(file => {
       if (types.indexOf(file.type) === -1) {
         toast.error("Image type not supported! Please try another one", {
@@ -113,7 +108,8 @@ class TripForm extends Component {
           [key]: {
             ...this.state[key],
             images: [...this.state[key].images, ...images.map(img => img.filename)]
-          }
+          },
+          isUpdating: false
         });
       });
     }
@@ -145,9 +141,11 @@ class TripForm extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    const { data } = this.state;
+    const { data, features } = this.state;
     const errors = this.validate(data);
-    if (isEmpty(errors)) {
+    if (_.isEmpty(errors)) {
+      data.features = features.map(x => x.id);
+      data.duration = parseInt(data.duration || 0, 10);
       const { createTrip, updateStep } = this.props;
       (!!data.id ? updateStep(data) : createTrip(data))
         .then(trip => {
@@ -183,7 +181,8 @@ class TripForm extends Component {
     e.preventDefault();
     const { newStep } = this.state;
     const { createStep, updateStep } = this.props;
-    (newStep.id ? updateStep({ ...newStep, placeId: newStep.placeId || newStep.place.id }) : createStep(newStep))
+    const temp = { ...newStep, placeId: newStep.placeId || newStep.place.id };
+    (newStep.id ? updateStep(temp) : createStep(temp))
       .then(step => {
         toast.success("Trip Step Saved Successfully", {
           hideProgressBar: true
@@ -205,16 +204,34 @@ class TripForm extends Component {
       });
   };
 
-  onSelect = (selectedOptions, key) => {
+  onFilter = (value, key) => {
     this.setState({
-      data: { ...this.state.data, [key]: selectedOptions },
-      errors: { ...this.state.errors, [key]: null }
+      data: { ...this.state.data, [key]: _.get(value, `${(value || {}).valueKey}`, undefined) },
+      [key]: value
     });
   };
 
+  renderStartDate = () =>
+    <div className="form-group">
+      <label>Start Date</label>
+      <DatePicker
+        className="form-control"
+        selected={this.state.data.startDate}
+        onChange={(date) => this.setState({ data: { ...this.state.data, startDate: date } })}
+      />
+    </div>;
+
+  renderDuration = () =>
+    <div className="form-group">
+      <label>Duration <strong>(in days)</strong></label>
+      <input type="number" name="duration" className="form-control"
+             value={this.state.data.duration} onChange={this.onChange}
+             placeholder="Please enter the trip duration*" required="required"/>
+    </div>;
+
 
   render() {
-    const { data, newStep, isOpen, places, isLoading, tripTypes } = this.state;
+    const { data, newStep, isUpdating, isOpen, places, isLoading, type, featuresOptions, features } = this.state;
     return (
       <Fragment>
         <StaticSlider curveImage={require("../../assets/svgs/curvegrey.svg")}/>
@@ -222,7 +239,11 @@ class TripForm extends Component {
           isLoading && <PageLoader/>
         }
         {
-          !isLoading && <section id="pagesection">
+          !isLoading &&
+          <section id="pagesection">
+            {
+              isUpdating && <ActionLoader/>
+            }
             <div className="container">
               <div className="row">
                 <div className="col-md-12 col-12 order-md-first order-last">
@@ -236,15 +257,16 @@ class TripForm extends Component {
                     </div>
                     <div className="form-group">
                       <label htmlFor="form_name p-l-10">Type</label>
-                      <Select
-                        placeholder={"Please select trip type"}
-                        name="type"
-                        required
-                        value={data.type}
-                        options={tripTypes.map(x => ({ label: x, value: x }))}
-                        className="my-select"
-                        onChange={(selectedOption) => this.onSelect(selectedOption, "type")}
-                      />
+                      <TripTypeSelector value={type} type={data.type} onFilter={this.onFilter}/>
+                    </div>
+                    {
+                      data.type === types.GROUP_ONETIME && [this.renderStartDate(), this.renderDuration()]
+                    }
+                    {
+                      data.type === types.GROUP_PERIODIC && this.renderDuration()
+                    }
+                    <div>
+
                     </div>
                     <div className="form-group">
                       <label>Capacity</label>
@@ -257,6 +279,14 @@ class TripForm extends Component {
                       <input type="number" name="price" className="form-control"
                              value={data.price} onChange={this.onChange}
                              placeholder="Please enter the trip price*" required="required"/>
+                    </div>
+                    <div className="form-group">
+                      <label>Features</label>
+                      <TripFeaturesSelector
+                        features={featuresOptions}
+                        value={features}
+                        onFilter={this.onFilter}
+                        selectedFeatures={data.features}/>
                     </div>
                     <div className="form-group">
                       <label>Description</label>
@@ -315,14 +345,19 @@ class TripForm extends Component {
                               <h3 className="text-left">Step form</h3>
                               <form>
                                 <div className="form-group">
-                                  <Select
-                                    placeholder={"Please Select Place"}
-                                    name="placeId"
-                                    required
-                                    value={newStep.placeId}
-                                    options={places.map(x => ({ label: x.name, value: x.id }))}
-                                    className="my-select"
-                                    onChange={(selectedOption) => this.onSelectStep(selectedOption, "placeId")}
+                                  <PlaceSelector
+                                    places={places}
+                                    value={this.state.place}
+                                    placeId={newStep.place}
+                                    onFilter={(value, key) =>
+                                      this.setState({
+                                        newStep: {
+                                          ...this.state.newStep,
+                                          [key]: value[key],
+                                          place: value
+                                        }
+                                      })
+                                    }
                                   />
                                 </div>
                                 <div className="form-group text-left">
@@ -388,18 +423,13 @@ class TripForm extends Component {
 }
 
 TripForm.propTypes = {
-  getCitiesByCountryId: PropTypes.func.isRequired,
   createStep: PropTypes.func.isRequired,
   createTrip: PropTypes.func.isRequired,
   updateTrip: PropTypes.func.isRequired,
   getTripById: PropTypes.func.isRequired,
   getTripSteps: PropTypes.func.isRequired,
   deleteStep: PropTypes.func.isRequired,
-  updateStep: PropTypes.func.isRequired,
-  getPlaces: PropTypes.func.isRequired,
-  finishedLoading: PropTypes.func.isRequired,
-  startUpdating: PropTypes.func.isRequired,
-  finishedUpdating: PropTypes.func.isRequired
+  updateStep: PropTypes.func.isRequired
 };
 
 
@@ -411,16 +441,11 @@ const initMapStateToProps = state => {
 };
 
 export default connect(initMapStateToProps, {
-  getCitiesByCountryId,
   createStep,
   updateStep,
-  getPlaces,
   createTrip,
   updateTrip,
   getTripById,
   getTripSteps,
-  deleteStep,
-  finishedLoading,
-  startUpdating,
-  finishedUpdating
+  deleteStep
 })(TripForm);

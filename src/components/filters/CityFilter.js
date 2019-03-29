@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 import Select from "react-select";
 
 const getData = (cities) => {
@@ -25,4 +24,4 @@ const CityFilter = ({ cities, onFilter, classes, value, geonameId }) => (
   />
 );
 
-export default connect()(CityFilter);
+export default CityFilter;

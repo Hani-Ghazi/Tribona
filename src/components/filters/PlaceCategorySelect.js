@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 import Select from "react-select";
 import PropTypes from "prop-types";
 
@@ -34,4 +33,4 @@ PlaceCategorySelect.propTypes = {
 };
 
 
-export default connect()(PlaceCategorySelect);
+export default PlaceCategorySelect;

@@ -5,7 +5,20 @@ const constants = {
       EXCLUSIVE: "EXCLUSIVE",
       GROUP_ONETIME: "GROUP_ONETIME",
       GROUP_PERIODIC: "GROUP_PERIODIC"
-    }
+    },
+    options: [{
+      valueKey: "value",
+      value: "EXCLUSIVE",
+      label: "EXCLUSIVE"
+    }, {
+      valueKey: "value",
+      value: "GROUP_ONETIME",
+      label: "GROUP ONETIME"
+    }, {
+      valueKey: "value",
+      value: "GROUP_PERIODIC",
+      label: "GROUP PERIODIC"
+    }]
   },
   users: {
     roles: {
