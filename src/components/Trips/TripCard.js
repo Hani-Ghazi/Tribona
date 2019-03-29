@@ -29,11 +29,12 @@ const TripCard = ({ trip }) => (
       <p className="text-truncate">
         {trip.description}
       </p>
-      <p className="flex-col-r-m">
-      <div>
-        {trip.likesCount} <IoIosThumbsUp size="1.5em" color="#ff4f81"/> {trip.commentsCount} <IoIosChatbubbles size="1.5em" color="#ff4f81"/>
+      <div className="flex-col-r-m">
+        <p>
+          {trip.likesCount} <IoIosThumbsUp size="1.5em" color="#ff4f81"/> {trip.commentsCount} <IoIosChatbubbles
+          size="1.5em" color="#ff4f81"/>
+        </p>
       </div>
-      </p>
     </div>
   </div>
 );

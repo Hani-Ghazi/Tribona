@@ -9,3 +9,6 @@ export const unFollowUser = (id) => () => api.unFollowUser(id);
 export const getUserById = (id) => () => api.userById(id);
 export const updateUser = (user) => (dispatch) =>
   api.updateUser(user).then(user => dispatch({ type: USER_UPDATE_PROFILE, payload: user }));
+
+export const getFollowers = (id, params) => () => api.getFollowers(id, params);
+export const getFollowedBy = (id, params) => () => api.getFollowedBy(id, params);

@@ -10,9 +10,10 @@ import ActionLoader from "../Loaders/actionLoader";
 import JourneysGrid from "../Journeys/JourneysGrid";
 import TripsGrid from "../Trips/TripsGrid";
 import PlacesGrid from "../Places/PlacesGrid";
-import { getUserById } from "../../actions/User";
+import { getUserById, getFollowers, getFollowedBy } from "../../actions/User";
 import CountryFilter from "../filters/CountryFilter";
 import CityFilter from "../filters/CityFilter";
+import UsersGrid from "./UsersGrid";
 
 const { REACT_APP_PUBLIC_FILES } = process.env;
 
@@ -49,19 +50,25 @@ class Profile extends Component {
     this.setState({ isUpdating: true });
     tab = tab || this.state.activeTab;
     this.fetchData(tab)
-      .then(res => this.setState({ [tab]: res.payload, isUpdating: false, activeTab: tab }))
+      .then(res =>{
+        this.setState({ [tab]: res.payload || res , isUpdating: false, activeTab: tab })
+      })
       .catch(error => this.setState({ isUpdating: false }));
   };
 
   async fetchData(tab) {
     const { pagination, filters } = this.state;
     const { ownerId } = this.props.match.params;
-    const { getJourneys, getTrips, getPlaces } = this.props;
+    const { getJourneys, getTrips, getPlaces, getFollowers, getFollowedBy, currentUser } = this.props;
     switch (tab) {
       case "JOURNEYS":
         return getJourneys({ pagination, filters: { ...filters, ownerId } });
       case "TRIPS":
         return getTrips({ pagination, filters: { ...filters, ownerId } });
+      case "FOLLOWERS":
+        return getFollowers(currentUser.id, { pagination });
+      case "FOLLOWED_BY":
+        return getFollowedBy(currentUser.id, { pagination });
       default:
         return getPlaces({ pagination, filters: { ...filters, ownerId } });
     }
@@ -84,7 +91,10 @@ class Profile extends Component {
   };
 
   render() {
-    const { isLoading, JOURNEYS, TRIPS, PLACES, activeTab, user, isUpdating, countryId, cities, cityId } = this.state;
+    const {
+      isLoading, JOURNEYS, TRIPS, PLACES, FOLLOWERS, FOLLOWED_BY,
+      activeTab, user, isUpdating, countryId, cities, cityId
+    } = this.state;
     if (isLoading) {
       return <PageLoader/>;
     }
@@ -122,6 +132,23 @@ class Profile extends Component {
                          className={`btn btn-outline-primary px-3 w-100 mr-1 mb-1 custom-btn ${activeTab === "PLACES" ? "active" : ""}`}>PLACES
                     </div>
                   </div>
+                  {
+                    (user && this.props.currentUser.id === user.id) ?
+                      <Fragment>
+                        <div className="col-12 align-self-md-center">
+                          <div onClick={() => this.onTabChanged("FOLLOWERS")}
+                               className={`btn btn-outline-primary px-3 w-100 mr-1 mb-1 custom-btn ${activeTab === "FOLLOWERS" ? "active" : ""}`}>FOLLOWERS
+                          </div>
+                        </div>
+                        <div className="col-12 align-self-md-center">
+                          <div onClick={() => this.onTabChanged("FOLLOWED_BY")}
+                               className={`btn btn-outline-primary px-3 w-100 mr-1 mb-1 custom-btn ${activeTab === "FOLLOWED_BY" ? "active" : ""}`}>FOLLOWED
+                            BY
+                          </div>
+                        </div>
+                      </Fragment>
+                      : <Fragment/>
+                  }
                 </div>
                 <div className="form-container p-3">
                   <h3 className="black bold mt-3 px-4 pb-2 text-center">Filter by</h3>
@@ -145,6 +172,12 @@ class Profile extends Component {
               {
                 activeTab === "PLACES" && <PlacesGrid places={PLACES}/>
               }
+              {
+                activeTab === "FOLLOWERS" && <UsersGrid users={FOLLOWERS}/>
+              }
+              {
+                activeTab === "FOLLOWED_BY" && <UsersGrid users={FOLLOWED_BY}/>
+              }
             </div>
           </div>
         </section>
@@ -165,5 +198,7 @@ export default connect(mapStateToProps, {
   getTrips,
   getPlaces,
   getUserById,
-  getCitiesByCountryId
+  getCitiesByCountryId,
+  getFollowers,
+  getFollowedBy
 })(Profile);
