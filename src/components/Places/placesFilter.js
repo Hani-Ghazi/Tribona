@@ -34,7 +34,8 @@ class placesFilter extends React.Component {
 
   getPlaces = () => {
     const { filters } = this.state;
-    this.props.getPlaces({ filters }).then(() => this.setState({ isUpdating: false }));
+
+    this.props.getPlaces({ filters, pagination: {...this.props.pagination} }).then(() => this.setState({ isUpdating: false }));
   };
 
   onChange = e => this.setState({
@@ -129,6 +130,12 @@ class placesFilter extends React.Component {
     );
   }
 }
+
+
+placesFilter.defaultProps = {
+  pagination: {}
+};
+
 
 const initMapStateToProps = state => {
   return {

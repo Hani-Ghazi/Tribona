@@ -21,7 +21,10 @@ class mapPlaces extends Component {
   };
 
   componentDidMount() {
-    this.props.getPlaces(defaultPlacesFilters).then(() => this.setState({ isLoading: false }, scrollToTop));
+    this.props.getPlaces({
+      ...defaultPlacesFilters,
+      pagination: { first: null }
+    }).then(() => this.setState({ isLoading: false }, scrollToTop));
   }
 
   render() {
@@ -35,7 +38,7 @@ class mapPlaces extends Component {
         <section id="section3" className="tour-list-sidebar map-full-container">
           <div className="row">
             <div className="col-md-12 col-lg-3 order-lg-first order-last mt-3 mt-lg-0">
-              <PlacesFilter placesCategories={placesCategories}/>
+              <PlacesFilter pagination={{ first: null }} placesCategories={placesCategories}/>
             </div>
             <div className={`col-lg-9 col-sm-6 col-xs-12`}>
               <MapPage places={places}/>

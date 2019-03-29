@@ -8,7 +8,10 @@ import api from "../api/places";
 import { defaultPagination } from "../utils";
 
 export const getPlaces = (params) => dispatch =>
-  api.getPlaces({ ...params, pagination: defaultPagination }).then(places => dispatch({
+  api.getPlaces({
+    pagination: { ...defaultPagination, ...params.pagination },
+    filters: params.filters
+  }).then(places => dispatch({
     type: PLACES_FETCHED,
     payload: places
   }));
