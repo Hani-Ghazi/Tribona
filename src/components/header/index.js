@@ -29,6 +29,9 @@ const Header = ({ isAuthenticated, logout, user }) => (
             <Link to={"/trips"} className={"nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3"}>Trips</Link>
           </li>
           <li className="nav-item">
+            <Link to={"/map"} className={"nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3"}>MAP</Link>
+          </li>
+          <li className="nav-item">
             <Link to={"/contact-us"} className={"nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3"}>Contact Us</Link>
           </li>
           {

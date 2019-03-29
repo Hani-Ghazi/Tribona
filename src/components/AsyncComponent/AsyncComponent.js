@@ -74,3 +74,9 @@ export const AsyncContactUsPage = Loadable({
   loader: () => import("../pages/ContactPage"),
   loading: () => <PageLoader/>
 });
+
+
+export const AsyncMApPage = Loadable({
+  loader: () => import("../pages/mapPlaces"),
+  loading: () => <PageLoader/>
+});

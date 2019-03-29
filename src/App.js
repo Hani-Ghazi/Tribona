@@ -26,10 +26,12 @@ import {
   // -------------------- //
   AsyncHomePage,
   AsyncContactUsPage,
+  AsyncMApPage,
   // -------------------- //
   AsyncProfilePage,
   AsyncEditProfilePage,
   AsyncMyFavoritePage
+  // -------------------- //
 } from "./components/AsyncComponent/AsyncComponent";
 import { GuestRoute, TorristRoute, NotAuthenticatedRoute, CompanyRoute } from "./components/Guard";
 import Header from "./components/header";
@@ -37,6 +39,8 @@ import Footer from "./components/footer";
 import ShouldLoginModal from "./components/Partials/ShouldLoginModal";
 import LightBox from "./components/Modals/LightBox";
 import StepsDrawer from "./components/Modals/StepsDrawer";
+import MapPage from "./components/pages/MapPage";
+
 
 const App = ({ location }) => {
   return (
@@ -65,6 +69,7 @@ const App = ({ location }) => {
         <GuestRoute location={location} path="/users/my-favorite" exact component={AsyncMyFavoritePage}/>
         <GuestRoute location={location} path="/profile" exact component={AsyncEditProfilePage}/>
         <GuestRoute location={location} path="/contact-us" exact component={AsyncContactUsPage}/>
+        <GuestRoute location={location} path="/map" exact component={AsyncMApPage}/>
       </Switch>
       <ShouldLoginModal/>
       <LightBox/>
