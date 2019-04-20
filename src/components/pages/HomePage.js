@@ -1,41 +1,45 @@
 import React, { Fragment, Component } from "react";
 import StaticSlider from "../sliders/StaticSlider";
-import HorizontalFilters from "../filters/HorizontalFilters";
-import PopularTrips from "../Trips/PopularTrips";
-import PopularPlaces from "../Places/PopularPlaces";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { finishedLoading } from "../../actions/Loaders";
-
-
-const trips = [{
-  img: require("../../assets/images/costarica.jpg"),
-  title: "Costa Rica"
-}, {
-  img: require("../../assets/images/costarica.jpg"),
-  title: "Costa Rica"
-}, {
-  img: require("../../assets/images/costarica.jpg"),
-  title: "Costa Rica"
-}, {
-  img: require("../../assets/images/costarica.jpg"),
-  title: "Costa Rica"
-}];
+import Timeline from "../../components/Partials/Timeline";
+import utilsAPI from "../../api/utils";
+import { scrollToTop } from "../../utils";
 
 class HomePage extends Component {
+  state = {
+    items: []
+  };
+
   componentDidMount() {
     this.props.finishedLoading();
+    this.getHomeContents();
   }
 
+  getHomeContents = () => {
+    const { items } = this.state;
+    utilsAPI.getHomeContents({
+      pagination: {
+        first: 6,
+        skip: items.length
+      }
+    }).then(items => {
+      this.setState({ items: [...this.state.items, ...items] }, () => {
+        if (!this.state.items.length) {
+          scrollToTop(400);
+        }
+      });
+    });
+  };
+
   render() {
-    const { popularPlaces, popularTrips } = this.props;
+    const { items } = this.state;
     return (
       <Fragment>
-        <StaticSlider curveImage={require("../../assets/svgs/curve.svg")}/>
-        {/*<HorizontalFilters/>*/}
-        <div className="p-t-100">
-          <PopularTrips trips={popularTrips || []}/>
-          <PopularPlaces places={popularPlaces || []}/>
+        <StaticSlider curveImage={require("../../assets/svgs/curvegrey.svg")}/>
+        <div id="pagesection" className="timeline-container">
+          <Timeline items={items} loadMore={this.getHomeContents}/>
         </div>
       </Fragment>
     );

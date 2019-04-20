@@ -1,8 +1,8 @@
 import moment from "moment";
 
-export const scrollToTop = () =>
+export const scrollToTop = (value) =>
   window.scrollTo({
-    top: 300,
+    top: value || 300,
     behavior: "smooth"
   });
 

@@ -29,7 +29,7 @@ instance.interceptors.response.use(res => {
     localStorage.removeItem("triponaUser");
     window.location.href = "/";
   }
-  return Promise.reject(error.response.data);
+  return error && error.response && error.response.data ? Promise.reject(error.response.data) : Promise.reject(error);
 });
 
 export default instance;

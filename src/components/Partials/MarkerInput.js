@@ -18,7 +18,7 @@ class MarkerInput extends Component {
     if (this.props.disable) return;
     const marker = {
       latitude: clickEvent.latLng.lat(),
-      longitude: clickEvent.latLng.lng()
+      longitude: clickEvent.latLng.lngmapProps()
     };
     this.props.onChange(marker);
     this.setState({ marker });

@@ -12,6 +12,8 @@
 @import '../login/css/hamburgers.min.css';
 @import '../login/css/util.css';
 @import '../login/css/main.css';
+@import "./timeline.css";
+
 /*login page style end*/
 
 .social-icon {

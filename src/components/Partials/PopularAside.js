@@ -10,7 +10,7 @@ const PopularAside = ({ list, action }) =>
       <Link
         to={`${item.id}`}
         key={key} className="pointer" onClick={() => action(item.id)}>
-        <img src={REACT_APP_PUBLIC_FILES + item.images[0]} alt="" className="test"/>
+        <img src={REACT_APP_PUBLIC_FILES + item.images[0]} alt="" className="popular-images"/>
       </Link>
     );
 

@@ -61,12 +61,16 @@ h6.underline-title {
 }
 
 .test {
-  height: auto !important;
-  max-height: 250px;
-  width: auto !important;
+  position: relative;
+  float: left;
+  height: 100px;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
   max-width: 46%;
   border-radius: 7px;
-  margin: 10px 5px;
+  margin: 5px;
+  width: auto !important;
 }
 
 .delete {
@@ -318,4 +322,92 @@ ul.steps .active {
   padding-right: 5% !important;
   padding-left: 5% !important;
   padding-top: 120px !important;
+}
+
+.tour-title img {
+  z-index: 0;
+}
+
+#back-to-top {
+  display: inline-block;
+  background-color: #ff4f81;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  border-radius: 4px;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  transition: background-color .3s,
+  opacity .5s, visibility .5s;
+  z-index: 1000;
+}
+
+#back-to-top::after {
+  content: "\f077";
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 2em;
+  line-height: 50px;
+  color: #fff;
+}
+
+#back-to-top:hover {
+  cursor: pointer;
+  background-color: #333;
+}
+
+#back-to-top:active {
+  background-color: #555;
+}
+
+#back-to-top.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Styles for the content section */
+
+.content {
+  width: 77%;
+  margin: 50px auto;
+  font-family: 'Merriweather', serif;
+  font-size: 17px;
+  color: #6c767a;
+  line-height: 1.9;
+}
+
+@media (min-width: 500px) {
+  .content {
+    width: 43%;
+  }
+  #back-to-top {
+    margin: 30px;
+  }
+}
+
+.content h1 {
+  margin-bottom: -10px;
+  color: #03a9f4;
+  line-height: 1.5;
+}
+
+.content h3 {
+  font-style: italic;
+  color: #96a2a7;
+}
+
+
+img.popular-images {
+  position: relative;
+  float: left;
+  height: 100px;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  max-width: 46%;
+  border-radius: 7px;
+  margin: 5px;
+  width: auto !important;
 }

@@ -39,7 +39,7 @@ import Footer from "./components/footer";
 import ShouldLoginModal from "./components/Partials/ShouldLoginModal";
 import LightBox from "./components/Modals/LightBox";
 import StepsDrawer from "./components/Modals/StepsDrawer";
-import MapPage from "./components/pages/MapPage";
+import BackToTop from "./components/Partials/BackToTop";
 
 
 const App = ({ location }) => {
@@ -71,6 +71,7 @@ const App = ({ location }) => {
         <GuestRoute location={location} path="/contact-us" exact component={AsyncContactUsPage}/>
         <GuestRoute location={location} path="/map" exact component={AsyncMApPage}/>
       </Switch>
+      <BackToTop/>
       <ShouldLoginModal/>
       <LightBox/>
       <StepsDrawer/>
