@@ -2,7 +2,7 @@ import React from "react";
 import Select from "react-select";
 import PropTypes from "prop-types";
 
-const { trips: { options } } = require("../../constans");
+const { trips: { options } } = require("../../constants");
 
 const getData = (types) => {
   return (types || [])

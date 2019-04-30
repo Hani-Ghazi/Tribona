@@ -4,7 +4,7 @@ import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { scrollToTop } from "../../utils";
 
-const { users: { roles } } = require("../../constans");
+const { users: { roles } } = require("../../constants");
 
 const CompanyRoute = ({ isAuthenticated, user, component: Component, ...rest }) => {
   scrollToTop();

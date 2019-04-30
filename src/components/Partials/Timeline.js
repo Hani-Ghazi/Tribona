@@ -17,7 +17,7 @@ const Timeline = ({ items = [], loadMore }) => (
         items.map((item, index) => (
           <div className="timeline" key={index}>
             <div className={`container ${index % 2 ? "right" : "left"}`}>
-              <TimelineCard item={item.item}/>
+              <TimelineCard item={item.item} type={item.type}/>
             </div>
           </div>
         ))

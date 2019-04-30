@@ -24,17 +24,14 @@ export const clearObject = (obj) => {
 export const parseDate = (date) => {
   const diff = moment().diff(moment(date));
   const time = moment.duration(diff)._data;
-  let temp = "";
   if (time.days) {
-    temp += `${time.days} days`;
+    return `${time.days} days ago`;
   }
   if (time.hours) {
-    if (temp !== "") temp += ", ";
-    temp += `${time.hours} hours`;
+    return `${time.hours} hours ago`;
   }
   if (time.minutes) {
-    if (temp !== "") temp += ", ";
-    temp += `${time.minutes} minutes`;
+    return `${time.minutes} minutes ago`;
   }
-  return `${temp} ago`;
+  return "few minutes ago";
 };

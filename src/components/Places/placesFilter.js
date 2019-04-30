@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { CityFilter, CountryFilter, SortFilter } from "../filters";
 import { ActionLoader } from "../Loaders";
 
-const { filters: { sort } } = require("../../constans");
+const { filters: { sort } } = require("../../constants");
 
 class placesFilter extends React.Component {
 

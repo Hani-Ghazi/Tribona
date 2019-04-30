@@ -3,6 +3,7 @@ import Icon from "@mdi/react";
 import { mdiAccountMultipleCheck } from "@mdi/js";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { FaUserPlus } from "react-icons/fa";
 import { followUser, unFollowUser } from "../../actions/User";
 
 class Follow extends Component {
@@ -29,16 +30,11 @@ class Follow extends Component {
 
   render() {
     const { isFollowOwner } = this.state;
+    const { size } = this.props;
     return (
-      <Icon path={mdiAccountMultipleCheck}
-            size={1.5}
-            horizontal
-            rotate={180}
-            className="pointer"
-            onClick={this.onFollowChange}
-            vertical
-            color={isFollowOwner ? "#ff4f81" : undefined}
-      />
+      <FaUserPlus
+        size={size || "2em"} className="pointer" onClick={this.onFollowChange}
+        color={isFollowOwner ? "#e40a22" : undefined}/>
     );
   }
 }

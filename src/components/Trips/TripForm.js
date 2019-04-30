@@ -27,7 +27,7 @@ import { TripTypeSelector, PlaceSelector } from "../filters";
 import { TripFeaturesSelector } from "../filters";
 import { PageLoader, ActionLoader } from "../Loaders";
 
-const { trips: { types } } = require("../../constans");
+const { trips: { types } } = require("../../constants");
 
 
 class TripForm extends Component {

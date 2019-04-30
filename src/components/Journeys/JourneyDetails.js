@@ -1,8 +1,14 @@
 import React, { Component, Fragment } from "react";
+import PropTypes from "prop-types";
+import StarRatings from "react-star-ratings";
+import JourneyStep from "./JourneyStep";
 import { connect } from "react-redux";
 import SliderWithScroll from "../sliders/SliderWithScroll";
-import { Favorite, Follow, Like, UserWidget, ImagesGallery, PopularAside, DetailedRate, Comments } from "../Partials";
-import StarRatings from "react-star-ratings";
+import PageLoader from "../Loaders/pageLoader";
+import ActionLoader from "../Loaders/actionLoader";
+import {
+  Favorite, Follow, Like, UserWidget, ImagesGallery, PopularAside, DetailedRate, Comments
+} from "../Partials";
 import {
   getJourneyById,
   getJourneyComments,
@@ -22,13 +28,9 @@ import {
   startUpdating,
   finishedUpdating
 } from "../../actions/Loaders";
-import PropTypes from "prop-types";
 import { toast } from "react-toastify";
-import ActionLoader from "../Loaders/actionLoader";
-import PageLoader from "../Loaders/pageLoader";
 import { IoIosCreate } from "react-icons/io";
 import { FaMapMarkerAlt } from "react-icons/fa";
-import JourneyStep from "./JourneyStep";
 
 
 class JourneyDetails extends Component {
@@ -246,32 +248,27 @@ class JourneyDetails extends Component {
                       <span className="btn btn-outline-danger pt-2 px-3 ">See Steps <FaMapMarkerAlt/></span>
                     </a>
                     </h4>
-                    <div className="separator-tour"/>
-                    <div className="row">
-                      <div className="col-lg-3 col-6 order-5 order-lg-3">
-                        <img className="svgcenter mb-2 location-icon" src={require("../../assets/svgs/location.svg")}
-                             alt=""/>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-lg-3 col-6 order-7 order-lg-7">
-                        <p className="grey text-center">Location<br/><span className="black bold">Netherlands</span></p>
-                      </div>
-                    </div>
                     <div className="tour-schedule">
-                      <h6 className="underline-title">Images</h6>
-                      <ImagesGallery images={journey.images}/>
-                      <h6 className="black bold mt-4 mb-3 underline-title">Description</h6>
-                      <p>{journey.description}</p>
-                      <h6 className="black bold mt-4 mb-3 underline-title">
-                      </h6>
+                      {
+                        !!journey.images.length &&
+                        <Fragment>
+                          <h6 className="underline-title">Images</h6>
+                          <ImagesGallery images={journey.images}/>
+                        </Fragment>
+                      }
+                      {
+                        journey.description &&
+                        <Fragment>
+                          <h6 className="black bold mt-4 mb-3 underline-title">Description</h6>
+                          <p>{journey.description}</p>
+                        </Fragment>
+                      }
                       <h6 className={"black bold mt-4 mb-3 underline-title"}>Journey Review Details</h6>
                       <DetailedRate ratings={journey.ratings} ratingsAvg={journey.ratingsAvg}/>
                       <h6 className={"black bold mt-4 mb-3 underline-title"}>Comments</h6>
                       <Comments comments={journey.comments || []} onAdd={this.onComment}
                                 onRemove={this.onRemoveComment}/>
                     </div>
-
                   </div>
                 </div>
               </div>

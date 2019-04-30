@@ -28,7 +28,7 @@ import { toast } from "react-toastify";
 import {scrollToTop} from "../../utils";
 
 const { REACT_APP_PUBLIC_FILES } = process.env;
-const { trips: { types } } = require("../../constans");
+const { trips: { types } } = require("../../constants");
 
 
 class TripDetails extends Component {

@@ -1,8 +1,9 @@
 import React from "react";
-import { IoIosHeart, IoIosThumbsUp } from "react-icons/io";
+import { FaRegBookmark } from "react-icons/fa";
 
-const Favorite = ({ isFav, onChange, size}) => {
-  return <IoIosHeart size={size || '2em'}  className="pointer" onClick={onChange} color={isFav ? "#ff4f81" : undefined}/>;
+const Favorite = ({ isFav, onChange, size }) => {
+  return <FaRegBookmark size={size || "2em"} className="pointer" onClick={onChange}
+                        color={isFav ? "#e40a22" : undefined}/>;
 };
 
 export default Favorite;

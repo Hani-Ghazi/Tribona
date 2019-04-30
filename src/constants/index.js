@@ -44,6 +44,12 @@ const constants = {
         label: "Latest"
       }
     }
+  },
+  homeContent: {
+    types: ['trip', 'journey', 'place'],
+    PLACE: 'place',
+    TRIP: 'trip',
+    JOURNEY: 'journey'
   }
 };
 

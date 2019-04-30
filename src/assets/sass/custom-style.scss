@@ -58,6 +58,12 @@ h6.underline-title {
   border-radius: 25px;
   min-width: 60vw;
   text-align: center;
+  background: transparent;
+}
+
+.rounded-modal .card:hover {
+  transition: none !important;
+  transform: none !important;
 }
 
 .test {
@@ -118,9 +124,9 @@ ul.steps > li {
   background: white;
   margin: 0 1.5em;
   display: inline-block;
-  color: #ff4f81;
+  color: #e40a22;
   position: relative;
-  border: 2px solid #ff4f81;
+  border: 2px solid #e40a22;
 }
 
 ul.steps > li::before {
@@ -131,7 +137,7 @@ ul.steps > li::before {
   width: 4em;
   height: .2em;
   //background: white;
-  border-bottom: 2px dashed #ff4f81;
+  border-bottom: 2px dashed #e40a22;
   z-index: -1;
 }
 
@@ -140,7 +146,7 @@ ul.steps > li:first-child::before {
 }
 
 ul.steps .active {
-  background: #ff4f81;
+  background: #e40a22;
   color: white;
 }
 
@@ -278,8 +284,8 @@ ul.steps .active {
 .custom-btn {
   border-radius: 15px;
   background-color: transparent;
-  color: #ff4f81;
-  border: 1px solid #ff4f81;
+  color: #e40a22;
+  border: 1px solid #e40a22;
   font-size: 14px;
   font-family: 'Lato', sans-serif;
   font-weight: 700;
@@ -290,8 +296,8 @@ ul.steps .active {
 
 .custom-btn:hover, .custom-btn.active {
   color: #fff !important;
-  border-color: #ff4f81 !important;
-  background-color: #ff4f81 !important;
+  border-color: #e40a22 !important;
+  background-color: #e40a22 !important;
 }
 
 #footer {
@@ -330,7 +336,7 @@ ul.steps .active {
 
 #back-to-top {
   display: inline-block;
-  background-color: #ff4f81;
+  background-color: #e40a22;
   width: 50px;
   height: 50px;
   text-align: center;

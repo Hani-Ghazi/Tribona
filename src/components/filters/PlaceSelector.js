@@ -1,6 +1,6 @@
 import React from "react";
 import Select from "react-select";
-import constants from "../../constans";
+import constants from "../../constants";
 
 const getData = (places) => {
   return (places || [])

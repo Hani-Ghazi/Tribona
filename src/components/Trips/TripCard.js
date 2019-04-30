@@ -5,7 +5,7 @@ import { parseDate } from "../../utils";
 import { IoIosThumbsUp, IoIosChatbubbles } from "react-icons/io";
 
 const defaultImage = require("../../assets/images/switzerland.jpg");
-const { trips: { types } } = require("../../constans");
+const { trips: { types } } = require("../../constants");
 const { REACT_APP_PUBLIC_FILES } = process.env;
 
 const TripCard = ({ trip }) => (
@@ -31,8 +31,8 @@ const TripCard = ({ trip }) => (
       </p>
       <div className="flex-col-r-m">
         <p>
-          {trip.likesCount} <IoIosThumbsUp size="1.5em" color="#ff4f81"/> {trip.commentsCount} <IoIosChatbubbles
-          size="1.5em" color="#ff4f81"/>
+          {trip.likesCount} <IoIosThumbsUp size="1.5em" color="#e40a22"/> {trip.commentsCount} <IoIosChatbubbles
+          size="1.5em" color="#e40a22"/>
         </p>
       </div>
     </div>

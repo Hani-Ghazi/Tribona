@@ -53,3 +53,11 @@
   height: 18px;
   color: #3b5998;
 }
+
+.w-40 {
+  width: 40px;
+}
+
+.bg-red {
+  background-color: #e40a22;
+}

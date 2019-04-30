@@ -8,7 +8,7 @@ import { getTrips } from "../../actions/Trips";
 import { getCitiesByCountryId } from "../../actions/Country";
 import { ActionLoader } from "../Loaders";
 
-const { filters: { sort } } = require("../../constans");
+const { filters: { sort } } = require("../../constants");
 
 
 class TripsFilters extends Component {
