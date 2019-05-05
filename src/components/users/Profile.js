@@ -16,6 +16,7 @@ import CityFilter from "../filters/CityFilter";
 import UsersGrid from "./UsersGrid";
 
 const { REACT_APP_PUBLIC_FILES } = process.env;
+const defaultAvatar = require("../../assets/images/avatar.jpeg");
 
 class Profile extends Component {
   state = {
@@ -109,7 +110,7 @@ class Profile extends Component {
                   user &&
                   <Fragment>
                     <img className="team-holder circle mx-auto svgcenter black-border"
-                         src={REACT_APP_PUBLIC_FILES + (user.image || "files-1547673340162.jpeg")}
+                         src={user.ownerImage ? REACT_APP_PUBLIC_FILES + user.ownerImage : defaultAvatar}
                          alt=""/>
                     < div className="w-100 m-t-20 text-center">
                       <h3>{(`${user.firstName} ${user.lastName}`)}</h3>

@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from "react";
 import StaticSlider from "../sliders/StaticSlider";
 import DatePicker from "react-datepicker";
-import moment from "moment";
 import { FaImages } from "react-icons/fa";
 import { toast } from "react-toastify";
 import api from "../../api/utils";

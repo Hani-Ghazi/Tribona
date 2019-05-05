@@ -25,5 +25,6 @@ export default {
   rateStep: (stepId, value) => api.post(`trips/steps/${stepId}/rating`, { value }),
   getStepsComments: (stepId) => api.get(`trips/steps/${stepId}/comments`),
   deleteStepComment: (stepId, commentId) => api.delete(`trips/steps/${stepId}/comments/${commentId}`),
-  getFeatures: () => api.get(`trips/features`)
+  getFeatures: () => api.get(`trips/features`),
+  booking: (data) => api.put(`trips/${data.id}/booking`, data)
 };

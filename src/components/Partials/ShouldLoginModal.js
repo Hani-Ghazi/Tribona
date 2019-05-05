@@ -102,59 +102,53 @@ class ShouldLoginModal extends Component {
         <Fragment/>
         :
         <Modal classNames={{ modal: "rounded-modal" }} open={isOpen} onClose={() => closeLoginModal()} center>
-          <div className="container">
-            <div className="row">
-              <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
-                <div className="card card-signin my-5">
-                  <div className="card-body">
-                    <h5 className="card-title text-center">Sign In</h5>
-                    <form className="form-signin">
-                      <div className="form-group text-left">
-                        <label htmlFor="inputEmail">Email address</label>
-                        <input type="email" id="inputEmail" className="form-control" placeholder="Email address"
-                               required
-                               autoFocus/>
-                      </div>
-
-                      <div className="form-group text-left">
-                        <label htmlFor="inputPassword">Password</label>
-                        <input type="password" id="inputPassword" className="form-control" placeholder="Password"
-                               required/>
-                      </div>
-
-                      <button className="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign in</button>
-                      <hr className="my-4"/>
-                      <div className="text-center">
-                        <GoogleLogin
-                          clientId={REACT_APP_GOOGLE_CLIENT_ID}
-                          redirectUri={REACT_APP_GOOGLE_REDIRECT_URI}
-                          buttonText=""
-                          className="social-icon"
-                          onSuccess={this.responseGoogle}
-                          onFailure={this.responseGoogle}
-                        />
-                        <FacebookLogin
-                          appId={REACT_APP_FACEBOOK_APP_ID}
-                          cssClass="social-icon facebok-icon"
-                          size="small"
-                          textButton=""
-                          icon={<FaFacebookF/>}
-                          fields="name,email,picture"
-                          callback={this.responseFacebook}
-                          autoLoad={false}
-                        />
-                        <TwitterLogin
-                          loginUrl="http://localhost:4000/api/v1/auth/twitter"
-                          onFailure={this.responseGoogle} onSuccess={this.responseGoogle}
-                          requestTokenUrl="http://localhost:4000/api/v1/auth/twitter/reverse"
-                          text=""
-                          className="social-icon"
-                        />
-                      </div>
-                    </form>
-                  </div>
+          <div className="card card-signin">
+            <div className="card-body">
+              <h5 className="card-title text-center">Sign In</h5>
+              <form className="form-signin">
+                <div className="form-group text-left">
+                  <label htmlFor="inputEmail">Email address</label>
+                  <input type="email" id="inputEmail" className="form-control" placeholder="Email address"
+                         required
+                         autoFocus/>
                 </div>
-              </div>
+
+                <div className="form-group text-left">
+                  <label htmlFor="inputPassword">Password</label>
+                  <input type="password" id="inputPassword" className="form-control" placeholder="Password"
+                         required/>
+                </div>
+
+                <button className="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign in</button>
+                <hr className="my-4"/>
+                <div className="text-center">
+                  <GoogleLogin
+                    clientId={REACT_APP_GOOGLE_CLIENT_ID}
+                    redirectUri={REACT_APP_GOOGLE_REDIRECT_URI}
+                    buttonText=""
+                    className="social-icon"
+                    onSuccess={this.responseGoogle}
+                    onFailure={this.responseGoogle}
+                  />
+                  <FacebookLogin
+                    appId={REACT_APP_FACEBOOK_APP_ID}
+                    cssClass="social-icon facebok-icon"
+                    size="small"
+                    textButton=""
+                    icon={<FaFacebookF/>}
+                    fields="name,email,picture"
+                    callback={this.responseFacebook}
+                    autoLoad={false}
+                  />
+                  <TwitterLogin
+                    loginUrl="http://localhost:4000/api/v1/auth/twitter"
+                    onFailure={this.responseGoogle} onSuccess={this.responseGoogle}
+                    requestTokenUrl="http://localhost:4000/api/v1/auth/twitter/reverse"
+                    text=""
+                    className="social-icon"
+                  />
+                </div>
+              </form>
             </div>
           </div>
         </Modal>

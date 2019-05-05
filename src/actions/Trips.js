@@ -24,6 +24,7 @@ export const createTrip = (trip) => () => api.createTrip(trip);
 export const updateTrip = (trip) => () => api.updateTrip(trip);
 export const deleteStep = (id) => () => api.deleteStep(id);
 export const rateTrip = (id, newRating) => () => api.rateTrip(id, newRating);
+export const booking = (data) => () => api.booking(data);
 
 
 // ---------------------- steps  ---------------------------------//

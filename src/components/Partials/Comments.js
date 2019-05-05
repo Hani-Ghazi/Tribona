@@ -1,10 +1,12 @@
-import React, { Fragment } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { connect } from "react-redux";
+import { parseDate } from "../../utils";
 
 const { REACT_APP_PUBLIC_FILES } = process.env;
+const defaultAvatar = require("../../assets/images/avatar.jpeg");
 
 class Comments extends React.Component {
   state = {
@@ -25,24 +27,21 @@ class Comments extends React.Component {
         <div className="comment-main-level mb-4">
 
           <div className="comment-avatar d-none d-md-block"><img
-            src={REACT_APP_PUBLIC_FILES + (comment.ownerImage || "files-1547673340162.jpeg")} alt="user owner"/></div>
+            src={comment.ownerImage ? REACT_APP_PUBLIC_FILES + comment.ownerImage : defaultAvatar} alt="user owner"/>
+          </div>
           <div className="comment-box">
             <div className="comment-head">
               <h6 className="comment-name "><a href="#">comment.ownerName</a></h6>
               <div className="text-left">
                 <br className="hidebr"/>
-                <span className="time-review">{moment().diff(moment(comment.createdAt), "minutes")} minutes
-                ago</span>
+                <span className="time-review">{parseDate(comment.createdAt)}</span>
                 {
                   isAuthenticated && comment.ownerId === userId &&
                   <span className={"pull-right"}>
-                    {/*<FaRegEdit*/}
-                    {/*className="pointer"*/}
-                    {/*size={"1.5em"}/> */}
                     <FaRegTrashAlt
-                    size={"1.5em"} className="pointer"
-                    color="#e40a22"
-                    onClick={() => onRemove(comment.id)}/>
+                      size={"1.5em"} className="pointer"
+                      color="#e40a22"
+                      onClick={() => onRemove(comment.id)}/>
                   </span>
                 }
               </div>
