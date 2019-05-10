@@ -7,7 +7,7 @@ const pageLoader = () => (
       <GridLoader
         sizeUnit={"px"}
         size={20}
-        color={"#e40a22"}
+        color={"#1a6bc4"}
         loading
       />
     </div>

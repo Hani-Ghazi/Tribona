@@ -36,9 +36,14 @@ const Header = ({ isAuthenticated, logout, user }) => (
           </li>
           {
             !isAuthenticated ?
-              <li className="nav-item">
-                <Link to={"/login"} className={"nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3"}>Login/Join us</Link>
-              </li>
+              [
+                <li className="nav-item">
+                  <Link to={"/login"} className={"nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3"}>Login</Link>
+                </li>,
+                <li className="nav-item">
+                  <Link to={"/sign-up"} className={"nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3"}>Join us</Link>
+                </li>
+              ]
               :
               <li className="nav-item dropdown">
                 <a className="nav-link dropdown-toggle dropdown-menu-right  ml-lg-0 ml-3 mr-4 my-lg-0 my-2 lastitem"

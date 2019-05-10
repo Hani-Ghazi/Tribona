@@ -31,8 +31,8 @@ const TripCard = ({ trip }) => (
       </p>
       <div className="flex-col-r-m">
         <p>
-          {trip.likesCount} <IoIosThumbsUp size="1.5em" color="#e40a22"/> {trip.commentsCount} <IoIosChatbubbles
-          size="1.5em" color="#e40a22"/>
+          {trip.likesCount} <IoIosThumbsUp size="1.5em" color="#1a6bc4"/> {trip.commentsCount} <IoIosChatbubbles
+          size="1.5em" color="#1a6bc4"/>
         </p>
       </div>
     </div>

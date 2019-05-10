@@ -125,9 +125,9 @@ ul.steps > li {
   background: white;
   margin: 0 1.5em;
   display: inline-block;
-  color: #e40a22;
+  color: #1a6bc4;
   position: relative;
-  border: 2px solid #e40a22;
+  border: 2px solid #1a6bc4;
 }
 
 ul.steps > li::before {
@@ -138,7 +138,7 @@ ul.steps > li::before {
   width: 4em;
   height: .2em;
   //background: white;
-  border-bottom: 2px dashed #e40a22;
+  border-bottom: 2px dashed #1a6bc4;
   z-index: -1;
 }
 
@@ -147,7 +147,7 @@ ul.steps > li:first-child::before {
 }
 
 ul.steps .active {
-  background: #e40a22;
+  background: #1a6bc4;
   color: white;
 }
 
@@ -285,8 +285,8 @@ ul.steps .active {
 .custom-btn {
   border-radius: 15px;
   background-color: transparent;
-  color: #e40a22;
-  border: 1px solid #e40a22;
+  color: #1a6bc4;
+  border: 1px solid #1a6bc4;
   font-size: 14px;
   font-family: 'Lato', sans-serif;
   font-weight: 700;
@@ -297,8 +297,8 @@ ul.steps .active {
 
 .custom-btn:hover, .custom-btn.active {
   color: #fff !important;
-  border-color: #e40a22 !important;
-  background-color: #e40a22 !important;
+  border-color: #1a6bc4 !important;
+  background-color: #1a6bc4 !important;
 }
 
 #footer {
@@ -322,7 +322,7 @@ ul.steps .active {
 }
 
 #top {
-  z-index: 1;
+  z-index: 2;
 }
 
 .map-full-container {
@@ -337,7 +337,7 @@ ul.steps .active {
 
 #back-to-top {
   display: inline-block;
-  background-color: #e40a22;
+  background-color: #1a6bc4;
   width: 50px;
   height: 50px;
   text-align: center;

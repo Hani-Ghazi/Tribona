@@ -72,7 +72,7 @@
 # Grey (secondary text) #AFAFAF
 # White ( white text inside images mostly,  background-color) 
 # Purple Primary Color (important text, call to action box, newsletter, other uses): #9B51E0 and rgba(155,81,224,0.X); for semi transparent background (X value may differ)
-# Desaturated Red for action links, buttons #e40a22
+# Desaturated Red for action links, buttons #1a6bc4
 # Mid grey: #666666
 # 
 
@@ -96,7 +96,7 @@ Please after you change main colors Use search and replace function for changing
 }
 
 .action-color {
-  color: #e40a22;
+  color: #1a6bc4;
 }
 
 /*=======================================================================
@@ -524,7 +524,7 @@ p span {
 
 .dropdown-item:focus, .dropdown-item:hover {
   background-color: transparent;
-  color: #e40a22;
+  color: #1a6bc4;
 }
 
 .fa-phone {
@@ -926,7 +926,7 @@ nav .fa-facebook-f, nav .fa-twitter, nav .fa-instagram {
 
 #section2 .btn-primary, .btn-primary {
   border-radius: 15px;
-  background-color: #e40a22;
+  background-color: #1a6bc4;
   color: #fff;
   border: none;
   font-size: 16.2px;
@@ -1044,7 +1044,7 @@ select::-ms-expand {
 
 .btn-primary.btn-sm {
   border-radius: 15px;
-  background-color: #e40a22;
+  background-color: #1a6bc4;
   color: #fff;
   border: none;
   font-size: 11px;
@@ -1057,8 +1057,8 @@ select::-ms-expand {
 .btn-outline-primary.btn-sm {
   border-radius: 15px;
   background-color: transparent;
-  color: #e40a22;
-  border: 1px solid #e40a22;
+  color: #1a6bc4;
+  border: 1px solid #1a6bc4;
   font-size: 11px;
   font-family: 'Lato', sans-serif;
   font-weight: 700;
@@ -1068,12 +1068,12 @@ select::-ms-expand {
 
 .btn-outline-primary.btn-sm:hover {
   color: #fff;
-  background-color: #e40a22;
+  background-color: #1a6bc4;
 }
 
 .btn-outline-danger {
-  border: 1px solid #e40a22;
-  color: #e40a22;
+  border: 1px solid #1a6bc4;
+  color: #1a6bc4;
   border-radius: 15px;
   font-size: 15px;
   font-family: 'Lato', sans-serif;
@@ -1082,7 +1082,7 @@ select::-ms-expand {
 }
 
 .btn-outline-danger:hover {
-  background-color: #e40a22;
+  background-color: #1a6bc4;
   color: #fff;
   border-radius: 15px;
 }
@@ -1165,7 +1165,7 @@ select::-ms-expand {
 
 .newsletterhome2 .btn-primary:hover {
   background-color: white;
-  color: #e40a22;
+  color: #1a6bc4;
 }
 
 .svgplane {
@@ -1603,7 +1603,7 @@ h6 a {
 }
 
 .testimonials .carousel-indicators .active {
-  background-color: #e40a22;
+  background-color: #1a6bc4;
 }
 
 .svgcenter {
@@ -1686,8 +1686,8 @@ h6 a {
 }
 
 #section3 .red-cta, #section5 .red-cta {
-  background-color: #e40a22;
-  border-color: #e40a22;
+  background-color: #1a6bc4;
+  border-color: #1a6bc4;
 }
 
 .bs-calltoaction.bs-calltoaction-primary .cta-button .btn,
@@ -1700,7 +1700,7 @@ h6 a {
 
 .cta-button .btn-primary:hover {
   background-color: #fff;
-  color: #e40a22;
+  color: #1a6bc4;
 }
 
 .cta-button-2 .btn-primary {
@@ -2487,18 +2487,18 @@ a:hover .letters-up {
   padding: 9px 12px 2px 12px;
   text-decoration: none;
   width: auto;
-  color: #e40a22;
+  color: #1a6bc4;
   background: #fff;
   border-radius: 10px;
-  border: 1px solid #e40a22;
+  border: 1px solid #1a6bc4;
   height: 41px;
   text-align: center;
   vertical-align: middle;
 }
 
 .pagination a:hover {
-  color: #e40a22;
-  background: #e40a22;
+  color: #1a6bc4;
+  background: #1a6bc4;
   color: #fff;
 }
 
@@ -2508,7 +2508,7 @@ a:hover .letters-up {
 
 .pagination .current {
   padding: 9px 12px 2px 12px;
-  background: #e40a22;
+  background: #1a6bc4;
   color: #fff;
   height: 41px;
 }
@@ -2660,7 +2660,7 @@ ul.single-tour-container {
 .fa-times-circle {
   font-size: 15px;
   margin-right: 11px;
-  color: #e40a22;
+  color: #1a6bc4;
 }
 
 /*=======================================================================
@@ -2740,30 +2740,30 @@ ul.single-tour-container {
 }
 
 .mfp-image-holder .mfp-close, .mfp-iframe-holder .mfp-close {
-  color: #e40a22;
+  color: #1a6bc4;
   opacity: 1;
 }
 
 .mfp-image-holder .mfp-close:hover, .mfp-iframe-holder .mfp-close:hover {
-  color: #e40a22;
+  color: #1a6bc4;
   opacity: 0.6;
 }
 
 div.avia-popup button.mfp-arrow:before {
-  color: #e40a22;
+  color: #1a6bc4;
 }
 
 div.avia-popup button.mfp-arrow:hover:before {
-  color: #e40a22;
+  color: #1a6bc4;
 }
 
 .mfp-arrow-left {
-  color: #e40a22 !important;
+  color: #1a6bc4 !important;
   opacity: 0.6;
 }
 
 .mfp-arrow-right {
-  color: #e40a22 !important;
+  color: #1a6bc4 !important;
   opacity: 0.6;
 }
 

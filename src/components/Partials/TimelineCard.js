@@ -140,7 +140,7 @@ class TimelineCard extends Component {
               numberOfStars={5}
               name='rating'
               rating={item.ratingsAvg || 0}
-              starRatedColor="#e40a22"
+              starRatedColor="#1a6bc4"
               starDimension="30px"
               starSpacing="3px"
             />

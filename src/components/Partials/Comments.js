@@ -40,7 +40,7 @@ class Comments extends React.Component {
                   <span className={"pull-right"}>
                     <FaRegTrashAlt
                       size={"1.5em"} className="pointer"
-                      color="#e40a22"
+                      color="#1a6bc4"
                       onClick={() => onRemove(comment.id)}/>
                   </span>
                 }

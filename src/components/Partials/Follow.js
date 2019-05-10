@@ -34,7 +34,7 @@ class Follow extends Component {
     return (
       <FaUserPlus
         size={size || "2em"} className="pointer" onClick={this.onFollowChange}
-        color={isFollowOwner ? "#e40a22" : undefined}/>
+        color={isFollowOwner ? "#1a6bc4" : undefined}/>
     );
   }
 }

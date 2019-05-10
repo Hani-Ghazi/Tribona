@@ -121,6 +121,7 @@ class ShouldLoginModal extends Component {
 
                 <button className="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign in</button>
                 <hr className="my-4"/>
+                <h4 className="text-center">Or Login with</h4>
                 <div className="text-center">
                   <GoogleLogin
                     clientId={REACT_APP_GOOGLE_CLIENT_ID}
