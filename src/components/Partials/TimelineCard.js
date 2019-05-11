@@ -9,12 +9,13 @@ import { tripToggleFavorite, tripToggleLike } from "../../actions/Trips";
 import { openLoginModal } from "../../actions/Modals";
 import { toast } from "react-toastify";
 import { parseDate } from "../../utils";
-
+import ImageCardSlider from "../sliders/imageCardSlider";
 
 const defaultImage = require("../../assets/images/peru.jpg");
 const placeIcon = require("../../assets/images/icons/place-white.png");
 const journeyIcon = require("../../assets/images/icons/journey-white.png");
 const tripIcon = require("../../assets/images/icons/trip-white.png");
+
 
 const { REACT_APP_PUBLIC_FILES } = process.env;
 const {
@@ -115,10 +116,11 @@ class TimelineCard extends Component {
     const { item, type } = this.state;
     return (
       <div className="timeline-panel">
-        <div className="timeline-heading pointer" onClick={this.goToDetails}>
-          <span><img src={getIcon(type)} className="w-40 pos-absolute bg-red" alt=""/></span>
-          <img className="img-fluid" src={item.images.length ? REACT_APP_PUBLIC_FILES + item.images[0] : defaultImage}
-               alt=""/>
+        <div className="timeline-heading pointer">
+          <ImageCardSlider images={item.images} goToDetails={this.goToDetails}/>
+          {/*<span><img src={getIcon(type)} className="w-40 pos-absolute bg-red" alt=""/></span>*/}
+          {/*<img className="img-fluid" src={item.images.length ? REACT_APP_PUBLIC_FILES + item.images[0] : defaultImage}*/}
+          {/*     alt=""/>*/}
         </div>
         <div className="timeline-body">
           <p>
