@@ -115,7 +115,7 @@ class TimelineCard extends Component {
     const { item, type } = this.state;
     return (
       <div className="timeline-panel">
-        <div className="timeline-heading" onClick={this.goToDetails}>
+        <div className="timeline-heading pointer" onClick={this.goToDetails}>
           <span><img src={getIcon(type)} className="w-40 pos-absolute bg-red" alt=""/></span>
           <img className="img-fluid" src={item.images.length ? REACT_APP_PUBLIC_FILES + item.images[0] : defaultImage}
                alt=""/>
