@@ -16,6 +16,7 @@ import { getCountries } from "./actions/Country";
 import { getPopularPlaces } from "./actions/Places";
 import { getPopularJourneys } from "./actions/Journey";
 import { getPopularTrips } from "./actions/Trips";
+import {getConstants} from "./actions/Utils"
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ store.dispatch(getCountries());
 store.dispatch(getPopularPlaces({ pagination: { first: 6, orderBy: 'views_DESC'} }));
 store.dispatch(getPopularJourneys({ pagination: { first: 6, orderBy: 'views_DESC' } }));
 store.dispatch(getPopularTrips({ pagination: { first: 6, orderBy: 'views_DESC'} }));
+store.dispatch(getConstants({ pagination: { first: 6, orderBy: 'views_DESC'} }));
 
 
 ReactDOM.render(

@@ -6,6 +6,7 @@ import journeys from "./reducers/Journey";
 import modals from "./reducers/Modals";
 import trips from "./reducers/Trips";
 import loaders from "./reducers/Loader";
+import utils from "./reducers/Utils";
 
 export default combineReducers({
   user,
@@ -14,5 +15,6 @@ export default combineReducers({
   journeys,
   modals,
   loaders,
-  trips
+  trips,
+  utils
 });

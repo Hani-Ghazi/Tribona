@@ -34,6 +34,11 @@ class ShouldLoginModal extends Component {
   };
 
 
+  constructor(props) {
+    super(props);
+  }
+
+
   submitLogin = data => this.props.login(data).then((user) => {
     if (user.type === USER_LOGGED_IN) {
       toast.success("Welcome Back, Nice to meet you again!", {
@@ -95,6 +100,7 @@ class ShouldLoginModal extends Component {
 
   render() {
     const { isOpen, closeLoginModal } = this.props;
+    const { data } = this.state;
     return (
       !
         isOpen
@@ -108,18 +114,22 @@ class ShouldLoginModal extends Component {
               <form className="form-signin">
                 <div className="form-group text-left">
                   <label htmlFor="inputEmail">Email address</label>
-                  <input type="email" id="inputEmail" className="form-control" placeholder="Email address"
-                         required
+                  <input type="email" id="inputEmail" className="form-control" placeholder="Email address" name="email"
+                         required value={data.email} onChange={this.onChange}
                          autoFocus/>
                 </div>
 
                 <div className="form-group text-left">
                   <label htmlFor="inputPassword">Password</label>
-                  <input type="password" id="inputPassword" className="form-control" placeholder="Password"
-                         required/>
+                  <input type="password" id="inputPassword" value={data.password} name="password"
+                         className="form-control" placeholder="Password"
+                         required onChange={this.onChange}/>
                 </div>
 
-                <button className="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign in</button>
+                <a className="btn btn-lg btn-primary btn-block text-uppercase"
+                   onClick={(e) => this.onSubmit(e)}>
+                  SignIn
+                </a>
                 <hr className="my-4"/>
                 <h4 className="text-center">Or Login with</h4>
                 <div className="text-center">
