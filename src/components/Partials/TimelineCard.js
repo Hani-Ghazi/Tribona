@@ -117,10 +117,7 @@ class TimelineCard extends Component {
     return (
       <div className="timeline-panel">
         <div className="timeline-heading pointer">
-          <ImageCardSlider images={item.images} goToDetails={this.goToDetails}/>
-          {/*<span><img src={getIcon(type)} className="w-40 pos-absolute bg-red" alt=""/></span>*/}
-          {/*<img className="img-fluid" src={item.images.length ? REACT_APP_PUBLIC_FILES + item.images[0] : defaultImage}*/}
-          {/*     alt=""/>*/}
+          <ImageCardSlider images={item.images} goToDetails={this.goToDetails} type={type}/>
         </div>
         <div className="timeline-body">
           <p>

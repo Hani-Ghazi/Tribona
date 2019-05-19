@@ -3,7 +3,7 @@ import "./assets/sass/_all.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-image-lightbox/style.css";
 import "react-datepicker/dist/react-datepicker.css";
-import { Switch } from "react-router-dom";
+import { Switch, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import LoginPage from "./components/pages/LoginPage";
 import SignUpPage from "./components/pages/SignUpPage";
@@ -61,15 +61,17 @@ const App = ({ location }) => {
         <GuestRoute location={location} path="/journeys/add" exact component={AsyncJourneyFormPage}/>
         <GuestRoute location={location} path="/journeys/edit/:id" exact component={AsyncJourneyFormPage}/>
         <GuestRoute location={location} path="/journeys/:id" exact component={AsyncJourneyDetailsPage}/>
-        <GuestRoute location={location} path="/trips" exact component={AsyncTripsListPage}/>
-        <CompanyRoute location={location} path="/trips/add" exact component={AsyncTripFormPage}/>
-        <CompanyRoute location={location} path="/trips/edit/:id" exact component={AsyncTripFormPage}/>
-        <GuestRoute location={location} path="/trips/:id" exact component={AsyncTripDetailsPage}/>
+        <GuestRoute location={location} path="/tours" exact component={AsyncTripsListPage}/>
+        <CompanyRoute location={location} path="/tours/add" exact component={AsyncTripFormPage}/>
+        <CompanyRoute location={location} path="/tours/edit/:id" exact component={AsyncTripFormPage}/>
+        <GuestRoute location={location} path="/tours/:id" exact component={AsyncTripDetailsPage}/>
+        <GuestRoute location={location} path="/tours/:id/:stepId" exact component={AsyncTripDetailsPage}/>
         <GuestRoute location={location} path="/users/profile/:ownerId" exact component={AsyncProfilePage}/>
         <GuestRoute location={location} path="/users/my-favorite" exact component={AsyncMyFavoritePage}/>
         <GuestRoute location={location} path="/profile" exact component={AsyncEditProfilePage}/>
         <GuestRoute location={location} path="/contact-us" exact component={AsyncContactUsPage}/>
         <GuestRoute location={location} path="/map" exact component={AsyncMApPage}/>
+        <Redirect from="/*" to="/"/>
       </Switch>
       <BackToTop/>
       <ShouldLoginModal/>

@@ -26,7 +26,7 @@ const Header = ({ isAuthenticated, logout, user }) => (
             <Link to={"/journeys"} className={"nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3"}>Journeys</Link>
           </li>
           <li className="nav-item">
-            <Link to={"/trips"} className={"nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3"}>Trips</Link>
+            <Link to={"/trips"} className={"nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3"}>Tours</Link>
           </li>
           <li className="nav-item">
             <Link to={"/map"} className={"nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3"}>MAP</Link>
@@ -37,10 +37,10 @@ const Header = ({ isAuthenticated, logout, user }) => (
           {
             !isAuthenticated ?
               [
-                <li className="nav-item">
+                <li className="nav-item" key={1}>
                   <Link to={"/login"} className={"nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3"}>Login</Link>
                 </li>,
-                <li className="nav-item">
+                <li className="nav-item" key={2}>
                   <Link to={"/sign-up"} className={"nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3"}>Join us</Link>
                 </li>
               ]

@@ -302,7 +302,7 @@ ul.steps .active {
 }
 
 #footer {
-  z-index: -1;
+  z-index: 0;
 }
 
 .user-name h3 {
@@ -481,4 +481,8 @@ img.popular-images {
 
 .fa-arrow-right:before, .fa-arrow-left:before {
   color: #222
+}
+
+.bg-blue {
+  background-color: #1a6bc4;
 }

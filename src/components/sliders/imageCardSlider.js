@@ -1,22 +1,11 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 
 const { REACT_APP_PUBLIC_FILES } = process.env;
 
 class imageCardSlider extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      images: [
-        "https://s3.us-east-2.amazonaws.com/dzuz14/thumbnails/aurora.jpg",
-        "https://s3.us-east-2.amazonaws.com/dzuz14/thumbnails/canyon.jpg",
-        "https://s3.us-east-2.amazonaws.com/dzuz14/thumbnails/city.jpg",
-        "https://s3.us-east-2.amazonaws.com/dzuz14/thumbnails/desert.jpg",
-        "https://s3.us-east-2.amazonaws.com/dzuz14/thumbnails/mountains.jpg",
-        "https://s3.us-east-2.amazonaws.com/dzuz14/thumbnails/redsky.jpg",
-        "https://s3.us-east-2.amazonaws.com/dzuz14/thumbnails/sandy-shores.jpg",
-        "https://s3.us-east-2.amazonaws.com/dzuz14/thumbnails/tree-of-life.jpg"
-      ],
       currentIndex: 0,
       translateValue: 0
     };
@@ -59,7 +48,6 @@ class imageCardSlider extends Component {
 
     return (
       <div className="slider">
-
         <div className="slider-wrapper"
              style={{
                transform: `translateX(${this.state.translateValue}px)`,
@@ -67,7 +55,11 @@ class imageCardSlider extends Component {
              }}>
           {
             (this.props.images || []).map((image, i) => (
-              <Slide key={i} image={image} goToDetails={this.props.goToDetails}/>
+              <Slide
+                key={i}
+                image={image}
+                goToDetails={this.props.goToDetails}
+                type={this.props.type}/>
             ))
           }
         </div>
@@ -85,14 +77,19 @@ class imageCardSlider extends Component {
 }
 
 
-const Slide = ({ image, goToDetails }) => {
+const Slide = ({ image, goToDetails, type }) => {
   const styles = {
     backgroundImage: `url(${REACT_APP_PUBLIC_FILES + image})`,
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "50% 60%"
   };
-  return <div className="slide" style={styles} onClick={goToDetails}/>;
+  return <Fragment>
+    <div className="pos-absolute bg-blue">
+      <img src={require(`../../assets/images/icons/${type}-white.png`) || ""} alt="" className="w-40"/>
+    </div>
+    <div className="slide" style={styles} onClick={goToDetails}/>
+  </Fragment>;
 };
 
 

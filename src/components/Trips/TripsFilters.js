@@ -70,7 +70,7 @@ class TripsFilters extends Component {
                      name="search"
                      onChange={this.onChange}
                      value={filters.search}
-                     placeholder="Search Places"/>
+                     placeholder="Search Tours"/>
               <div className="input-group-append">
                 <div className="input-group-text"><i className="fa fa-search"/>
                 </div>
