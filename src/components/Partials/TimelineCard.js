@@ -56,7 +56,7 @@ class TimelineCard extends Component {
     const data = { id: item.id, isLiked: item.isLiked };
     const onResponse = () => {
       this.setState({ item: { ...item, isLiked: !item.isLiked } });
-      toast.success(`You successfully ${!item.isLiked ? "unlike" : "like"}`, {
+      toast.success(`You successfully ${item.isLiked ? "unlike" : "like"}`, {
         hideProgressBar: true
       });
     };

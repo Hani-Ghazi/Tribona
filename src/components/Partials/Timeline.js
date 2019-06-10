@@ -11,12 +11,13 @@ const Timeline = ({ items = [], loadMore }) => (
       pageStart={0}
       loadMore={loadMore}
       hasMore={true}
+      className={"row pos-relative m-0"}
       loader={PageLoader()}
     >
       {
         items.map((item, index) => (
-          <div className="timeline" key={index}>
-            <div className={`container ${index % 2 ? "right" : "left"}`}>
+          <div className="col-md-6" key={index}>
+            <div className={`container ${index % 2 ? "left" : "right"}`}>
               <TimelineCard item={item.item} type={item.type}/>
             </div>
           </div>
