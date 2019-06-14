@@ -10,6 +10,7 @@ import SignUpPage from "./components/pages/SignUpPage";
 import ForgetPasswordPage from "./components/pages/ForgetPasswordPage";
 import VerifyPage from "./components/pages/VerifyPage";
 import ResetPAge from "./components/pages/ResetPassword";
+import SearchPage from "./components/pages/Search";
 import { ToastContainer } from "react-toastify";
 import {
   AsyncPlaceDetailsPage,
@@ -52,6 +53,7 @@ const App = ({ location }) => {
         <NotAuthenticatedRoute location={location} path="/forget-password" exact component={ForgetPasswordPage}/>
         <NotAuthenticatedRoute location={location} path="/verify" exact component={VerifyPage}/>
         <NotAuthenticatedRoute location={location} path="/reset" exact component={ResetPAge}/>
+        <NotAuthenticatedRoute location={location} path="/search" exact component={SearchPage}/>
         <GuestRoute location={location} path="/" exact component={AsyncHomePage}/>
         <GuestRoute location={location} path="/places" exact component={AsyncPlacesListPage}/>
         <TorristRoute location={location} path="/places/add" exact component={AsyncPlaceFormPage}/>

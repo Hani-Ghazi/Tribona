@@ -14,7 +14,7 @@ const TripsGrid = ({ trips }) => {
   }
   return (
     <Fragment>
-      <div className="col-xs-12 col-md-6 col-lg-4">
+      <div className="col-xs-12 col-md-6 col-lg-1">
         {
           trips && trips
             .slice(0, half)
@@ -25,7 +25,7 @@ const TripsGrid = ({ trips }) => {
               />)
         }
       </div>
-      <div className="col-xs-12 col-md-6 col-lg-4">
+      <div className="col-xs-12 col-md-6 col-lg-1">
         {
           trips && trips
             .slice(half)

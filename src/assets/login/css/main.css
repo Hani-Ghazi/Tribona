@@ -548,3 +548,23 @@ iframe {
 
 
 
+.container-search{
+  width: 75vw;
+    min-height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 150px  15px 15px ;
+    position: relative;
+    z-index: 1;
+    
+
+}
+.container-search header{
+      box-shadow: none !important;
+      border-radius: 15px;
+}
+.center div{
+  justify-content: center;
+}

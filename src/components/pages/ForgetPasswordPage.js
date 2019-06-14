@@ -3,7 +3,6 @@ import { forgetPassword } from "../../actions/Auth";
 import { connect } from "react-redux";
 import Validator from "validator";
 
-import Header from "../header";
 import bgImage from "../../assets/login/images/bg-01.jpg";
 import { Link } from "react-router-dom";
 import isEmpty from "lodash/isEmpty";
@@ -29,7 +28,7 @@ class ForgetPasswordPage extends Component {
           state: {
             email: this.state.data.email,
             resetToken: res.resetToken
-          }
+          } 
         });
       });
     }

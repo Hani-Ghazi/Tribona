@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
 import JourneysFilters from "./JourneysFilters";
-import JourneyCard from "./JourneyCard";
 import StaticSlider from "../sliders/StaticSlider";
 import { getJourneys } from "../../actions/Journey";
 import { connect } from "react-redux";
@@ -41,7 +40,7 @@ class JourneysList extends Component {
                 <div className="col-xs-12 col-md-12 col-lg-8">
                   <ActionLoader/>
                 </div>
-              }
+              } 
               {
                 !isUpdating &&
                 <JourneysGrid journeys={journeys}/>

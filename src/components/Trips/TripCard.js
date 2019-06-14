@@ -43,8 +43,8 @@ TripCard.propTypes = {
   trip: PropTypes.shape({
     description: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequred,
-    capacity: PropTypes.number.isRequred,
+    price: PropTypes.number,
+    capacity: PropTypes.number,
     endDate: PropTypes.string,
     startDate: PropTypes.string,
     type: PropTypes.string.isRequired
