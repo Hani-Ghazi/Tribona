@@ -7,7 +7,7 @@ import { MdSearch } from "react-icons/md";
 import isEmpty from "lodash/isEmpty";
 import { withRouter } from 'react-router-dom';
 import qs from "query-string";
-
+import _ from "lodash";
 
 class Header extends Component {
   state = {
@@ -21,6 +21,18 @@ class Header extends Component {
       filter: { ...qs.parse(this.props.location.search) },
     });
   }
+  componentWillReceiveProps(nextProps) {
+    let newfilter = qs.parse(nextProps.location.search);
+    if (newfilter !== this.state.filter && _.isEmpty(newfilter)) {
+      this.setState({
+        filter: {
+          search:''
+        }
+      });
+
+    }
+  }
+
   onChange = () => event => {
     let { value, name } = event.target;
     this.setState({
