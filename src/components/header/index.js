@@ -7,45 +7,48 @@ import { MdSearch } from "react-icons/md";
 import isEmpty from "lodash/isEmpty";
 import { withRouter } from 'react-router-dom';
 import qs from "query-string";
-import { getJourneys } from "../../actions/Journey";
-import { getTrips } from "../../actions/Trips";
-import { getPlaces } from "../../actions/Places";
+
 
 class Header extends Component {
   state = {
-    search: ''
+    filter: {
+      search: ''
+    },
+
   };
+  componentDidMount() {
+    this.setState({
+      filter: { ...qs.parse(this.props.location.search) },
+    });
+  }
   onChange = () => event => {
     let { value, name } = event.target;
     this.setState({
-      [name]: value,
-    }, () =>
-        this.getJourneys()
-    );
+      filter: {
+        [name]: value,
+      }
+    });
   };
 
-  getJourneys = () => {
-    const { search } = this.state;
-    this.props.getJourneys({ search });
-    this.props.getTrips({ search });
-    this.props.getPlaces({ search });
-  };
+
+  sendToSearch = () => {
+    let search = this.state.filter.search
+    this.props.history.push({
+      pathname: "/search",
+      search: qs.stringify({
+        search
+      })
+    });
+
+  }
 
   onSubmit = (e) => {
     e.preventDefault();
-    let search = this.state.search
+    let search = this.state.filter.search
     if (!isEmpty(search)) {
-      this.props.history.push({
-        pathname: "/search",
-        search: qs.stringify({
-          search
-        }),
-        state: {
-          journeys: this.props.journeys,
-          trips: this.props.trips,
-          places: this.props.places,
-        }
-      });
+      this.sendToSearch();
+
+
     }
 
 
@@ -67,19 +70,25 @@ class Header extends Component {
             <span className="sr-only">Toggle navigation</span>
           </button>
           <div className="collapse navbar-collapse ml-auto" id="navbarSupportedContent">
-            <form onSubmit={this.onSubmit} className="col-6">
+            <form onSubmit={this.onSubmit} className="col-6 row">
 
               <TextField
                 id="search-bar"
                 name="search"
-                fullWidth
+                className="col-6 mr-3"
                 placeholder="search"
-                value={this.state.search}
+                value={this.state.filter.search}
                 onChange={this.onChange()}
                 InputProps={{
                   startAdornment: <InputAdornment position="start"><MdSearch /></InputAdornment>,
                 }}
               />
+               <div className="container-login100-form-btn col-2" style={{ justifyContent: "flex-end" }}>
+                  <button className="login100-form-btn">
+                    Search
+                  </button>
+                </div>
+
             </form>
             <ul className="navbar-nav ml-auto">
 
@@ -145,21 +154,12 @@ class Header extends Component {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state)
   return {
     isAuthenticated: !!state.user.id,
     user: state.user,
-    journeys: state.journeys && state.journeys.list,
-    places: state.places && state.places.list,
-    trips: state.trips && state.trips.list,
-
-
   };
 };
 
 export default withRouter(connect(mapStateToProps, {
   logout,
-  getJourneys,
-  getTrips,
-  getPlaces,
 })(Header));
