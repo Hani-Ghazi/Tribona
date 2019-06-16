@@ -2,7 +2,7 @@ import moment from "moment";
 
 export const scrollToTop = (value) =>
   window.scrollTo({
-    top: value || 300,
+    top: value || 100,
     behavior: "smooth"
   });
 

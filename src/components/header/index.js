@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { logout } from "../../actions/Auth";
@@ -43,27 +43,23 @@ class Header extends Component {
 
 
   sendToSearch = () => {
-    let search = this.state.filter.search
+    let search = this.state.filter.search;
     this.props.history.push({
       pathname: "/search",
       search: qs.stringify({
         search
       })
     });
-
-  }
+  };
 
   onSubmit = (e) => {
     e.preventDefault();
-    let search = this.state.filter.search
+    let search = this.state.filter.search;
     if (!isEmpty(search)) {
       this.sendToSearch();
-
-
     }
-
-
   };
+
   render() {
     const { isAuthenticated, logout, user } = this.props;
     return (
@@ -112,7 +108,7 @@ class Header extends Component {
                 <Link to={"/journeys"} className={"nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3"}>Journeys</Link>
               </li>
               <li className="nav-item">
-                <Link to={"/trips"} className={"nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3"}>Tours</Link>
+                <Link to={"/tours"} className={"nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3"}>Tours</Link>
               </li>
               <li className="nav-item">
                 <Link to={"/map"} className={"nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3"}>MAP</Link>
@@ -147,7 +143,7 @@ class Header extends Component {
                       <div className="dropdown-divider" />
                       <Link to={"/journeys/add"} className="dropdown-item mt-1">New Journey</Link>
                       <div className="dropdown-divider" />
-                      <Link to={"/trips/add"} className="dropdown-item mt-1">New Trip</Link>
+                      <Link to={"/tours/add"} className="dropdown-item mt-1">New Trip</Link>
                       <div className="dropdown-divider" />
                       <Link to={"/profile"} className="dropdown-item mt-1">Edit Profile</Link>
                       <div className="dropdown-divider" />

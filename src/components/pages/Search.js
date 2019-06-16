@@ -24,7 +24,7 @@ class Search extends Component {
     isUpdating0: false,
     isUpdating1: false,
     isUpdating2: false,
-    filter: { ...qs.parse(this.props.location.search) },
+    filters: { ...qs.parse(this.props.location.search) },
     journeys: [],
     trips: [],
     places: []
@@ -33,10 +33,10 @@ class Search extends Component {
     this.getResults();
   }
   componentWillReceiveProps(nextProps) {
-    let newfilter = qs.parse(nextProps.location.search);
-    if (newfilter !== this.state.filter) {
+    let newfilters = qs.parse(nextProps.location.search);
+    if (newfilters !== this.state.filters) {
       this.setState({
-        filter: newfilter
+        filters: newfilters
       }, () => this.getResults());
 
     }
@@ -45,15 +45,15 @@ class Search extends Component {
     this.setState({ tab: newValue });
 
   getResults = () => {
-    const { filter } = this.state;
+    const { filters } = this.state;
     this.setState({ isUpdating0: true, isUpdating1: true, isUpdating2: true });
-    apiJourneys.getJourneys({ filter }).then(journeys => {
+    apiJourneys.getJourneys({ filters }).then(journeys => {
       this.setState({ journeys });
     }).finally(() => (this.setState({ isUpdating0: false })));
-    apiTrips.getTrips({ filter }).then(trips => {
+    apiTrips.getTrips({ filters }).then(trips => {
       this.setState({ trips });
     }).finally(() => (this.setState({ isUpdating1: false })));
-    apiPlaces.getPlaces({ filter }).then(places => {
+    apiPlaces.getPlaces({ filters }).then(places => {
       this.setState({ places });
     }).finally(() => (this.setState({ isUpdating2: false })));
   };

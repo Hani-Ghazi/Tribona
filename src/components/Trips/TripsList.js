@@ -18,6 +18,10 @@ class TripsList extends Component {
     this.props.getTrips().then(() => this.setState({ isLoading: false }, scrollToTop));
   }
 
+  getTrips = (filters = {}) => {
+    this.props.getTrips(filters).then(() => this.setState({ isLoading: false }, scrollToTop));
+  }
+
 
   render() {
     const { trips } = this.props;
@@ -34,7 +38,7 @@ class TripsList extends Component {
               <div className="col-12 col-md-6  col-lg-3 ml-lg-5 order-lg-first order-last mt-3 mt-lg-0">
                 <div className="form-container py-3">
                   <h4 className="black bold mt-3 px-4 pb-2 text-center">Search for what suits you</h4>
-                  <TripsFilters/>
+                  <TripsFilters getTrips={this.getTrips}/>
                 </div>
               </div>
               <TripsGrid trips={trips}/>

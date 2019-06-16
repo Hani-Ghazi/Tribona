@@ -109,6 +109,5 @@ TripsFilters.propTypes = {
 
 
 export default connect(initMapStateToProps, {
-  getTrips,
   getCitiesByCountryId
 })(TripsFilters);

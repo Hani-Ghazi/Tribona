@@ -14,7 +14,7 @@ const TripCard = ({ trip }) => (
       <span className="far fa-clock mr-2 white"/>
       <strong>{parseDate(trip.createdAt)}</strong>
     </small>
-    <Link className="img-card" to={`/trips/${trip.id}`}>
+    <Link className="img-card" to={`/tours/${trip.id}`}>
       <img src={trip.images.length ? REACT_APP_PUBLIC_FILES + trip.images[0] : defaultImage} alt=""/>
     </Link>
     <div className="card-content">
