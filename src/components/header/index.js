@@ -26,7 +26,7 @@ const Header = ({ isAuthenticated, logout, user }) => (
             <Link to={"/journeys"} className={"nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3"}>Journeys</Link>
           </li>
           <li className="nav-item">
-            <Link to={"/trips"} className={"nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3"}>Tours</Link>
+            <Link to={"/tours"} className={"nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3"}>Tours</Link>
           </li>
           <li className="nav-item">
             <Link to={"/map"} className={"nav-link  mr-3 open my-lg-0 my-2 ml-lg-0 ml-3"}>MAP</Link>
@@ -61,7 +61,7 @@ const Header = ({ isAuthenticated, logout, user }) => (
                   <div className="dropdown-divider"/>
                   <Link to={"/journeys/add"} className="dropdown-item mt-1">New Journey</Link>
                   <div className="dropdown-divider"/>
-                  <Link to={"/trips/add"} className="dropdown-item mt-1">New Trip</Link>
+                  <Link to={"/tour/add"} className="dropdown-item mt-1">New Tour</Link>
                   <div className="dropdown-divider"/>
                   <Link to={"/profile"} className="dropdown-item mt-1">Edit Profile</Link>
                   <div className="dropdown-divider"/>

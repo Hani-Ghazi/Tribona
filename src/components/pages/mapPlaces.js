@@ -28,6 +28,7 @@ class mapPlaces extends Component {
   }
 
   render() {
+    console.log('here we are');
     const { places, placesCategories } = this.props;
     const { isLoading } = this.state;
     if (isLoading) {

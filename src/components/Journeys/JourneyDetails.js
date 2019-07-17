@@ -1,39 +1,63 @@
-import React, { Component, Fragment } from "react";
+import React, {Component, Fragment} from "react";
 import PropTypes from "prop-types";
 import StarRatings from "react-star-ratings";
 import JourneyStep from "./JourneyStep";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import SliderWithScroll from "../sliders/SliderWithScroll";
 import PageLoader from "../Loaders/pageLoader";
 import ActionLoader from "../Loaders/actionLoader";
+import {Comments, DetailedRate, Favorite, Follow, ImagesGallery, Like, PopularAside, UserWidget} from "../Partials";
 import {
-  Favorite, Follow, Like, UserWidget, ImagesGallery, PopularAside, DetailedRate, Comments
-} from "../Partials";
-import {
-  getJourneyById,
-  getJourneyComments,
-  journeyToggleFavorite,
-  journeyToggleLike,
-  addOrUpdateComment,
-  getJourneySteps,
-  deleteComment,
-  rateJourney
+    addOrUpdateComment,
+    deleteComment,
+    getJourneyById,
+    getJourneyComments,
+    getJourneySteps,
+    journeyToggleFavorite,
+    journeyToggleLike,
+    rateJourney
 } from "../../actions/Journey";
-import {
-  openLoginModal,
-  openStepsDrawer
-} from "../../actions/Modals";
-import {
-  finishedLoading,
-  startUpdating,
-  finishedUpdating
-} from "../../actions/Loaders";
-import { toast } from "react-toastify";
-import { IoIosCreate } from "react-icons/io";
-import { FaMapMarkerAlt } from "react-icons/fa";
+import {openLoginModal, openStepsDrawer} from "../../actions/Modals";
+import {finishedLoading, finishedUpdating, startUpdating} from "../../actions/Loaders";
+import {toast} from "react-toastify";
+import {IoIosCreate} from "react-icons/io";
+import {FaMapMarkerAlt} from "react-icons/fa";
+
+import ReactMapboxGl, {Feature, Layer, Popup} from "react-mapbox-gl";
+import styled from "styled-components";
+import moment from "moment";
+
+
+const Map = ReactMapboxGl({
+    accessToken: "pk.eyJ1IjoibWVtbzk1IiwiYSI6ImNqcTZnbDViZjI3d2c0Mm11aWxnM3Bod2EifQ.RB17uMbr73RZINXqtK2A0g"
+});
+
+const StyledPopup = styled.div`
+  background: white;
+  color: #3f618c;
+  font-weight: 400;
+  padding: 5px;
+  border-radius: 2px;
+`;
+
+const lineLayout = {
+    'line-cap': 'round',
+    'line-join': 'round'
+};
+
+const linePaint = {
+    'line-color': '#8363a5',
+    'line-width': 4
+};
 
 
 class JourneyDetails extends Component {
+
+    center_latitude = 39.882533979173;
+    center_longitude = 32.866045119695286;
+    points_road = [];
+    
+    place = null;
 
   state = {
     isOpen: false,
@@ -62,6 +86,29 @@ class JourneyDetails extends Component {
         );
       });
   }
+
+    onToggleHover(cursor, {map}) {
+        map.getCanvas().style.cursor = cursor;
+    }
+
+
+    markerClick = (place, {feature}) => {
+        this.place = place;
+        this.setState({
+            // center: feature.geometry.coordinates,
+            // zoom: [14],
+        });
+    };
+
+    onDrag = () => {
+        if (this.place) {
+            this.place = null;
+            this.setState({
+                // center: feature.geometry.coordinates,
+                // zoom: ,
+            });
+        }
+    };
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.journey && this.props.journey && nextProps.journey.id && this.props.journey.id && nextProps.journey.id !== this.props.journey.id) {
@@ -183,10 +230,14 @@ class JourneyDetails extends Component {
 
     const { popularJourneys, isAuthenticated, userId } = this.props;
     const { currentIndex, journey, isLoading, isUpdating, isOpen } = this.state;
+    console.log(journey);
     let step = !!(journey || {}).steps ? journey.steps[currentIndex] : null;
 
     return (
       <Fragment>
+          {(
+              this.points_road = []
+          )}
         {
           isLoading && <PageLoader/>
         }
@@ -260,11 +311,75 @@ class JourneyDetails extends Component {
                         journey.description &&
                         <Fragment>
                           <h6 className="black bold mt-4 mb-3 underline-title">Description</h6>
-                          <p>{journey.description}</p>
+                            <p>{journey.description}</p>
                         </Fragment>
                       }
+
+                        {
+                            <Fragment>
+                                <h6 className="black bold mt-4 mb-3 underline-title">Steps on Map</h6>
+                                <div className="">
+                                    <Map
+                                        style="mapbox://styles/mapbox/streets-v8"
+                                        center={[this.center_longitude, this.center_latitude]}
+                                        zoom={[4]}
+                                        onDrag={this.onDrag}
+                                        containerStyle={{
+                                            height: "75vh",
+                                            width: "97%",
+                                        }}>
+                                        {(journey.steps || []).filter(x => x.place.latitude && x.place.longitude).map(step =>
+                                            this.points_road.push([step.place.longitude, step.place.latitude])
+                                        )}
+                                        <Layer type="line" layout={lineLayout} paint={linePaint}>
+                                            <Feature coordinates={this.points_road} />
+                                        </Layer>
+                                        <Layer
+                                            type="symbol"
+                                            id="marker"
+                                            layout={{"icon-image": "bus-15"}}>
+                                            {(journey.steps || []).filter(x => x.place.latitude && x.place.longitude).map(step =>
+                                            <Feature
+                                            key={step.id}
+                                            onMouseEnter={this.onToggleHover.bind(this, 'pointer')}
+                                            onMouseLeave={this.onToggleHover.bind(this, '')}
+                                            onClick={this.markerClick.bind(this, step)}
+                                            coordinates={[step.place.longitude, step.place.latitude]}/>
+                                            )}
+                                        </Layer>
+                                        {this.place && (
+                                        <Popup key={this.place.id}
+                                               coordinates={[this.place.place.longitude, this.place.place.latitude]}>
+                                            <StyledPopup>
+                                                <h6>{this.place.priority + 1} - {this.place.place.name}</h6>
+                                                <div>
+                                                    {this.place.description}
+                                                </div>
+                                            </StyledPopup>
+                                        </Popup>
+                                        )}
+
+                                    </Map>
+                                </div>
+                            </Fragment>
+                        }
+
                       <h6 className={"black bold mt-4 mb-3 underline-title"}>Journey Review Details</h6>
                       <DetailedRate ratings={journey.ratings} ratingsAvg={journey.ratingsAvg}/>
+                        {
+                            journey.createdAt &&
+                            <Fragment>
+                                <h6 className="black bold mt-4 mb-3 underline-title">Created At</h6>
+                                <p> {moment(journey.createdAt).format('YYYY-MM-DD HH:mm')}</p>
+                            </Fragment>
+                        }
+                        {
+                            journey.views &&
+                            <Fragment>
+                                <h6 className="black bold mt-4 mb-3 underline-title">Views</h6>
+                                <p>{journey.views} views</p>
+                            </Fragment>
+                        }
                       <h6 className={"black bold mt-4 mb-3 underline-title"}>Comments</h6>
                       <Comments comments={journey.comments || []} onAdd={this.onComment}
                                 onRemove={this.onRemoveComment}/>

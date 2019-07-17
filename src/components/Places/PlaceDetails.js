@@ -30,6 +30,8 @@ import { toast } from "react-toastify";
 import { IoIosCreate } from "react-icons/io";
 import { PageLoader, ActionLoader } from "../Loaders";
 import { scrollToTop } from "../../utils";
+import {FaMapMarkerAlt} from "react-icons/fa";
+import moment from "moment";
 
 class PlaceDetails extends Component {
   state = {
@@ -168,6 +170,7 @@ class PlaceDetails extends Component {
   render() {
     const { popularPlaces, isAuthenticated, userId } = this.props;
     const { place, isUpdating, isLoading } = this.state;
+    console.log(place);
     if (isLoading) {
       return <PageLoader/>;
     }
@@ -226,6 +229,11 @@ class PlaceDetails extends Component {
                 <div className="col-xs-12 col-md-11 col-lg-8 single-tour">
                   <div className="row">
                     <div className="col-xs-12 col-md-12 col-lg-12">
+                        <div className="m-t-30">
+                            <h4 id="read-tour" className="black text-left mb-3 flex-sb-m bold">
+                                {place.name}
+                            </h4>
+                        </div>
                       {
                         (place.images && place.images.length) ?
                         [
@@ -236,8 +244,9 @@ class PlaceDetails extends Component {
                       <div className="m-t-30">
                         <h6 className="underline-title">Map Location</h6>
                         <MarkerInput
-                          marker={{ longitude: place.longitude, latitude: place.latitude }}
-                          center={{ latitude: place.latitude, longitude: place.longitude }}
+                          marker={{ latitude: place.latitude, longitude: place.longitude }}
+                          center={{ place: place }}
+
                           disable={true}
                         />
                       </div>
@@ -249,6 +258,14 @@ class PlaceDetails extends Component {
                         <h6 className="underline-title">Review Details</h6>
                         <DetailedRate ratings={place.ratings} ratingsAvg={place.ratingsAvg}/>
                       </div>
+                        <div className="m-t-30">
+                            <h6 className="underline-title">Created At</h6>
+                            <p> {moment(place.createdAt).format('YYYY-MM-DD HH:mm')}</p>
+                        </div>
+                        <div className="m-t-30">
+                            <h6 className="underline-title">Views</h6>
+                            <p> {place.views} views</p>
+                        </div>
                       <div className="m-t-30">
                         <h6 className="underline-title m-b-0">Comments</h6>
                         <Comments comments={place.comments || []} onAdd={this.onComment}

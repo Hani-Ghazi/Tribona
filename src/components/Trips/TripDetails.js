@@ -29,11 +29,46 @@ import { toast } from "react-toastify";
 import { scrollToTop } from "../../utils";
 import BookModal from "./BookTripModal";
 
+import ReactMapboxGl, {Feature, Layer, Popup} from "react-mapbox-gl";
+import styled from "styled-components";
+
 const { REACT_APP_PUBLIC_FILES } = process.env;
 const { trips: { types } } = require("../../constants");
 
 
+const Map = ReactMapboxGl({
+    accessToken: "pk.eyJ1IjoibWVtbzk1IiwiYSI6ImNqcTZnbDViZjI3d2c0Mm11aWxnM3Bod2EifQ.RB17uMbr73RZINXqtK2A0g"
+});
+
+const StyledPopup = styled.div`
+  background: white;
+  color: #3f618c;
+  font-weight: 400;
+  padding: 5px;
+  border-radius: 2px;
+`;
+
+const lineLayout = {
+    'line-cap': 'round',
+    'line-join': 'round'
+};
+
+const linePaint = {
+    'line-color': '#8363a5',
+    'line-width': 4
+};
+
+
 class TripDetails extends Component {
+
+
+    center_latitude = 39.882533979173;
+    center_longitude = 32.866045119695286;
+    points_road = [];
+
+    place = null;
+
+
   state = {
     isLoading: true,
     isUpdating: false
@@ -61,6 +96,29 @@ class TripDetails extends Component {
       });
   }
 
+    onToggleHover(cursor, {map}) {
+        map.getCanvas().style.cursor = cursor;
+    }
+
+
+    markerClick = (place, {feature}) => {
+        this.place = place;
+        this.setState({
+            // center: feature.geometry.coordinates,
+            // zoom: [14],
+        });
+    };
+
+    onDrag = () => {
+        if (this.place) {
+            this.place = null;
+            this.setState({
+                // center: feature.geometry.coordinates,
+                // zoom: ,
+            });
+        }
+    };
+
   diffAsDays = () => {
     const { trip } = this.state;
     return moment(trip.endDate).diff(moment(trip.startDate), "days") + 1;
@@ -69,6 +127,7 @@ class TripDetails extends Component {
 
   hasSocial = () => {
     const { trip } = this.state;
+      console.log(trip);
     return (
       trip.ownerTwitterURL ||
       trip.ownerFacebookURL ||
@@ -193,6 +252,9 @@ class TripDetails extends Component {
     const { isAuthenticated, userId, popularTrips } = this.props;
     return (
       <Fragment>
+          {(
+              this.points_road = []
+          )}
         {
           isLoading && <PageLoader/>
         }
@@ -209,7 +271,7 @@ class TripDetails extends Component {
                 <div className="row">
                   <div className="col-xs-12 col-md-6 col-lg-3 ml-lg-5 ml-sm-3 order-lg-first order-last mt-3 mt-lg-0">
                     <div id="instasidebar" className="grid2 runsidebar  text-center">
-                      <h6 className="black semibold mx-4 mb-2 underline-title">Popular Trips</h6>
+                      <h6 className="black semibold mx-4 mb-2 underline-title">Popular Tours</h6>
                       <PopularAside list={popularTrips} action={console.log}/>
                     </div>
                   </div>
@@ -265,6 +327,62 @@ class TripDetails extends Component {
                             }
                           </div>
                         </li>
+                          <li>
+                              {
+                                  <Fragment>
+                                      <h6 className="black bold mt-4 mb-3 underline-title">Steps on Map</h6>
+                                      <div className="">
+                                          <Map
+                                              style="mapbox://styles/mapbox/streets-v8"
+                                              center={[this.center_longitude, this.center_latitude]}
+                                              zoom={[4]}
+                                              onDrag={this.onDrag}
+                                              containerStyle={{
+                                                  height: "75vh",
+                                                  width: "97%",
+                                              }}>
+                                              {(trip.steps || []).filter(x => x.place.latitude && x.place.longitude).map(step =>
+                                                  this.points_road.push([step.place.longitude, step.place.latitude])
+                                              )}
+                                              <Layer type="line" layout={lineLayout} paint={linePaint}>
+                                                  <Feature coordinates={this.points_road} />
+                                              </Layer>
+                                              <Layer
+                                                  type="symbol"
+                                                  id="marker"
+                                                  layout={{"icon-image": "bus-15"}}>
+                                                  {(trip.steps || []).filter(x => x.place.latitude && x.place.longitude).map(step =>
+                                                      <Feature
+                                                          key={step.id}
+                                                          onMouseEnter={this.onToggleHover.bind(this, 'pointer')}
+                                                          onMouseLeave={this.onToggleHover.bind(this, '')}
+                                                          onClick={this.markerClick.bind(this, step)}
+                                                          coordinates={[step.place.longitude, step.place.latitude]}/>
+                                                  )}
+                                              </Layer>
+                                              {this.place && (
+                                                  <Popup key={this.place.id}
+                                                         coordinates={[this.place.place.longitude, this.place.place.latitude]}>
+                                                      <StyledPopup>
+                                                          <h6>{this.place.priority + 1} - {this.place.place.name}</h6>
+                                                          <div>
+                                                              {this.place.description}
+                                                          </div>
+                                                      </StyledPopup>
+                                                  </Popup>
+                                              )}
+
+                                          </Map>
+                                      </div>
+                                  </Fragment>
+                              }
+                          </li>
+                          <li>
+                              <div className="tour-item-title list-font">Description</div>
+                              <div className="tour-item-description list-font">
+                                  <div className={"dis-block"}>{trip.description}</div>
+                              </div>
+                          </li>
                         {trip.ownerWebsite &&
                         <li>
                           <div className="tour-item-title list-font">Company Website</div>
@@ -343,28 +461,56 @@ class TripDetails extends Component {
                         {
                           trip.capacity &&
                           <li>
-                            <div className="tour-item-title list-font">Trip Capacity</div>
+                            <div className="tour-item-title list-font">Tour Capacity</div>
                             <div className="tour-item-description list-font">{trip.capacity}</div>
                           </li>
                         }
+                          {
+                              trip.price &&
+                              <li>
+                                  <div className="tour-item-title list-font">Tour Price</div>
+                                  <div className="tour-item-description list-font">{trip.price}</div>
+                              </li>
+                          }
+                          {
+                              trip.createdAt &&
+                              <li>
+                                  <div className="tour-item-title list-font">CreatedAt</div>
+                                  <div className="tour-item-description list-font">{moment(trip.createdAt).format('YYYY-MM-DD HH:mm')}</div>
+                              </li>
+                          }
+                          {
+                              trip.startDate &&
+                              <li>
+                                  <div className="tour-item-title list-font">Start Date</div>
+                                  <div className="tour-item-description list-font">{moment(trip.startDate).format('YYYY-MM-DD HH:mm')}</div>
+                              </li>
+                          }
+                          {
+                              trip.views &&
+                              <li>
+                                  <div className="tour-item-title list-font">Tour Views</div>
+                                  <div className="tour-item-description list-font">{trip.views}</div>
+                              </li>
+                          }
                         {
                           trip.startDate &&
                           <li>
-                            <div className="tour-item-title list-font">Trip Start Date</div>
+                            <div className="tour-item-title list-font">Tour Start Date</div>
                             <div className="tour-item-description list-font">{moment(trip.startDate).format("ll")}</div>
                           </li>
                         }
                         {
                           trip.endDate &&
                           <li>
-                            <div className="tour-item-title list-font">Trip Start Date</div>
+                            <div className="tour-item-title list-font">Tour Start Date</div>
                             <div className="tour-item-description list-font">{moment(trip.endDate).format("ll")}</div>
                           </li>
                         }
                       </ul>
                       <div className={"w-100"}>
                         <div className="tour-schedule">
-                          <h6 className={"black bold mt-4 mb-3 underline-title"}>Trip Review Details</h6>
+                          <h6 className={"black bold mt-4 mb-3 underline-title"}>Tour Review Details</h6>
                           <DetailedRate ratings={trip.ratings} ratingsAvg={trip.ratingsAvg}/>
                           <h6 className={"black bold mt-4 mb-3 underline-title"}>Comments</h6>
                           <Comments comments={trip.comments || []} onAdd={this.onComment}
