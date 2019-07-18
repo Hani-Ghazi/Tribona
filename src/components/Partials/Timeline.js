@@ -17,7 +17,7 @@ const Timeline = ({ items = [], loadMore }) => (
       {
         items.map((item, index) => (
           <div className="col-md-6" key={index}>
-            <div className={`container ${index % 2 ? "left" : "right"}`}>
+            <div style={{width: "70%", float: index % 2 ? "left" : "right", marginBottom: "10px", borderRadius: "30"}}>
               <TimelineCard item={item.item} type={item.type}/>
             </div>
           </div>
